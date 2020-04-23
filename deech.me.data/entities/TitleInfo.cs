@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace deech.me.data.entities
 {
     public class TitleInfo
@@ -7,7 +9,7 @@ namespace deech.me.data.entities
         public Person Author { get; set; } = new Person();
         public string Cover { get; set; }
         public string Date { get; set; }
-        public Genre Genre { get; set; } = new Genre();
+        public List<Genre> Genres { get; set; } = new List<Genre>();
         public Language Language { get; set; } = new Language();
         public Language SourceLanguage { get; set; } = new Language();
         public string Title { get; set; }

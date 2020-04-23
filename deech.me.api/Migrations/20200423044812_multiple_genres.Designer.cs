@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deech.me.data.context;
 
 namespace deech.me.api.Migrations
 {
     [DbContext(typeof(DeechMeDataContext))]
-    partial class DeechMeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20200423044812_multiple_genres")]
+    partial class multiple_genres
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

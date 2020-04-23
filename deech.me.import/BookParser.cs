@@ -18,28 +18,36 @@ namespace deech.me.import
                 var doc = new XmlDocument();
                 doc.Load(file.FullName);
 
-                var description = doc.GetElementsByTagName("description")[0].OwnerDocument;
-                var titleInfo = description.GetElementsByTagName("title-info")[0].OwnerDocument;
-                var publishInfo = description.GetElementsByTagName("publish-info")[0].OwnerDocument;
-                var body = description.GetElementsByTagName("body")[0].OwnerDocument;
-                var author = titleInfo.GetElementsByTagName("author")[0].OwnerDocument;
 
-                book.Title.Genre.Code = titleInfo.GetElementsByTagName("genre").Count > 0 ? titleInfo.GetElementsByTagName("genre")[0].InnerText : null;
 
-                book.Title.Author.FirstName = author.GetElementsByTagName("first-name").Count > 0 ? author.GetElementsByTagName("first-name")[0].InnerText : null;
-                book.Title.Author.LastName = author.GetElementsByTagName("last-name").Count > 0 ? author.GetElementsByTagName("last-name")[0].InnerText : null;
+                var ns = new XmlNamespaceManager(doc.NameTable);
+                ns.AddNamespace("bk", "http://www.gribuser.ru/xml/fictionbook/2.0");
 
-                book.Title.Title = titleInfo.GetElementsByTagName("book-title").Count > 0 ? titleInfo.GetElementsByTagName("book-title")[0].InnerText : null;
-                book.Title.Annotation = titleInfo.GetElementsByTagName("annotation").Count > 0 ? titleInfo.GetElementsByTagName("annotation")[0].InnerXml : null;
-                book.Title.Date = titleInfo.GetElementsByTagName("date").Count > 0 ? titleInfo.GetElementsByTagName("date")[0].InnerXml : null;
-                book.Title.Language.Code = titleInfo.GetElementsByTagName("language").Count > 0 ? titleInfo.GetElementsByTagName("language")[0].InnerXml : null;
-                book.Title.SourceLanguage.Code = titleInfo.GetElementsByTagName("source-language").Count > 0 ? titleInfo.GetElementsByTagName("source-language")[0].InnerXml : null;
+                var root = doc.DocumentElement;
 
-                book.Publish.BookName = publishInfo.GetElementsByTagName("book-name").Count > 0 ? publishInfo.GetElementsByTagName("book-name")[0].InnerText : null;
-                book.Publish.Publisher = publishInfo.GetElementsByTagName("publisher").Count > 0 ? publishInfo.GetElementsByTagName("publisher")[0].InnerText : null;
-                book.Publish.Year = publishInfo.GetElementsByTagName("year").Count > 0 ? publishInfo.GetElementsByTagName("year")[0].InnerText : null;
+                var genres = root.SelectNodes("//bk:description/bk:title-info/bk:genre", ns);
 
-                book.Content.Content = Encoding.UTF8.GetBytes(body.InnerXml);
+                foreach (XmlNode genre in genres)
+                {
+                    book.Title.Genres.Add(new Genre{Code = genre.InnerText});
+                }
+
+                book.Title.Author.FirstName = root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:first-name", ns)?.InnerText;
+                book.Title.Author.LastName = root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:last-name", ns)?.InnerText;
+                book.Title.Author.MiddleName = root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:middle-name", ns)?.InnerText;
+
+                book.Title.Title = root.SelectSingleNode("//bk:description/bk:title-info/bk:book-title", ns)?.InnerText;
+                book.Title.Annotation = root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", ns)?.InnerXml;
+                book.Title.Date = root.SelectSingleNode("//bk:description/bk:title-info/bk:date", ns)?.InnerText;
+                book.Title.Language.Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:language", ns)?.InnerText;
+                book.Title.SourceLanguage.Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:source-language", ns)?.InnerText;
+
+                book.Publish.BookName = root.SelectSingleNode("//bk:description/bk:publish-info/bk:book-name", ns)?.InnerText;
+                book.Publish.City =  root.SelectSingleNode("//bk:description/bk:publish-info/bk:city", ns)?.InnerText;
+                book.Publish.Publisher =  root.SelectSingleNode("//bk:description/bk:publish-info/bk:publisher", ns)?.InnerText;
+                book.Publish.Year =  root.SelectSingleNode("//bk:description/bk:publish-info/bk:year", ns)?.InnerText;
+
+                book.Content.Content = Encoding.UTF8.GetBytes(root.SelectSingleNode("//bk:body", ns)?.InnerText);
             }
             catch
             {
