@@ -1,3 +1,4 @@
+using System.Linq;
 using deech.me.data.entities;
 using Microsoft.EntityFrameworkCore;
 

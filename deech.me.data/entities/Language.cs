@@ -1,8 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace deech.me.data.entities
 {
     public class Language
     {
-        public int Id { get; set; }
+        [Key]
         public string Code { get; set; }
         public string Name { get; set; }
     }
