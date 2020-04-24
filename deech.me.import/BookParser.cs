@@ -22,11 +22,13 @@ namespace deech.me.import
 
                 var root = doc.DocumentElement;
 
+                book.File = file.Name;
+
                 var genres = root.SelectNodes("//bk:description/bk:title-info/bk:genre", ns);
 
                 foreach (XmlNode genre in genres)
                 {
-                    //book.Title.Genres.Add(new Genre { Code = genre.InnerText });
+                    book.Title.Genres.Add(new TitleInfoGenre { TitleInfo = book.Title, Genre = new Genre { Code = genre.InnerText } });
                 }
 
                 if (root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:first-name", ns)?.InnerText != null || root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:last-name", ns)?.InnerText != null)

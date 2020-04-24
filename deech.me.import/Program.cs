@@ -8,7 +8,7 @@ namespace deech.me.import
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             var books = new List<Book>();
             var files = BookReader.GetBooks();
@@ -30,50 +30,66 @@ namespace deech.me.import
             {
                 using (var context = new DeechMeDataContext(builder.Options))
                 {
-                    // book.Title.Genres.ForEach(async g =>
-                    // {
-                    //     var genre = await context.Genres.FirstOrDefaultAsync(x => x.Code == g.Code);
+                    for (int i = 0; i < book.Title.Genres.Count; i++)
+                    {
+                        var existingGenre = context.Genres.Find(book.Title.Genres[i].Genre.Code);
 
-                    //     if (genre != null)
-                    //     {
-                    //         context.Entry(g).State = EntityState.Detached;
-                    //     }
-                    // });
+                        if (existingGenre != null)
+                        {
+                            book.Title.Genres[i].Genre = existingGenre;
+                        }
+                    }
+
+                    if (book.Title.Language?.Code != null)
+                    {
+                        var language = context.Languages.Find(book.Title.Language.Code);
+
+                        if (language != null)
+                        {
+                            book.Title.Language = language;
+                        }
+                    }
+
+                    if (book.Title.SourceLanguage?.Code != null)
+                    {
+                        var language = context.Languages.Find(book.Title.Language.Code);
+
+                        if (language != null)
+                        {
+                            book.Title.SourceLanguage = language;
+                        }
+                    }
+
+                    if (book.Title.Author != null)
+                    {
+                        var exisitngAuthor = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == book.Title.Author.FirstName && p.LastName == book.Title.Author.LastName && p.MiddleName == book.Title.Author.MiddleName);
+
+                        if (exisitngAuthor != null)
+                        {
+                            book.Title.Author = exisitngAuthor;
+                        }
+
+                    }
+
+                    if (book.Title.Translator != null)
+                    {
+                        var exisitngTranslator = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == book.Title.Translator.FirstName && p.LastName == book.Title.Translator.LastName && p.MiddleName == book.Title.Translator.MiddleName);
+
+                        if (exisitngTranslator != null)
+                        {
+                            book.Title.Translator = exisitngTranslator;
+                        }
+                    }
 
                     try
                     {
-                        if (book.Title.Language?.Code != null)
-                        {
-                            var language = context.Languages.Find(book.Title.Language.Code);
-
-                            if (language != null)
-                            {
-                                book.Title.Language = language;
-                            }
-                        }
-
-                        if (book.Title.SourceLanguage?.Code != null)
-                        {
-                            var language = context.Languages.Find(book.Title.Language.Code);
-
-                            if (language != null)
-                            {
-                                book.Title.SourceLanguage = language;
-                            }
-                        }
-
                         context.Add(book);
                         context.SaveChanges();
                     }
-                    catch (System.Exception ex)
+                    catch
                     {
-                        throw;
+                        System.Console.WriteLine(book.File);
                     }
-
-
-
-
-
                 }
             }
         }

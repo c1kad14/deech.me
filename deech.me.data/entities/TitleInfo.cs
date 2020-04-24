@@ -6,13 +6,14 @@ namespace deech.me.data.entities
     {
         public int Id { get; set; }
         public string Annotation { get; set; }
-        public Person Author { get; set; }
+        public List<TitleInfoAuthor> Authors { get; set; } = new List<TitleInfoAuthor>();
         public string Cover { get; set; }
         public string Date { get; set; }
-        public List<Genre> Genres { get; set; } = new List<Genre>();
+        public List<TitleInfoGenre> Genres { get; set; } = new List<TitleInfoGenre>();
+        public List<TitleInfoKeyword> Keywords { get; set; } = new List<TitleInfoKeyword>();
         public Language Language { get; set; }
         public Language SourceLanguage { get; set; }
         public string Title { get; set; }
-        public Person Translator { get; set; }
+        public List<TitleInfoTranslator> Translators { get; set; } = new List<TitleInfoTranslator>();
     }
 }

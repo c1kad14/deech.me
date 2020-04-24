@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deech.me.data.context;
 
 namespace deech.me.api.Migrations
 {
     [DbContext(typeof(DeechMeDataContext))]
-    partial class DeechMeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20200424025629_made_title_and_genres_many_to_many")]
+    partial class made_title_and_genres_many_to_many
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,9 +30,6 @@ namespace deech.me.api.Migrations
 
                     b.Property<int?>("ContentId")
                         .HasColumnType("int");
-
-                    b.Property<string>("File")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PublishId")
                         .HasColumnType("int");
