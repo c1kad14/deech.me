@@ -21,58 +21,74 @@ namespace deech.me.import
                 ns.AddNamespace("bk", "http://www.gribuser.ru/xml/fictionbook/2.0");
 
                 var root = doc.DocumentElement;
+                var genres = root.SelectNodes("//bk:description/bk:title-info/bk:genre", ns);
+                var authors = root.SelectNodes("//bk:description/bk:title-info/bk:author", ns);
+                var translators = root.SelectNodes("//bk:description/bk:title-info/bk:translator", ns);
+                var bodyList = root.SelectNodes("//bk:body", ns);
 
                 book.File = file.Name;
 
-                var genres = root.SelectNodes("//bk:description/bk:title-info/bk:genre", ns);
+                book.TitleInfo.Title = root.SelectSingleNode("//bk:description/bk:title-info/bk:book-title", ns)?.InnerText;
+                book.TitleInfo.Annotation = root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", ns)?.InnerText;
+                book.TitleInfo.Date = root.SelectSingleNode("//bk:description/bk:title-info/bk:date", ns)?.InnerText;
 
                 foreach (XmlNode genre in genres)
                 {
-                    book.Title.Genres.Add(new TitleInfoGenre { TitleInfo = book.Title, Genre = new Genre { Code = genre.InnerText } });
+                    book.TitleInfo.Genres.Add(new TitleInfoGenre { TitleInfo = book.TitleInfo, Genre = new Genre { Code = genre.InnerText } });
                 }
 
-                if (root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:first-name", ns)?.InnerText != null || root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:last-name", ns)?.InnerText != null)
+                foreach (XmlNode author in authors)
                 {
-                    book.Title.Author = new Person
+                    book.TitleInfo.Authors.Add(new TitleInfoAuthor
                     {
-                        FirstName = root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:first-name", ns)?.InnerText,
-                        LastName = root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:last-name", ns)?.InnerText,
-                        MiddleName = root.SelectSingleNode("//bk:description/bk:title-info/bk:author/bk:middle-name", ns)?.InnerText
-
-                    };
+                        TitleInfo = book.TitleInfo,
+                        Author = new Person
+                        {
+                            FirstName = root.SelectSingleNode("//bk:first-name", ns)?.InnerText,
+                            LastName = root.SelectSingleNode("//bk:last-name", ns)?.InnerText,
+                            MiddleName = root.SelectSingleNode("//bk:middle-name", ns)?.InnerText
+                        }
+                    });
                 }
 
-                if (root.SelectSingleNode("//bk:description/bk:title-info/bk:translator/bk:first-name", ns)?.InnerText != null || root.SelectSingleNode("//bk:description/bk:title-info/bk:translator/bk:last-name", ns)?.InnerText != null)
+                foreach (XmlNode translator in translators)
                 {
-                    book.Title.Translator = new Person
+                    book.TitleInfo.Translators.Add(new TitleInfoTranslator
                     {
-                        FirstName = root.SelectSingleNode("//bk:description/bk:title-info/bk:translator/bk:first-name", ns)?.InnerText,
-                        LastName = root.SelectSingleNode("//bk:description/bk:title-info/bk:translator/bk:last-name", ns)?.InnerText,
-                        MiddleName = root.SelectSingleNode("//bk:description/bk:title-info/bk:translator/bk:middle-name", ns)?.InnerText
-
-                    };
+                        TitleInfo = book.TitleInfo,
+                        Translator = new Person
+                        {
+                            FirstName = root.SelectSingleNode("//bk:first-name", ns)?.InnerText,
+                            LastName = root.SelectSingleNode("//bk:last-name", ns)?.InnerText,
+                            MiddleName = root.SelectSingleNode("//bk:middle-name", ns)?.InnerText
+                        }
+                    });
                 }
-
-                book.Title.Title = root.SelectSingleNode("//bk:description/bk:title-info/bk:book-title", ns)?.InnerText;
-                book.Title.Annotation = root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", ns)?.InnerText;
-                book.Title.Date = root.SelectSingleNode("//bk:description/bk:title-info/bk:date", ns)?.InnerText;
 
                 if (root.SelectSingleNode("//bk:description/bk:title-info/bk:lang", ns)?.InnerText != null)
                 {
-                    book.Title.Language = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:lang", ns).InnerText };
+                    book.TitleInfo.Language = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:lang", ns).InnerText };
                 }
 
                 if (root.SelectSingleNode("//bk:description/bk:title-info/bk:source-lang", ns)?.InnerText != null)
                 {
-                    book.Title.SourceLanguage = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:source-language", ns).InnerText };
+                    book.TitleInfo.SourceLanguage = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:source-language", ns).InnerText };
                 }
 
-                book.Publish.BookName = root.SelectSingleNode("//bk:description/bk:publish-info/bk:book-name", ns)?.InnerText;
-                book.Publish.City = root.SelectSingleNode("//bk:description/bk:publish-info/bk:city", ns)?.InnerText;
-                book.Publish.Publisher = root.SelectSingleNode("//bk:description/bk:publish-info/bk:publisher", ns)?.InnerText;
-                book.Publish.Year = root.SelectSingleNode("//bk:description/bk:publish-info/bk:year", ns)?.InnerText;
+                book.PublishInfo.BookName = root.SelectSingleNode("//bk:description/bk:publish-info/bk:book-name", ns)?.InnerText;
+                book.PublishInfo.City = root.SelectSingleNode("//bk:description/bk:publish-info/bk:city", ns)?.InnerText;
+                book.PublishInfo.Publisher = root.SelectSingleNode("//bk:description/bk:publish-info/bk:publisher", ns)?.InnerText;
+                book.PublishInfo.Year = root.SelectSingleNode("//bk:description/bk:publish-info/bk:year", ns)?.InnerText;
 
-                book.Content.Content = Encoding.UTF8.GetBytes(root.SelectSingleNode("//bk:body", ns)?.InnerText);
+
+                foreach (XmlNode body in bodyList)
+                {
+                    book.Contents.Add(new BookContent
+                    {
+                        Book = book,
+                        Data = Encoding.UTF8.GetBytes(body.InnerXml)
+                    });
+                }
             }
             catch
             {
