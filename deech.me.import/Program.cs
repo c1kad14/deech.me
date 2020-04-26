@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using deech.me.data.context;
 using deech.me.data.entities;
@@ -30,54 +31,75 @@ namespace deech.me.import
             {
                 using (var context = new DeechMeDataContext(builder.Options))
                 {
-                    for (int i = 0; i < book.Title.Genres.Count; i++)
+                    for (int i = 0; i < book.TitleInfo.Genres.Count; i++)
                     {
-                        var existingGenre = context.Genres.Find(book.Title.Genres[i].Genre.Code);
+                        var existingGenre = context.Genres.Find(book.TitleInfo.Genres[i].Genre.Code);
 
                         if (existingGenre != null)
                         {
-                            book.Title.Genres[i].Genre = existingGenre;
+                            book.TitleInfo.Genres[i].Genre = existingGenre;
                         }
                     }
 
-                    if (book.Title.Language?.Code != null)
+                    if (book.TitleInfo.Language?.Code != null)
                     {
-                        var language = context.Languages.Find(book.Title.Language.Code);
+                        var language = context.Languages.Find(book.TitleInfo.Language.Code);
 
                         if (language != null)
                         {
-                            book.Title.Language = language;
+                            book.TitleInfo.Language = language;
                         }
                     }
 
-                    if (book.Title.SourceLanguage?.Code != null)
+                    if (book.TitleInfo.SourceLanguage?.Code != null)
                     {
-                        var language = context.Languages.Find(book.Title.Language.Code);
+                        var language = context.Languages.Find(book.TitleInfo.Language.Code);
 
                         if (language != null)
                         {
-                            book.Title.SourceLanguage = language;
+                            book.TitleInfo.SourceLanguage = language;
                         }
                     }
 
-                    if (book.Title.Author != null)
+                    if (book.TitleInfo.Authors.Count > 0)
                     {
-                        var exisitngAuthor = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == book.Title.Author.FirstName && p.LastName == book.Title.Author.LastName && p.MiddleName == book.Title.Author.MiddleName);
-
-                        if (exisitngAuthor != null)
+                        for (var i = 0; i < book.TitleInfo.Authors.Count; i++)
                         {
-                            book.Title.Author = exisitngAuthor;
-                        }
+                            var author = book.TitleInfo.Authors[i].Author;
+                            var exisitngAuthor = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == author.FirstName && p.LastName == author.LastName && p.MiddleName == author.MiddleName);
 
+                            if (exisitngAuthor != null)
+                            {
+                                book.TitleInfo.Authors[i].Author = exisitngAuthor;
+                            }
+                        }
                     }
 
-                    if (book.Title.Translator != null)
+                    if (book.TitleInfo.Translators.Count > 0)
                     {
-                        var exisitngTranslator = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == book.Title.Translator.FirstName && p.LastName == book.Title.Translator.LastName && p.MiddleName == book.Title.Translator.MiddleName);
-
-                        if (exisitngTranslator != null)
+                        for (var i = 0; i < book.TitleInfo.Translators.Count; i++)
                         {
-                            book.Title.Translator = exisitngTranslator;
+                            var translator = book.TitleInfo.Translators[i].Translator;
+                            var exisitngTranslator = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == translator.FirstName && p.LastName == translator.LastName && p.MiddleName == translator.MiddleName);
+
+                            if (exisitngTranslator != null)
+                            {
+                                book.TitleInfo.Translators[i].Translator = exisitngTranslator;
+                            }
+                        }
+                    }
+
+                    if (book.TitleInfo.Keywords.Count > 0)
+                    {
+                        for (var i = 0; i < book.TitleInfo.Keywords.Count; i++)
+                        {
+                            var keyword = book.TitleInfo.Keywords[i].Keyword;
+                            var existingKeyword = context.Keywords.Find(keyword.Code);
+
+                            if (existingKeyword != null)
+                            {
+                                book.TitleInfo.Keywords[i].Keyword = existingKeyword;
+                            }
                         }
                     }
 
@@ -86,7 +108,7 @@ namespace deech.me.import
                         context.Add(book);
                         context.SaveChanges();
                     }
-                    catch
+                    catch(Exception ex)
                     {
                         System.Console.WriteLine(book.File);
                     }

@@ -12,7 +12,11 @@ namespace deech.me.data.context
 
         public DbSet<Book> Books { get; set; }
         public DbSet<BookContent> BookContents { get; set; }
+        public DbSet<Cover> Covers { get; set; }
+        public DbSet<CustomInfo> CustomInfos { get; set; }
         public DbSet<Genre> Genres { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Language> Languages { get; set; }
         public DbSet<Person> Persons { get; set; }
         public DbSet<PublishInfo> PublishInfos { get; set; }
