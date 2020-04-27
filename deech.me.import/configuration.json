@@ -1,5 +1,5 @@
 {
-    "importFolder": "../../../deech.me/t",
+    "importFolder": "../../../deech.me/import",
     "processedFolder": "../../../deech.me/processed",
     "connectionString": "Server=127.0.0.1,1433;Database=DeechMeDb;User Id=SA;Password=1Secure*Password1"
 }

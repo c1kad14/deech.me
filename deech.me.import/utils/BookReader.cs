@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using deech.me.import.models;
 
-namespace deech.me.import
+namespace deech.me.import.utils
 {
     public class BookReader
     {
@@ -16,6 +17,7 @@ namespace deech.me.import
         public static string GetBookContent(FileInfo file)
         {
             using var stream = file.OpenText();
+
             return stream.ReadToEnd();
         }
     }

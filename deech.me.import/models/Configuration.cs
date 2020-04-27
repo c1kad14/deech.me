@@ -2,7 +2,7 @@ using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace deech.me.import
+namespace deech.me.import.models
 {
     public class Configuration
     {

@@ -1,11 +1,10 @@
-using System;
 using System.IO;
 using System.Text;
 using System.Xml;
 using deech.me.data.entities;
 using deech.me.import.abstractions;
 
-namespace deech.me.import
+namespace deech.me.import.utils
 {
     public class BookParser : IParser
     {
@@ -22,6 +21,7 @@ namespace deech.me.import
                 bk.AddNamespace("bk", "http://www.gribuser.ru/xml/fictionbook/2.0");
 
                 var root = doc.DocumentElement;
+                var cover = root.SelectSingleNode("//bk:description/bk:title-info/bk:coverpage/bk:image", bk)?.Attributes[0]?.Value?.Replace("#", "");
                 var genres = root.SelectNodes("//bk:description/bk:title-info/bk:genre", bk);
                 var authors = root.SelectNodes("//bk:description/bk:title-info/bk:author", bk);
                 var translators = root.SelectNodes("//bk:description/bk:title-info/bk:translator", bk);
@@ -47,7 +47,7 @@ namespace deech.me.import
 
                     foreach (var keyword in keywords)
                     {
-                        if (!book.TitleInfo.Keywords.Exists(k => k.Keyword.Code == keyword))
+                        if (!book.TitleInfo.Keywords.Exists(k => k.Keyword.Code == keyword.Trim()))
                         {
                             book.TitleInfo.Keywords.Add(new TitleInfoKeyword { TitleInfo = book.TitleInfo, Keyword = new Keyword { Code = keyword.Trim() } });
                         }
@@ -69,9 +69,9 @@ namespace deech.me.import
                         TitleInfo = book.TitleInfo,
                         Author = new Person
                         {
-                            FirstName = root.SelectSingleNode("//bk:first-name", bk)?.InnerText,
-                            LastName = root.SelectSingleNode("//bk:last-name", bk)?.InnerText,
-                            MiddleName = root.SelectSingleNode("//bk:middle-name", bk)?.InnerText
+                            FirstName = author["first-name"]?.InnerText,
+                            LastName = author["last-name"]?.InnerText,
+                            MiddleName = author["middle-name"]?.InnerText
                         }
                     });
                 }
@@ -83,9 +83,9 @@ namespace deech.me.import
                         TitleInfo = book.TitleInfo,
                         Translator = new Person
                         {
-                            FirstName = root.SelectSingleNode("//bk:first-name", bk)?.InnerText,
-                            LastName = root.SelectSingleNode("//bk:last-name", bk)?.InnerText,
-                            MiddleName = root.SelectSingleNode("//bk:middle-name", bk)?.InnerText
+                            FirstName = translator["first-name"]?.InnerText,
+                            LastName = translator["last-name"]?.InnerText,
+                            MiddleName = translator["middle-name"]?.InnerText
                         }
                     });
                 }
@@ -111,7 +111,7 @@ namespace deech.me.import
 
                 foreach (XmlNode bin in binary)
                 {
-                    if (bin.Attributes["id"].Value == "cover.jpg")
+                    if (!string.IsNullOrEmpty(cover) && bin.Attributes["id"].Value == cover)
                     {
                         book.TitleInfo.Cover.Data = Encoding.UTF8.GetBytes(bin.InnerXml);
                     }

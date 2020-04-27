@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deech.me.data.context;
 
 namespace deech.me.api.Migrations
 {
     [DbContext(typeof(DeechMeDataContext))]
-    partial class DeechMeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20200427082032_added_id_field_to_authors_and_translators")]
+    partial class added_id_field_to_authors_and_translators
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

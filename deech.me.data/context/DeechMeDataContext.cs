@@ -33,17 +33,11 @@ namespace deech.me.data.context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TitleInfoAuthor>()
-                .HasKey(x => new { x.TitleInfoId, x.AuthorId });
-
             modelBuilder.Entity<TitleInfoGenre>()
                 .HasKey(x => new { x.TitleInfoId, x.GenreCode });
 
             modelBuilder.Entity<TitleInfoKeyword>()
                 .HasKey(x => new { x.TitleInfoId, x.KeywordCode });
-
-            modelBuilder.Entity<TitleInfoTranslator>()
-                .HasKey(x => new { x.TitleInfoId, x.TranslatorId });
         }
     }
 }
