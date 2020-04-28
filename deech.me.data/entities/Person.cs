@@ -1,6 +1,8 @@
-﻿namespace deech.me.data.entities
+﻿using deech.me.data.abstractions;
+
+namespace deech.me.data.entities
 {
-    public class Person
+    public class Person : IReadEntity
     {
         public int Id { get; set; }
         public string FirstName { get; set; }

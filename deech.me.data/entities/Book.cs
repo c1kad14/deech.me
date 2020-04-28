@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using deech.me.data.abstractions;
 
 namespace deech.me.data.entities
 {
-    public class Book
+    public class Book : IReadEntity
     {
         public int Id { get; set; }
         public virtual List<BookContent> Contents { get; set; } = new List<BookContent>();

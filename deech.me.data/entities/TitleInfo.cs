@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using deech.me.data.abstractions;
 
 namespace deech.me.data.entities
 {
-    public class TitleInfo
+    public class TitleInfo : IReadEntity
     {
         public int Id { get; set; }
         public string Annotation { get; set; }
