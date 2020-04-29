@@ -18,7 +18,12 @@ namespace deech.me.logic.services
             this.dbContextOptions = dbContextOptions;
         }
 
-        public Func<IQueryable<TEntity>, IQueryable<TEntity>> IncludeFunc { get; set; }
+        protected Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc;
+
+        public void SetIncludeFunc(Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc)
+        {
+            this.includeFunc = includeFunc;
+        }
 
         public List<TEntity> GetMultiple(Expression<Func<TEntity, bool>> predicate)
         {
@@ -28,8 +33,8 @@ namespace deech.me.logic.services
             if (predicate != null)
                 query = query.Where(predicate);
 
-            if (IncludeFunc != null)
-                query = IncludeFunc(query);
+            if (includeFunc != null)
+                query = includeFunc(query);
 
             return query.ToList();
         }
@@ -42,8 +47,8 @@ namespace deech.me.logic.services
             if (predicate != null)
                 query = query.Where(predicate);
 
-            if (IncludeFunc != null)
-                query = IncludeFunc(query);
+            if (includeFunc != null)
+                query = includeFunc(query);
 
             return query.FirstOrDefault();
         }

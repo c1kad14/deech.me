@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -6,9 +7,8 @@ using deech.me.import.abstractions;
 
 namespace deech.me.import.utils
 {
-    public class BookParser : IParser
+    public class BookParser : IBookParser
     {
-        public static int ExceptionCount { get; set; }
         public Book Parse(FileInfo file)
         {
             var book = new Book();
@@ -30,16 +30,24 @@ namespace deech.me.import.utils
 
                 book.File = file.Name;
 
-                book.TitleInfo.Title = root.SelectSingleNode("//bk:description/bk:title-info/bk:book-title", bk)?.InnerText;
-                book.TitleInfo.Annotation = root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", bk)?.InnerText;
-                book.TitleInfo.Date = root.SelectSingleNode("//bk:description/bk:title-info/bk:date", bk)?.InnerText;
+                book.TitleInfo = new TitleInfo
+                {
+                    Title = root.SelectSingleNode("//bk:description/bk:title-info/bk:book-title", bk)?.InnerText,
+                    Date = root.SelectSingleNode("//bk:description/bk:title-info/bk:date", bk)?.InnerText,
+                };
 
-                book.PublishInfo.BookName = root.SelectSingleNode("//bk:description/bk:publish-info/bk:book-name", bk)?.InnerText;
-                book.PublishInfo.City = root.SelectSingleNode("//bk:description/bk:publish-info/bk:city", bk)?.InnerText;
-                book.PublishInfo.Publisher = root.SelectSingleNode("//bk:description/bk:publish-info/bk:publisher", bk)?.InnerText;
-                book.PublishInfo.Year = root.SelectSingleNode("//bk:description/bk:publish-info/bk:year", bk)?.InnerText;
+                if (!string.IsNullOrEmpty(root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", bk)?.InnerText))
+                {
+                    book.TitleInfo.Annotation = new Annotation { Text = root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", bk)?.InnerText };
+                }
 
-                book.CustomInfo.Text = root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText;
+                foreach (XmlNode genre in genres)
+                {
+                    if (!book.TitleInfo.Genres.Exists(g => g.Genre.Code == genre.InnerText))
+                    {
+                        book.TitleInfo.Genres.Add(new TitleInfoGenre { TitleInfo = book.TitleInfo, Genre = new Genre { Code = genre.InnerText } });
+                    }
+                }
 
                 if (root.SelectSingleNode("//bk:description/bk:title-info/bk:keywords", bk)?.InnerText != null)
                 {
@@ -54,24 +62,17 @@ namespace deech.me.import.utils
                     }
                 }
 
-                foreach (XmlNode genre in genres)
-                {
-                    if (!book.TitleInfo.Genres.Exists(g => g.Genre.Code == genre.InnerText))
-                    {
-                        book.TitleInfo.Genres.Add(new TitleInfoGenre { TitleInfo = book.TitleInfo, Genre = new Genre { Code = genre.InnerText } });
-                    }
-                }
-
                 foreach (XmlNode author in authors)
                 {
                     book.TitleInfo.Authors.Add(new TitleInfoAuthor
                     {
                         TitleInfo = book.TitleInfo,
-                        Author = new Person
+                        Author = new Author
                         {
                             FirstName = author["first-name"]?.InnerText,
                             LastName = author["last-name"]?.InnerText,
-                            MiddleName = author["middle-name"]?.InnerText
+                            MiddleName = author["middle-name"]?.InnerText,
+                            Nickname = author["nickname"]?.InnerText
                         }
                     });
                 }
@@ -81,11 +82,12 @@ namespace deech.me.import.utils
                     book.TitleInfo.Translators.Add(new TitleInfoTranslator
                     {
                         TitleInfo = book.TitleInfo,
-                        Translator = new Person
+                        Translator = new Translator
                         {
                             FirstName = translator["first-name"]?.InnerText,
                             LastName = translator["last-name"]?.InnerText,
-                            MiddleName = translator["middle-name"]?.InnerText
+                            MiddleName = translator["middle-name"]?.InnerText,
+                            Nickname = translator["nickname"]?.InnerText,
                         }
                     });
                 }
@@ -98,6 +100,22 @@ namespace deech.me.import.utils
                 if (root.SelectSingleNode("//bk:description/bk:title-info/bk:source-lang", bk)?.InnerText != null)
                 {
                     book.TitleInfo.SourceLanguage = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:source-language", bk).InnerText };
+                }
+
+                if (!string.IsNullOrEmpty(root.SelectSingleNode("//bk:description/bk:publish-info", bk)?.InnerText))
+                {
+                    book.PublishInfo = new PublishInfo
+                    {
+                        City = root.SelectSingleNode("//bk:description/bk:publish-info/bk:city", bk)?.InnerText,
+                        Publisher = root.SelectSingleNode("//bk:description/bk:publish-info/bk:publisher", bk)?.InnerText,
+                        Year = root.SelectSingleNode("//bk:description/bk:publish-info/bk:year", bk)?.InnerText,
+                        BookName = root.SelectSingleNode("//bk:description/bk:publish-info/bk:book-name", bk)?.InnerText
+                    };
+                }
+
+                if (!string.IsNullOrEmpty(root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText))
+                {
+                    book.CustomInfo = new CustomInfo { Text = root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText };
                 }
 
                 foreach (XmlNode body in bodies)
@@ -113,7 +131,7 @@ namespace deech.me.import.utils
                 {
                     if (!string.IsNullOrEmpty(cover) && bin.Attributes["id"].Value == cover)
                     {
-                        book.TitleInfo.Cover.Data = Encoding.UTF8.GetBytes(bin.InnerXml);
+                        book.TitleInfo.Cover = new Cover { Data = Encoding.UTF8.GetBytes(bin.InnerXml) };
                     }
                     else
                     {
@@ -129,7 +147,6 @@ namespace deech.me.import.utils
             }
             catch
             {
-                ExceptionCount++;
                 return null;
             }
 

@@ -10,6 +10,7 @@ namespace deech.me.import.utils
     public class ImportProcessor : IImportProcessor
     {
         private DbContextOptions _options;
+
         public ImportProcessor(DbContextOptions options)
         {
             this._options = options;
@@ -19,13 +20,16 @@ namespace deech.me.import.utils
         {
             using (var context = new DeechMeDataContext(this._options))
             {
-                for (int i = 0; i < book.TitleInfo.Genres.Count; i++)
+                if (book.TitleInfo.Genres?.Count > 0)
                 {
-                    var existingGenre = context.Genres.Find(book.TitleInfo.Genres[i].Genre.Code);
-
-                    if (existingGenre != null)
+                    for (int i = 0; i < book.TitleInfo.Genres.Count; i++)
                     {
-                        book.TitleInfo.Genres[i].Genre = existingGenre;
+                        var existingGenre = context.Genres.Find(book.TitleInfo.Genres[i].Genre.Code);
+
+                        if (existingGenre != null)
+                        {
+                            book.TitleInfo.Genres[i].Genre = existingGenre;
+                        }
                     }
                 }
 
@@ -49,12 +53,12 @@ namespace deech.me.import.utils
                     }
                 }
 
-                if (book.TitleInfo.Authors.Count > 0)
+                if (book.TitleInfo.Authors?.Count > 0)
                 {
                     for (var i = 0; i < book.TitleInfo.Authors.Count; i++)
                     {
                         var author = book.TitleInfo.Authors[i].Author;
-                        var exisitngAuthor = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == author.FirstName && p.LastName == author.LastName && p.MiddleName == author.MiddleName);
+                        var exisitngAuthor = await context.Authors.FirstOrDefaultAsync(p => p.FirstName == author.FirstName && p.LastName == author.LastName && p.MiddleName == author.MiddleName);
 
                         if (exisitngAuthor != null)
                         {
@@ -63,12 +67,12 @@ namespace deech.me.import.utils
                     }
                 }
 
-                if (book.TitleInfo.Translators.Count > 0)
+                if (book.TitleInfo.Translators?.Count > 0)
                 {
                     for (var i = 0; i < book.TitleInfo.Translators.Count; i++)
                     {
                         var translator = book.TitleInfo.Translators[i].Translator;
-                        var exisitngTranslator = await context.Persons.FirstOrDefaultAsync(p => p.FirstName == translator.FirstName && p.LastName == translator.LastName && p.MiddleName == translator.MiddleName);
+                        var exisitngTranslator = await context.Translators.FirstOrDefaultAsync(p => p.FirstName == translator.FirstName && p.LastName == translator.LastName && p.MiddleName == translator.MiddleName);
 
                         if (exisitngTranslator != null)
                         {
@@ -77,7 +81,7 @@ namespace deech.me.import.utils
                     }
                 }
 
-                if (book.TitleInfo.Keywords.Count > 0)
+                if (book.TitleInfo.Keywords?.Count > 0)
                 {
                     for (var i = 0; i < book.TitleInfo.Keywords.Count; i++)
                     {

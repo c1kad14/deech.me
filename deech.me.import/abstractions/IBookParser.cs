@@ -3,7 +3,7 @@ using deech.me.data.entities;
 
 namespace deech.me.import.abstractions
 {
-    public interface IParser
+    public interface IBookParser
     {
          Book Parse(FileInfo file);
     }

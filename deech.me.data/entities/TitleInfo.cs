@@ -6,9 +6,9 @@ namespace deech.me.data.entities
     public class TitleInfo : IReadEntity
     {
         public int Id { get; set; }
-        public string Annotation { get; set; }
+        public Annotation Annotation { get; set; }
         public List<TitleInfoAuthor> Authors { get; set; } = new List<TitleInfoAuthor>();
-        public virtual Cover Cover { get; set; } = new Cover();
+        public Cover Cover { get; set; }
         public string Date { get; set; }
         public List<TitleInfoGenre> Genres { get; set; } = new List<TitleInfoGenre>();
         public List<TitleInfoKeyword> Keywords { get; set; } = new List<TitleInfoKeyword>();

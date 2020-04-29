@@ -8,7 +8,7 @@ namespace deech.me.logic.abstractions
 {
     public interface IReadDataService<TEntity> where TEntity : IReadEntity
     {
-        Func<IQueryable<TEntity>, IQueryable<TEntity>> IncludeFunc { get; set; }
+        void SetIncludeFunc(Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc);
         TEntity GetSingle(Expression<Func<TEntity, bool>> predicate);
         List<TEntity> GetMultiple(Expression<Func<TEntity, bool>> predicate);
     }

@@ -10,6 +10,8 @@ namespace deech.me.data.context
 
         }
 
+        public DbSet<Annotation> Annotations { get; set; }
+        public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookContent> BookContents { get; set; }
         public DbSet<Cover> Covers { get; set; }
@@ -18,13 +20,13 @@ namespace deech.me.data.context
         public DbSet<Image> Images { get; set; }
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<Language> Languages { get; set; }
-        public DbSet<Person> Persons { get; set; }
         public DbSet<PublishInfo> PublishInfos { get; set; }
         public DbSet<TitleInfo> TitleInfos { get; set; }
         public DbSet<TitleInfoAuthor> TitleInfoAuthors { get; set; }
         public DbSet<TitleInfoGenre> TitleInfoGenres { get; set; }
         public DbSet<TitleInfoKeyword> TitleInfoKeywords { get; set; }
         public DbSet<TitleInfoTranslator> TitleInfoTranslators { get; set; }
+        public DbSet<Translator> Translators { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
