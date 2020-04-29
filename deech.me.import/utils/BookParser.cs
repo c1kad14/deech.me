@@ -131,14 +131,14 @@ namespace deech.me.import.utils
                 {
                     if (!string.IsNullOrEmpty(cover) && bin.Attributes["id"].Value == cover)
                     {
-                        book.TitleInfo.Cover = new Cover { Data = Encoding.UTF8.GetBytes(bin.InnerXml) };
+                        book.TitleInfo.Cover = new Cover { Data = Convert.FromBase64String(bin.InnerXml) };
                     }
                     else
                     {
                         book.Images.Add(new Image
                         {
                             Book = book,
-                            Data = Encoding.UTF8.GetBytes(bin.InnerXml),
+                            Data = Convert.FromBase64String(bin.InnerXml),
                             Name = bin.Attributes["id"].Value,
                             Type = bin.Attributes["content-type"].Value
                         });
