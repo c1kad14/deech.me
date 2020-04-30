@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
-using deech.me.import.utils;
+
 using Microsoft.EntityFrameworkCore;
+
+using deech.me.import.utils;
+
 
 namespace deech.me.import
 {

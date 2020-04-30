@@ -1,15 +1,20 @@
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
-using deech.me.data.context;
-using deech.me.logic.abstractions;
-using deech.me.logic.services;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
+
+using deech.me.api.middleware;
+using deech.me.data.context;
+using deech.me.logic.abstractions;
+using deech.me.logic.services;
+
 using Newtonsoft.Json;
 
 namespace deech.me.api
@@ -34,13 +39,17 @@ namespace deech.me.api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+                          ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile("logs/deech.me.{Date}.log");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseLoggingMiddleware();
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseEndpoints(endpoints =>

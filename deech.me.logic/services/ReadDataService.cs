@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+
+using Microsoft.EntityFrameworkCore;
+
 using deech.me.data.abstractions;
 using deech.me.data.context;
 using deech.me.logic.abstractions;
-using Microsoft.EntityFrameworkCore;
 
 namespace deech.me.logic.services
 {

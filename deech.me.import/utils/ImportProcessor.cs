@@ -1,9 +1,11 @@
 using System;
 using System.Threading.Tasks;
+
+using Microsoft.EntityFrameworkCore;
+
 using deech.me.data.context;
 using deech.me.data.entities;
 using deech.me.import.abstractions;
-using Microsoft.EntityFrameworkCore;
 
 namespace deech.me.import.utils
 {

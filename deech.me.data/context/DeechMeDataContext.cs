@@ -1,5 +1,6 @@
-using deech.me.data.entities;
 using Microsoft.EntityFrameworkCore;
+
+using deech.me.data.entities;
 
 namespace deech.me.data.context
 {

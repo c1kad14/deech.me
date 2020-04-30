@@ -1,7 +1,4 @@
 namespace deech.me.data.abstractions
 {
-    public interface IReadEntity
-    {
-         
-    }
+    public interface IReadEntity { }
 }
