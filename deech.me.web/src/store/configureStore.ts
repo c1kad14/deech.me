@@ -1,29 +1,21 @@
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
-import thunk from 'redux-thunk';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
-import { History } from 'history';
-import { ApplicationState, reducers } from './';
+import {createLogicMiddleware} from 'redux-logic';
+import {applyMiddleware, compose, createStore} from 'redux';
+import {createLogger} from "redux-logger";
+import rootReducer from './rootReducer';
+import rootLogic from "./rootLogic";
 
-export default function configureStore(history: History, initialState?: ApplicationState) {
-    const middleware = [
-        thunk,
-        routerMiddleware(history)
-    ];
+const logicMiddleware = createLogicMiddleware(rootLogic);
+const loggerMiddleware = createLogger();
+const middleware = applyMiddleware(logicMiddleware, loggerMiddleware);
 
-    const rootReducer = combineReducers({
-        ...reducers,
-        router: connectRouter(history)
-    });
+// using compose to allow for applyMiddleware Redux Dev Tools
+const enhancer = (window as any)['devToolsExtension'] && process.env.NODE_ENV === 'development'
+    ? compose(middleware,
+        (window as any).__REDUX_DEVTOOLS_EXTENSION__ &&
+        (window as any).__REDUX_DEVTOOLS_EXTENSION__()
+    )
+    : middleware;
 
-    const enhancers = [];
-    const windowIfDefined = typeof window === 'undefined' ? null : window as any;
-    if (windowIfDefined && windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__) {
-        enhancers.push(windowIfDefined.__REDUX_DEVTOOLS_EXTENSION__());
-    }
-
-    return createStore(
-        rootReducer,
-        initialState,
-        compose(applyMiddleware(...middleware), ...enhancers)
-    );
+export default function configureStore() {
+    return createStore(rootReducer, enhancer);
 }
