@@ -1,26 +1,36 @@
-import { createLogic } from "redux-logic";
-import Axios from "axios";
-import { domain } from "../config";
-import titleConstants from "./constants";
-import { TitleInfo } from "./types";
+import { createLogic, Action } from "redux-logic"
+import Axios from "axios"
+import { domain } from "../config"
+import { TitleInfo, TitleActionTypes, TitleActionType } from "./types"
+import { loading, loaded } from "../app/actions"
+import { setTitles } from "./actions"
 
-const titleSearch = createLogic({
-    type: titleConstants.SET_SEARCH_FILTER,
+
+type ActionExtractor<C> = Extract<TitleActionType, { type: C }>;
+
+type T_SEARCH = ActionExtractor<typeof TitleActionTypes.SEARCH_TITLES>['type'];
+type P_SEARCH = ActionExtractor<typeof TitleActionTypes.SEARCH_TITLES>['payload'];
+
+const titleSearch = createLogic<{}, { action: Action<T_SEARCH, P_SEARCH> }>({
+    type: TitleActionTypes.SEARCH_TITLES,
     processOptions: {
         dispatchReturn: true
     },
 
-    async process({ action }, dispatch, done) {
-         const title = action.payload as SearchFilter;
-        const url = `${domain}/titleinfo/byTitle?title${title}`;
+    async process(
+        { action }: { action: Action<T_SEARCH, P_SEARCH> },
+        dispatch: (searchAction: TitleActionType) => void,
+        done: () => void, ) {
+        const { filter } = <P_SEARCH>action.payload;
+        const url = `${domain}/titleinfo/byTitle?title${filter.title}`;
 
-        dispatch(appActions.setAppState(appConstants.LOADING));
+        // dispatch(loading());
 
         const response = await Axios.get(url);
-        const titlesSearchResults = await response.data;
+        const titlesSearchResults = await response.data as TitleInfo[];
 
-        dispatch(titleActions.setSearchResult(titlesSearchResults as TitleInfo []));
-        dispatch(appActions.setAppState(appConstants.SEARCHING));
+        dispatch(setTitles(titlesSearchResults));
+        // dispatch(loaded());
         done();
     }
 });
