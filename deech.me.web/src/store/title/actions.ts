@@ -1,45 +1,38 @@
-import { action } from 'typesafe-actions'
-import { TitleFilter, TitleInfo, TitleActionTypes, TitleActionType } from './types'
-import { Action } from 'redux'
+import { TitleFilter, TitleInfo, TitleTypes, TitleActionTypes } from './types'
 
-// const setFilter = (filter: TitleFilter) => action(TitleActionTypes.SET_FILTER, filter)
-// const resetFilter = () => action(TitleActionTypes.RESET_FILTER)
-// const setTitles = (titles: TitleInfo[]) => action(typeof TitleActionTypes.SET_TITLES, titles)
-// const clearTitles = () => action(TitleActionTypes.CLEAR_TITLES)
-
-export function setFilter(filter: TitleFilter): TitleActionType {
+export function setFilter(filter: TitleFilter): TitleActionTypes {
     return {
-        type: TitleActionTypes.SET_FILTER,
+        type: TitleTypes.SET_FILTER,
         payload: {
             filter
         }
     }
 }
 
-export function resetFilter(): TitleActionType {
+export function resetFilter(): TitleActionTypes {
     return {
-        type: TitleActionTypes.RESET_FILTER
+        type: TitleTypes.RESET_FILTER
     }
 }
 
-export function setTitles(titles: TitleInfo[]): TitleActionType {
+export function setTitles(titles: TitleInfo[]): TitleActionTypes {
     return {
-        type: TitleActionTypes.SET_TITLES,
+        type: TitleTypes.SET_TITLES,
         payload: {
             titles
         }
     }
 }
 
-export function clearTitles(): TitleActionType {
+export function clearTitles(): TitleActionTypes {
     return {
-        type: TitleActionTypes.CLEAR_TITLES
+        type: TitleTypes.CLEAR_TITLES
     }
 }
 
-export function searchTitles(filter: TitleFilter): TitleActionType {
+export function searchTitles(filter: TitleFilter): TitleActionTypes {
     return {
-        type: TitleActionTypes.SEARCH_TITLES,
+        type: TitleTypes.SEARCH_TITLES,
         payload: {
             filter
         }

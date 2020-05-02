@@ -1,6 +1,6 @@
-import { Action } from "redux";
+import { Action } from "redux"
 
-export enum TitleActionTypes {
+export enum TitleTypes {
     SET_FILTER = '@@title/SET_FILTER',
     RESET_FILTER = '@@title/RESET_FILTER',
     SEARCH_TITLES = '@@title/SEARCH_TITLES',
@@ -35,32 +35,32 @@ export interface TitleState {
 }
 
 interface SetFilter extends Action {
-    type: TitleActionTypes.SET_FILTER
+    type: TitleTypes.SET_FILTER
     payload: {
         filter: TitleFilter
     }
 }
 
 interface ResetFilter extends Action {
-    type: TitleActionTypes.RESET_FILTER
+    type: TitleTypes.RESET_FILTER
 }
 
 interface SetTitles extends Action {
-    type: TitleActionTypes.SET_TITLES
+    type: TitleTypes.SET_TITLES
     payload: {
         titles: TitleInfo[]
     }
 }
 
 interface ClearTitles extends Action {
-    type: TitleActionTypes.CLEAR_TITLES
+    type: TitleTypes.CLEAR_TITLES
 }
 
 interface SearchTitles extends Action {
-    type: TitleActionTypes.SEARCH_TITLES
+    type: TitleTypes.SEARCH_TITLES
     payload: {
         filter: TitleFilter
     }
 }
 
-export type TitleActionType = SetFilter | ResetFilter | SetTitles | ClearTitles | SearchTitles
+export type TitleActionTypes = SetFilter | ResetFilter | SetTitles | ClearTitles | SearchTitles

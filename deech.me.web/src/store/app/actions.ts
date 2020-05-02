@@ -1,6 +1,22 @@
-import { action } from 'typesafe-actions'
-import { AppActionTypes, AppState } from './types'
+import { AppActionTypes, AppTypes } from './types'
 
-export const loading = () => action(AppActionTypes.LOADING)
-export const loaded = () => action(AppActionTypes.LOADED)
-export const error = (error: string) => action(AppActionTypes.ERROR, error)
+export function setLoading(): AppActionTypes {
+    return {
+        type: AppTypes.LOADING
+    }
+}
+
+export function setLoaded(): AppActionTypes {
+    return {
+        type: AppTypes.LOADED
+    }
+}
+
+export function setError(error: string): AppActionTypes {
+    return {
+        type: AppTypes.ERROR,
+        paylaod: {
+            error
+        }
+    }
+}

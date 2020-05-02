@@ -1,5 +1,5 @@
 import { Reducer } from 'redux'
-import { TitleState, TitleInfo, TitleActionTypes } from './types'
+import { TitleState, TitleTypes } from './types'
 import produce from 'immer'
 
 const initialState: TitleState = {
@@ -7,25 +7,23 @@ const initialState: TitleState = {
     titles: []
 }
 
-const reducer: Reducer<TitleState> = (state = initialState, action): TitleState => {
+export const TitileReducer: Reducer<TitleState> = (state = initialState, action): TitleState => {
     return produce<TitleState>(state, draft => {
         switch (action.type) {
-            case TitleActionTypes.SET_FILTER:
-                draft.filter = action.payload
-                break;
-            case TitleActionTypes.RESET_FILTER:
-                draft.filter = undefined;
-                break;
-            case TitleActionTypes.SET_TITLES:
-                draft.titles = action.payload
-                break;
-            case TitleActionTypes.CLEAR_TITLES:
-                draft.titles = [];
-                break;
+            case TitleTypes.SET_FILTER:
+                draft.filter = action.payload.filter
+                break
+            case TitleTypes.RESET_FILTER:
+                draft.filter = undefined
+                break
+            case TitleTypes.SET_TITLES:
+                draft.titles = action.payload.titles
+                break
+            case TitleTypes.CLEAR_TITLES:
+                draft.titles = []
+                break
             default:
-                return state;
+                return state
         }
-    });
+    })
 }
-
-export { reducer as TitileReducer }

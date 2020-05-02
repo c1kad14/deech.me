@@ -1,9 +1,7 @@
-import { BookLogic } from "./book";
-import { TitleLogic } from "./title";
-import { AppLogic } from "./app";
+import BookLogic from "./book/logic";
+import TitleLogic from "./title/logic"
 
 export default [
-    ...AppLogic,
     ...BookLogic,
     ...TitleLogic
 ];

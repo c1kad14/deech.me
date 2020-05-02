@@ -1,40 +1,41 @@
 import { createLogic, Action } from "redux-logic"
 import Axios from "axios"
 import { domain } from "../config"
-import { TitleInfo, TitleActionTypes, TitleActionType } from "./types"
-import { loading, loaded } from "../app/actions"
+import { TitleActionTypes, TitleTypes } from "./types"
 import { setTitles } from "./actions"
+import { AppActionTypes } from "../app/types"
+import { setLoading, setLoaded } from "../app/actions"
 
 
-type ActionExtractor<C> = Extract<TitleActionType, { type: C }>;
+type ActionExtractor<C> = Extract<TitleActionTypes, { type: C }>
 
-type T_SEARCH = ActionExtractor<typeof TitleActionTypes.SEARCH_TITLES>['type'];
-type P_SEARCH = ActionExtractor<typeof TitleActionTypes.SEARCH_TITLES>['payload'];
+type T_SEARCH = ActionExtractor<typeof TitleTypes.SEARCH_TITLES>['type']
+type P_SEARCH = ActionExtractor<typeof TitleTypes.SEARCH_TITLES>['payload']
 
 const titleSearch = createLogic<{}, { action: Action<T_SEARCH, P_SEARCH> }>({
-    type: TitleActionTypes.SEARCH_TITLES,
+    type: TitleTypes.SEARCH_TITLES,
     processOptions: {
         dispatchReturn: true
     },
 
     async process(
         { action }: { action: Action<T_SEARCH, P_SEARCH> },
-        dispatch: (searchAction: TitleActionType) => void,
+        dispatch: (action: TitleActionTypes | AppActionTypes) => void,
         done: () => void, ) {
-        const { filter } = <P_SEARCH>action.payload;
-        const url = `${domain}/titleinfo/byTitle?title${filter.title}`;
+        const { filter } = <P_SEARCH>action.payload
+        const url = `${domain}/titleinfo/byTitle?title${filter.title}`
 
-        // dispatch(loading());
+        dispatch(setLoading())
 
-        const response = await Axios.get(url);
-        const titlesSearchResults = await response.data as TitleInfo[];
+        const response = await Axios.get(url)
+        const titlesSearchResults = await response.data
 
-        dispatch(setTitles(titlesSearchResults));
-        // dispatch(loaded());
-        done();
+        dispatch(setTitles(titlesSearchResults))
+        dispatch(setLoaded())
+        done()
     }
-});
+})
 
 export default [
     titleSearch
-];
+]
