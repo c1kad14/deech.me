@@ -1,4 +1,4 @@
-import { AppActionTypes, AppTypes } from './types'
+import { AppActionTypes, AppTypes } from "./types"
 
 export function setLoading(): AppActionTypes {
     return {

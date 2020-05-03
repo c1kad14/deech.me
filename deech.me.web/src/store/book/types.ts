@@ -2,9 +2,9 @@ import { TitleInfo } from "../title/types";
 import { Action } from "redux";
 
 export enum BookTypes {
-    CLEAR_BOOK = '@@book/CLEAR_BOOK',
-    SET_BOOK = '@@book/SET_BOOK',
-    SET_BOOK_ID = '@@book/SET_BOOK_ID'
+    CLEAR_BOOK = "@@book/CLEAR_BOOK",
+    SET_BOOK = "@@book/SET_BOOK",
+    SET_BOOK_ID = "@@book/SET_BOOK_ID"
 }
 
 export interface Book {

@@ -1,13 +1,13 @@
-import { Reducer } from 'redux'
-import produce from 'immer'
-import { BookState, BookTypes } from './types'
+import { Reducer } from "redux"
+import produce from "immer"
+import { BookState, BookTypes } from "./types"
 
 const initialState: BookState = {
     id: undefined,
     book: undefined
 }
 
-export const TitileReducer: Reducer<BookState> = (state = initialState, action): BookState => {
+export const BookReducer: Reducer<BookState> = (state = initialState, action): BookState => {
     return produce<BookState>(state, draft => {
         switch (action.type) {
             case BookTypes.SET_BOOK_ID:

@@ -1,7 +1,7 @@
-import { combineReducers } from "redux";
-import { BookReducer } from "./book";
-import { AppReducer } from "./app";
-import { TitleReducer } from "./title";
+import { combineReducers } from "redux"
+import { AppReducer } from "./app/reducer"
+import { BookReducer } from "./book/reducer"
+import { TitleReducer } from "./title/reducer"
 
 export default combineReducers({
     ...AppReducer,

@@ -1,6 +1,6 @@
-import { Reducer } from 'redux'
-import { AppState, AppTypes } from './types'
-import produce from 'immer'
+import { Reducer } from "redux"
+import { AppState, AppTypes } from "./types"
+import produce from "immer"
 
 const initialState: AppState = {
     loading: false,

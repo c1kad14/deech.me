@@ -1,11 +1,11 @@
 import { Action } from "redux"
 
 export enum TitleTypes {
-    SET_FILTER = '@@title/SET_FILTER',
-    RESET_FILTER = '@@title/RESET_FILTER',
-    SEARCH_TITLES = '@@title/SEARCH_TITLES',
-    SET_TITLES = '@@title/SET_TITLES',
-    CLEAR_TITLES = '@@title/CLEAR_TITLES'
+    SET_FILTER = "@@title/SET_FILTER",
+    RESET_FILTER = "@@title/RESET_FILTER",
+    SEARCH_TITLES = "@@title/SEARCH_TITLES",
+    SET_TITLES = "@@title/SET_TITLES",
+    CLEAR_TITLES = "@@title/CLEAR_TITLES"
 }
 
 export interface TitleFilter {

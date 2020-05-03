@@ -1,10 +1,10 @@
 import { Action } from "redux"
 
 export enum AppTypes {
-    DEFAULT = '@@app/DEFAULT',
-    LOADING = '@@app/LOADING',
-    LOADED = '@@app/LOADED',
-    ERROR = '@@app/ERROR'
+    DEFAULT = "@@app/DEFAULT",
+    LOADING = "@@app/LOADING",
+    LOADED = "@@app/LOADED",
+    ERROR = "@@app/ERROR"
 }
 
 export interface AppState {

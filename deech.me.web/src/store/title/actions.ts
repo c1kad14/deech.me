@@ -1,4 +1,4 @@
-import { TitleFilter, TitleInfo, TitleTypes, TitleActionTypes } from './types'
+import { TitleFilter, TitleInfo, TitleTypes, TitleActionTypes } from "./types"
 
 export function setFilter(filter: TitleFilter): TitleActionTypes {
     return {

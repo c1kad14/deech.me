@@ -9,8 +9,8 @@ import { setLoading, setLoaded } from "../app/actions"
 
 type ActionExtractor<C> = Extract<TitleActionTypes, { type: C }>
 
-type T_SEARCH = ActionExtractor<typeof TitleTypes.SEARCH_TITLES>['type']
-type P_SEARCH = ActionExtractor<typeof TitleTypes.SEARCH_TITLES>['payload']
+type T_SEARCH = ActionExtractor<typeof TitleTypes.SEARCH_TITLES>["type"]
+type P_SEARCH = ActionExtractor<typeof TitleTypes.SEARCH_TITLES>["payload"]
 
 const titleSearch = createLogic<{}, { action: Action<T_SEARCH, P_SEARCH> }>({
     type: TitleTypes.SEARCH_TITLES,
