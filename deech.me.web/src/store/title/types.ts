@@ -59,7 +59,7 @@ interface ClearTitles extends Action {
 interface SearchTitles extends Action {
     type: TitleTypes.SEARCH_TITLES
     payload: {
-        filter: TitleFilter
+        title: string
     }
 }
 

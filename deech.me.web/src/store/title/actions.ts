@@ -30,11 +30,11 @@ export function clearTitles(): TitleActionTypes {
     }
 }
 
-export function searchTitles(filter: TitleFilter): TitleActionTypes {
+export function searchTitles(title: string): TitleActionTypes {
     return {
         type: TitleTypes.SEARCH_TITLES,
         payload: {
-            filter
+            title
         }
     }
 }

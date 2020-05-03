@@ -7,7 +7,7 @@ const initialState: TitleState = {
     titles: []
 }
 
-export const TitleReducer: Reducer<TitleState> = (state = initialState, action): TitleState => {
+const TitleReducer: Reducer<TitleState> = (state = initialState, action): TitleState => {
     return produce<TitleState>(state, draft => {
         switch (action.type) {
             case TitleTypes.SET_FILTER:
@@ -26,4 +26,8 @@ export const TitleReducer: Reducer<TitleState> = (state = initialState, action):
                 return state
         }
     })
+}
+
+export default {
+    TitleReducer
 }

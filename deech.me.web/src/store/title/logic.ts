@@ -22,15 +22,17 @@ const titleSearch = createLogic<{}, { action: Action<T_SEARCH, P_SEARCH> }>({
         { action }: { action: Action<T_SEARCH, P_SEARCH> },
         dispatch: (action: TitleActionTypes | AppActionTypes) => void,
         done: () => void, ) {
-        const { filter } = <P_SEARCH>action.payload
-        const url = `${domain}/titleinfo/byTitle?title${filter.title}`
+        const { title } = <P_SEARCH>action.payload
+
+        const url = `${domain}/titleinfo/bytitle?title=${title}`
 
         dispatch(setLoading())
 
         const response = await Axios.get(url)
         const titlesSearchResults = await response.data
 
-        dispatch(setTitles(titlesSearchResults))
+        console.log(titlesSearchResults)
+        // dispatch(setTitles(titlesSearchResults))
         dispatch(setLoaded())
         done()
     }

@@ -1,8 +1,8 @@
 import { createLogicMiddleware } from "redux-logic"
-import { applyMiddleware, compose, createStore } from "redux"
+import { applyMiddleware, compose, createStore, Store, Action } from "redux"
 import { createLogger } from "redux-logger"
-import rootReducer from "./rootReducer"
 import rootLogic from "./rootLogic"
+import rootReducer from "./rootReducer"
 
 const logicMiddleware = createLogicMiddleware(rootLogic as any)
 const loggerMiddleware = createLogger()

@@ -7,7 +7,7 @@ const initialState: BookState = {
     book: undefined
 }
 
-export const BookReducer: Reducer<BookState> = (state = initialState, action): BookState => {
+const BookReducer: Reducer<BookState> = (state = initialState, action): BookState => {
     return produce<BookState>(state, draft => {
         switch (action.type) {
             case BookTypes.SET_BOOK_ID:
@@ -21,4 +21,8 @@ export const BookReducer: Reducer<BookState> = (state = initialState, action): B
                 return state
         }
     })
+}
+
+export default {
+    BookReducer
 }

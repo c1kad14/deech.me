@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deech.me.api", "deech.me.api\deech.me.api.csproj", "{A84CF23B-27F5-497E-8ACF-8A0C5467DA79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deech.me.web", "deech.me.web\deech.me.web.csproj", "{1A77B3D7-42AC-4E69-9225-CD959000B797}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deech.me.data", "deech.me.data\deech.me.data.csproj", "{6CA10529-7885-4CC8-AAC0-6718DEB4A086}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "deech.me.logic", "deech.me.logic\deech.me.logic.csproj", "{D45F1B9F-A846-43CD-BAC9-2B843BF32DE0}"

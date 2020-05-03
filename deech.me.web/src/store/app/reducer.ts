@@ -1,13 +1,13 @@
-import { Reducer } from "redux"
-import { AppState, AppTypes } from "./types"
-import produce from "immer"
+import { Reducer } from 'redux'
+import { AppState, AppTypes } from './types'
+import produce from 'immer'
 
 const initialState: AppState = {
     loading: false,
     error: undefined
 }
 
-export const AppReducer: Reducer<AppState> = (state = initialState, action): AppState => {
+const AppReducer: Reducer<AppState> = (state = initialState, action): AppState => {
     return produce(state, draft => {
         switch (action.type) {
             case AppTypes.LOADING:
@@ -24,4 +24,8 @@ export const AppReducer: Reducer<AppState> = (state = initialState, action): App
                 return state
         }
     })
+}
+
+export default {
+    AppReducer
 }
