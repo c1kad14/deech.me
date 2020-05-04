@@ -8,5 +8,6 @@ import "./custom.css"
 export default () => (
     <Layout>
         <Route exact path="/" component={Home} />
+        {/* <Route exact path="/book" component={Book} /> */}
     </Layout>
 );

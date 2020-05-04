@@ -31,8 +31,7 @@ const titleSearch = createLogic<{}, { action: Action<T_SEARCH, P_SEARCH> }>({
         const response = await Axios.get(url)
         const titlesSearchResults = await response.data
 
-        console.log(titlesSearchResults)
-        // dispatch(setTitles(titlesSearchResults))
+        dispatch(setTitles(titlesSearchResults))
         dispatch(setLoaded())
         done()
     }

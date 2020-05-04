@@ -19,12 +19,12 @@ export interface TitleInfo {
     annotation?: string
     authors?: string[]
     cover?: string
-    date?: Date
+    date?: string
     genres?: string[]
     id?: string
     keywords?: string[]
     language?: string
-    src_language?: string
+    sourceLanguage?: string
     title?: string
     translators?: string[]
 }

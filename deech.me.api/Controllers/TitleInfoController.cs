@@ -5,25 +5,42 @@ using Microsoft.EntityFrameworkCore;
 
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
+using AutoMapper;
+using deech.me.logic.models;
+using System.Collections.Generic;
 
 namespace deech.me.api.controllers
 {
     [Route("[controller]")]
     public class TitleInfoController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IReadDataService<TitleInfo> _readDataService;
 
-        public TitleInfoController(IReadDataService<TitleInfo> readDataService)
+        public TitleInfoController(IReadDataService<TitleInfo> readDataService, IMapper mapper)
         {
             this._readDataService = readDataService;
+            _mapper = mapper;
         }
 
         [HttpGet("byTitle")]
         public ActionResult GetByTitle(string title)
         {
+            this._readDataService.SetIncludeFunc(i => i.Include(ti => ti.Authors)
+                                                       .ThenInclude(tia => tia.Author)
+                                                       .Include(ti => ti.Cover)
+                                                       .Include(ti => ti.Genres)
+                                                       .Include(ti => ti.Annotation)
+                                                       .Include(ti => ti.Translators)
+                                                       .ThenInclude(tit => tit.Translator)
+                                                       .Include(ti => ti.SourceLanguage)
+                                                       .Include(ti => ti.Language)
+                                                       .Include(ti => ti.Keywords));
             var result = this._readDataService.GetMultiple(t => t.Title.ToLower().Contains(title.ToLower().Trim()));
 
-            return new JsonResult(result);
+            var mapped = this._mapper.Map<List<TitleInfo>, List<TitleInfoModel>>(result);
+
+            return new JsonResult(mapped);
         }
 
         [HttpGet("byId")]

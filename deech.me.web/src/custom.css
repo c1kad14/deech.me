@@ -1,14 +1,40 @@
 /* Provide sufficient contrast against white background */
+
 a {
   color: #0366d6;
 }
 
-code {
-  color: #E01A76;
+.deech-me-logo {
+  color: #e60d4e !important;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+body {
+  background-color: #333333;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font: outline;
+}
+
+.card {
+  cursor: pointer;
+  width: 12rem;
+  margin: 1rem;
+}
+
+.card:hover {
+  background-color: #444444;
+  color: #f7f7f7;
+}
+
+.crop {
+  overflow: hidden;
+  white-space: nowrap;
+  /* Don't forget this one */
+  text-overflow: ellipsis;
+  line-height: 1rem;
+}
+
+.title-description {
+  font-size: 100%;
+  text-align: center;
+  padding: 10%;
 }

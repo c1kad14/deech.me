@@ -1,7 +1,9 @@
 import React, { ChangeEvent, MouseEvent, useEffect } from "react"
 import { useDispatch, useSelector } from 'react-redux'
-import { setFilter, searchTitles } from "../store/title/actions";
-import { RootState } from "../store/rootReducer";
+import { setFilter, searchTitles } from "../store/title/actions"
+import { RootState } from "../store/rootReducer"
+import TitleTile from '../components/TitleTile'
+import Titles from "../components/Titles"
 
 const Home: React.FC = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,9 @@ const Home: React.FC = () => {
   };
 
   let { filter } = useSelector((state: RootState) => state.TitleReducer);
+
+
+
   return <div>
     <h1>Enter book title</h1>
     <input type="text" name="title" onChange={onFilterChange} />
@@ -35,6 +40,8 @@ const Home: React.FC = () => {
       onClick={handleClick}
       value="Search"
     />
+
+    <Titles />
   </div>
 }
 

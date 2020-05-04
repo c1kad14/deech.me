@@ -16,6 +16,8 @@ using deech.me.logic.abstractions;
 using deech.me.logic.services;
 
 using Newtonsoft.Json;
+using AutoMapper;
+using deech.me.logic.mapper;
 
 namespace deech.me.api
 {
@@ -33,6 +35,8 @@ namespace deech.me.api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var mappingConfig = new MapperConfiguration(config => { config.AddProfile(new MappingProfile()); });
+            services.AddSingleton(mappingConfig.CreateMapper());
             services.Configure<WebEncoderOptions>(options => new TextEncoderSettings(UnicodeRanges.All));
             services.AddTransient(typeof(IReadDataService<>), typeof(ReadDataService<>));
             services.AddDbContext<DeechMeDataContext>(options =>
