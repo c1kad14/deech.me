@@ -1,4 +1,4 @@
-import { BookTypes, BookActionTypes, Book } from "./types";
+import { BookTypes, BookActionTypes, Book } from "./types"
 
 export function setBookId(id: number): BookActionTypes {
     return {

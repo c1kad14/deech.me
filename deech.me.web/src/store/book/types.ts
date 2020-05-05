@@ -1,5 +1,5 @@
-import { TitleInfo } from "../title/types";
-import { Action } from "redux";
+import { TitleInfo } from "../title/types"
+import { Action } from "redux"
 
 export enum BookTypes {
     CLEAR_BOOK = "@@book/CLEAR_BOOK",

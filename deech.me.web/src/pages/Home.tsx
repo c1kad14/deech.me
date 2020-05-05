@@ -1,48 +1,37 @@
-import React, { ChangeEvent, MouseEvent, useEffect } from "react"
-import { useDispatch, useSelector } from 'react-redux'
-import { setFilter, searchTitles } from "../store/title/actions"
-import { RootState } from "../store/rootReducer"
-import TitleTile from '../components/TitleTile'
+import React, { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { searchTitles } from "../store/title/actions"
 import Titles from "../components/Titles"
 
 const Home: React.FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('Component mounted');
+    console.log("Component mounted")
     return () => {
-      console.log('Component will be unmount')
+      console.log("Component will be unmount")
     }
-  }, []);
+  }, [])
 
-  const onFilterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value)
-    dispatch(setFilter({ title: e.target.value }));
-  };
+  const [filter, setFilter] = useState<string>("")
 
-  const handleClick = (e: MouseEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    console.log(filter)
-    if (filter && filter.title)
-      dispatch(searchTitles(filter.title));
-  };
+  const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilter(e.target.value)
+  }
 
-  let { filter } = useSelector((state: RootState) => state.TitleReducer);
-
-
+  const onKeyPressHandler = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      if (filter && filter)
+        dispatch(searchTitles(filter))
+    }
+  }
 
   return <div>
     <h1>Enter book title</h1>
-    <input type="text" name="title" onChange={onFilterChange} />
-
-    <input type="button"
-      className="btn btn-primary btn-lg"
-      onClick={handleClick}
-      value="Search"
-    />
+    <input type="text" name="title" onChange={onFilterChange} onKeyPress={onKeyPressHandler} />
 
     <Titles />
   </div>
 }
 
-export default Home;
+export default Home

@@ -1,12 +1,13 @@
-import { createLogicMiddleware } from "redux-logic"
-import { applyMiddleware, compose, createStore, Store, Action } from "redux"
+import { applyMiddleware, compose, createStore } from "redux"
 import { createLogger } from "redux-logger"
-import rootLogic from "./rootLogic"
 import rootReducer from "./rootReducer"
+import createSagaMiddleware from "redux-saga"
+import { sagaWatcher } from "./sagas"
 
-const logicMiddleware = createLogicMiddleware(rootLogic as any)
+const sagaMiddleware = createSagaMiddleware()
 const loggerMiddleware = createLogger()
-const middleware = applyMiddleware(logicMiddleware, loggerMiddleware)
+const middleware = applyMiddleware(sagaMiddleware, loggerMiddleware)
+
 
 // using compose to allow for applyMiddleware Redux Dev Tools
 const enhancer = (window as any)["devToolsExtension"] && process.env.NODE_ENV === "development"
@@ -16,6 +17,10 @@ const enhancer = (window as any)["devToolsExtension"] && process.env.NODE_ENV ==
     )
     : middleware
 
+const store = createStore(rootReducer, enhancer)
+
+sagaMiddleware.run(sagaWatcher)
+
 export default function configureStore() {
-    return createStore(rootReducer, enhancer)
+    return store
 }

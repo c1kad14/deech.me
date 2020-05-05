@@ -6,8 +6,8 @@ import BookReducer from "./book/reducer"
 import TitleReducer from "./title/reducer"
 import { createBrowserHistory } from "history"
 
-const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href") as string;
-const history = createBrowserHistory({ basename: baseUrl });
+const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href") as string
+const history = createBrowserHistory({ basename: baseUrl })
 
 const rootReducer = combineReducers({
     ...AppReducer,

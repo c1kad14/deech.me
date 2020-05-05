@@ -56,7 +56,7 @@ interface ClearTitles extends Action {
     type: TitleTypes.CLEAR_TITLES
 }
 
-interface SearchTitles extends Action {
+export interface SearchTitles extends Action {
     type: TitleTypes.SEARCH_TITLES
     payload: {
         title: string
