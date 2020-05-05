@@ -1,6 +1,6 @@
 import { call, put, takeEvery } from "redux-saga/effects"
 import Axios from "axios"
-import { TitleTypes, TitleActionTypes } from "./title/types"
+import { TitleTypes } from "./title/types"
 import { setTitles } from "./title/actions"
 import { domain } from "./config"
 import { setLoading, setLoaded } from "./app/actions"

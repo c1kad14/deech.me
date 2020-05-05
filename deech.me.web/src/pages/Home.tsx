@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { searchTitles } from "../store/title/actions"
 import Titles from "../components/Titles"
+import { Spinner } from "reactstrap"
+import { AppState } from "../store/app/types"
+import { RootState } from "../store/rootReducer"
 
 const Home: React.FC = () => {
   const dispatch = useDispatch()
@@ -14,6 +17,8 @@ const Home: React.FC = () => {
   }, [])
 
   const [filter, setFilter] = useState<string>("")
+
+  let { loading } = useSelector((state: RootState) => state.AppReducer)
 
   const onFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value)
@@ -30,7 +35,7 @@ const Home: React.FC = () => {
     <h1>Enter book title</h1>
     <input type="text" name="title" onChange={onFilterChange} onKeyPress={onKeyPressHandler} />
 
-    <Titles />
+    {loading ? <Spinner /> : <Titles />}
   </div>
 }
 
