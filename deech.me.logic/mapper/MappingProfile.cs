@@ -15,7 +15,6 @@ namespace deech.me.logic.mapper
             CreateMap<TitleInfoTranslator, String>().ConvertUsing(r => r.Translator.ToString());
             CreateMap<TitleInfo, TitleInfoModel>()
                 .ForMember(dest => dest.Annotation, opt => opt.MapFrom(src => src.Annotation.Text))
-                .ForMember(dest => dest.Cover, opt => opt.MapFrom(src => Convert.ToBase64String(src.Cover.Data)))
                 .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.SourceLanguage.Code))
                 .ForMember(dest => dest.SourceLanguage, opt => opt.MapFrom(src => src.Language.Code));
         }

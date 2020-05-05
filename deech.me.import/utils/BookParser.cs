@@ -5,6 +5,7 @@ using System.Xml;
 
 using deech.me.data.entities;
 using deech.me.import.abstractions;
+using deech.me.import.models;
 
 namespace deech.me.import.utils
 {
@@ -28,8 +29,10 @@ namespace deech.me.import.utils
                 var translators = root.SelectNodes("//bk:description/bk:title-info/bk:translator", bk);
                 var bodies = root.SelectNodes("//bk:body", bk);
                 var binary = root.SelectNodes("//bk:binary", bk);
+                var bookId = file.Name.Remove(file.Name.IndexOf(".fb2"), 4);
+                var directory = $"{Configuration.Instance.ProcessedFolder}/{bookId}";
 
-                book.File = file.Name;
+                book.File = bookId;
 
                 book.TitleInfo = new TitleInfo
                 {
@@ -121,6 +124,16 @@ namespace deech.me.import.utils
 
                 foreach (XmlNode body in bodies)
                 {
+                    XmlNodeList paragraphs = body.SelectNodes("//bk:p", bk);
+                    var counter = 1;
+
+                    foreach (XmlNode paragraph in paragraphs)
+                    {
+                        XmlAttribute attr = doc.CreateAttribute("pid");
+                        attr.Value = $"{bookId}_{counter++}";
+                        paragraph.Attributes.Append(attr);
+                    }
+
                     book.Contents.Add(new BookContent
                     {
                         Book = book,
@@ -128,26 +141,48 @@ namespace deech.me.import.utils
                     });
                 }
 
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
+
                 foreach (XmlNode bin in binary)
                 {
-                    if (!string.IsNullOrEmpty(cover) && bin.Attributes["id"].Value == cover)
+                    if (!string.IsNullOrEmpty(bin.Attributes["id"].Value))
                     {
-                        book.TitleInfo.Cover = new Cover { Data = Convert.FromBase64String(bin.InnerXml) };
-                    }
-                    else
-                    {
-                        book.Images.Add(new Image
+
+                        var filePath = $"{directory}/{bin.Attributes["id"].Value}";
+
+                        if (File.Exists(filePath))
                         {
-                            Book = book,
-                            Data = Convert.FromBase64String(bin.InnerXml),
-                            Name = bin.Attributes["id"].Value,
-                            Type = bin.Attributes["content-type"].Value
-                        });
+                            File.Delete(filePath);
+                        }
+
+                        using (var imageFile = new FileStream(filePath, FileMode.Create))
+                        {
+                            var imgBase64String = Convert.FromBase64String(bin.InnerXml);
+                            imageFile.Write(imgBase64String, 0, imgBase64String.Length);
+                            imageFile.Flush();
+                        }
+
+                        if (bin.Attributes["id"].Value != cover)
+                        {
+                            book.Images.Add(new Image
+                            {
+                                Book = book,
+                                Path = $"{bookId}/{bin.Attributes["id"].Value}"
+                            });
+                        }
+                        else
+                        {
+                            book.TitleInfo.Cover = $"{bookId}/{bin.Attributes["id"].Value}";
+                        }
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                System.Console.WriteLine(ex.Message);
                 return null;
             }
 

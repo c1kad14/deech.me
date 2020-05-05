@@ -69,6 +69,7 @@ namespace deech.me.api
             app.UseLoggingMiddleware();
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseStaticFiles();
             app.UseCors(MyAllowSpecificOrigins);
             app.UseEndpoints(endpoints =>
             {

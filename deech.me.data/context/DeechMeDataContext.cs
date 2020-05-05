@@ -15,7 +15,6 @@ namespace deech.me.data.context
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookContent> BookContents { get; set; }
-        public DbSet<Cover> Covers { get; set; }
         public DbSet<CustomInfo> CustomInfos { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Image> Images { get; set; }

@@ -28,7 +28,6 @@ namespace deech.me.api.controllers
         {
             this._readDataService.SetIncludeFunc(i => i.Include(ti => ti.Authors)
                                                        .ThenInclude(tia => tia.Author)
-                                                       .Include(ti => ti.Cover)
                                                        .Include(ti => ti.Genres)
                                                        .Include(ti => ti.Annotation)
                                                        .Include(ti => ti.Translators)

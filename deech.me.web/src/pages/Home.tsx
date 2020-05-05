@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux"
 import { searchTitles } from "../store/title/actions"
 import Titles from "../components/Titles"
 import { Spinner } from "reactstrap"
-import { AppState } from "../store/app/types"
 import { RootState } from "../store/rootReducer"
 
 const Home: React.FC = () => {

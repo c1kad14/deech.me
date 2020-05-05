@@ -6,6 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using deech.me.data.context;
 using deech.me.data.entities;
 using deech.me.import.abstractions;
+using deech.me.import.models;
+using System.Text;
+using System.IO;
 
 namespace deech.me.import.utils
 {
@@ -101,6 +104,12 @@ namespace deech.me.import.utils
                 {
                     context.Add(book);
                     context.SaveChanges();
+
+                    var file = $"{Configuration.Instance.ImportFolder}/{book.File}.fb2";
+                    var destinationPath = new StringBuilder(file).Replace(Configuration.Instance.ImportFolder, $"{Configuration.Instance.ProcessedFolder}/{book.File}");
+
+                    var fileInfo = new FileInfo(file);
+                    fileInfo.MoveTo($"{destinationPath}");
                 }
                 catch (Exception ex)
                 {
