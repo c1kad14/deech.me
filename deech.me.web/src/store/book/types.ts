@@ -11,10 +11,11 @@ export interface Book {
     title: TitleInfo
     contents: string[]
     images: string[]
+    file: string
 }
 
 export interface BookState {
-    readonly id?: number
+    readonly id?: string
     readonly book?: Book
 }
 
@@ -25,10 +26,10 @@ interface SetBook extends Action {
     }
 }
 
-interface SetBookId extends Action {
+export interface SetBookId extends Action {
     type: BookTypes.SET_BOOK_ID
     payload: {
-        id: number
+        id: string
     }
 }
 

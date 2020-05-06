@@ -21,7 +21,7 @@ export interface TitleInfo {
     cover?: string
     date?: string
     genres?: string[]
-    id?: string
+    id: string
     keywords?: string[]
     language?: string
     sourceLanguage?: string

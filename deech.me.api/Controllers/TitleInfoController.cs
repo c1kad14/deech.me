@@ -20,7 +20,7 @@ namespace deech.me.api.controllers
         public TitleInfoController(IReadDataService<TitleInfo> readDataService, IMapper mapper)
         {
             this._readDataService = readDataService;
-            _mapper = mapper;
+            this._mapper = mapper;
         }
 
         [HttpGet("byTitle")]

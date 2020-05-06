@@ -5,17 +5,21 @@ using Microsoft.EntityFrameworkCore;
 
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
+using AutoMapper;
+using deech.me.logic.models;
 
 namespace deech.me.api.controllers
 {
     [Route("[controller]")]
     public class BookController : ControllerBase
     {
+        private readonly IMapper _mapper;
         private readonly IReadDataService<Book> _readDataService;
 
-        public BookController(IReadDataService<Book> readDataService)
+        public BookController(IReadDataService<Book> readDataService, IMapper mapper)
         {
             this._readDataService = readDataService;
+            this._mapper = mapper;
         }
 
         [HttpGet("byTitleId")]
@@ -26,8 +30,9 @@ namespace deech.me.api.controllers
                                                        .Include(b => b.TitleInfo));
 
             var result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
+            var mapped = this._mapper.Map<Book, BookModel>(result);
 
-            return new JsonResult(result);
+            return new JsonResult(mapped);
         }
 
         [HttpGet("byAuthorId")]
