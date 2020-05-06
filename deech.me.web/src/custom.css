@@ -41,3 +41,15 @@ body {
   text-align: center;
   padding: 10%;
 }
+
+p[pid]:hover {
+  background-color:#302e2e;
+  color: #eeeeee93;
+}
+
+.book-image {
+  display: flex;
+  margin: auto;
+  max-width: 80%;
+  padding-bottom: 10px;
+}
