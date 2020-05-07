@@ -1,4 +1,6 @@
 using System;
+using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +9,6 @@ using deech.me.data.context;
 using deech.me.data.entities;
 using deech.me.import.abstractions;
 using deech.me.import.models;
-using System.Text;
-using System.IO;
 
 namespace deech.me.import.utils
 {

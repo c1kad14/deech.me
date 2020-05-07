@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
@@ -5,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
-using AutoMapper;
 using deech.me.logic.models;
-using System.Collections.Generic;
+
+using AutoMapper;
 
 namespace deech.me.api.controllers
 {
@@ -36,7 +37,6 @@ namespace deech.me.api.controllers
                                                        .Include(ti => ti.Language)
                                                        .Include(ti => ti.Keywords));
             var result = this._readDataService.GetMultiple(t => t.Title.ToLower().Contains(title.ToLower().Trim()));
-
             var mapped = this._mapper.Map<List<TitleInfo>, List<TitleInfoModel>>(result);
 
             return new JsonResult(mapped);
@@ -47,7 +47,6 @@ namespace deech.me.api.controllers
         {
             this._readDataService.SetIncludeFunc(i => i.Include(ti => ti.Authors)
                                                        .ThenInclude(tia => tia.Author)
-                                                       .Include(ti => ti.Cover)
                                                        .Include(ti => ti.Genres)
                                                        .Include(ti => ti.Annotation)
                                                        .Include(ti => ti.Translators)

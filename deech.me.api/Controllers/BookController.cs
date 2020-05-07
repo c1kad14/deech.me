@@ -25,8 +25,7 @@ namespace deech.me.api.controllers
         [HttpGet("byTitleId")]
         public ActionResult GetBookByTitleId(int titleId)
         {
-            this._readDataService.SetIncludeFunc(i => i.Include(b => b.Images)
-                                                       .Include(b => b.Contents)
+            this._readDataService.SetIncludeFunc(i => i.Include(b => b.Paragraphs)
                                                        .Include(b => b.TitleInfo));
 
             var result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
@@ -38,9 +37,7 @@ namespace deech.me.api.controllers
         [HttpGet("byAuthorId")]
         public ActionResult GetBookByAuthorId(int authorId)
         {
-            this._readDataService.SetIncludeFunc(i => i.Include(b => b.Images)
-                                                       .Include(b => b.Contents)
-                                                       .Include(b => b.TitleInfo)
+            this._readDataService.SetIncludeFunc(i => i.Include(b => b.TitleInfo)
                                                        .ThenInclude(bti => bti.Authors));
 
             var result = this._readDataService.GetSingle(b => b.TitleInfo.Authors.Any(a => a.AuthorId == authorId));

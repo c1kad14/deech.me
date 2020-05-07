@@ -7,10 +7,15 @@ export enum BookTypes {
     SET_BOOK_ID = "@@book/SET_BOOK_ID"
 }
 
+interface Paragraph {
+    type: string
+    value: string
+    id: number
+}
+
 export interface Book {
     title: TitleInfo
-    contents: string[]
-    images: string[]
+    paragraphs: Paragraph[]
     file: string
 }
 

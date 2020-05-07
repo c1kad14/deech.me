@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -11,8 +12,12 @@ namespace deech.me.import.utils
 {
     public class BookParser : IBookParser
     {
+        private int _sequence;
+
         public Book Parse(FileInfo file)
         {
+            this._sequence = 0;
+
             var book = new Book();
             try
             {
@@ -121,25 +126,14 @@ namespace deech.me.import.utils
                 {
                     book.CustomInfo = new CustomInfo { Text = root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText };
                 }
+                var paragraphs = new List<Paragraph>();
 
                 foreach (XmlNode body in bodies)
                 {
-                    XmlNodeList paragraphs = body.SelectNodes("//bk:p", bk);
-                    var counter = 1;
-
-                    foreach (XmlNode paragraph in paragraphs)
-                    {
-                        XmlAttribute attr = doc.CreateAttribute("pid");
-                        attr.Value = $"{bookId}_{counter++}";
-                        paragraph.Attributes.Append(attr);
-                    }
-
-                    book.Contents.Add(new BookContent
-                    {
-                        Book = book,
-                        Data = Encoding.UTF8.GetBytes(body.InnerXml)
-                    });
+                    ParseNode(body, paragraphs, doc, book);
                 }
+
+                book.Paragraphs = paragraphs;
 
                 if (!Directory.Exists(directory))
                 {
@@ -150,7 +144,6 @@ namespace deech.me.import.utils
                 {
                     if (!string.IsNullOrEmpty(bin.Attributes["id"].Value))
                     {
-
                         var filePath = $"{directory}/{bin.Attributes["id"].Value}";
 
                         if (File.Exists(filePath))
@@ -165,15 +158,7 @@ namespace deech.me.import.utils
                             imageFile.Flush();
                         }
 
-                        if (bin.Attributes["id"].Value != cover)
-                        {
-                            book.Images.Add(new Image
-                            {
-                                Book = book,
-                                Path = $"{bookId}/{bin.Attributes["id"].Value}"
-                            });
-                        }
-                        else
+                        if (bin.Attributes["id"].Value == cover)
                         {
                             book.TitleInfo.Cover = $"{bookId}/{bin.Attributes["id"].Value}";
                         }
@@ -187,6 +172,65 @@ namespace deech.me.import.utils
             }
 
             return book;
+        }
+
+        public void ParseNode(XmlNode node, List<Paragraph> paragraphs, XmlDocument doc, Book book)
+        {
+            switch (node.Name)
+            {
+                case "p":
+                case "title":
+                case "epigraph":
+                case "cite":
+                case "poem":
+                case "subtitle":
+                case "a":
+                case "table":
+                    if (node.HasChildNodes)
+                    {
+                        foreach (XmlNode child in node.ChildNodes)
+                        {
+                            if (child.Name == "image")
+                            {
+                                foreach (XmlAttribute attribute in child.Attributes)
+                                {
+                                    if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
+                                    {
+                                        var newChild = doc.CreateElement("img");
+                                        var newAttribute = doc.CreateAttribute("src");
+
+                                        newAttribute.Value = $"{book.File}/{attribute.Value.Replace("#", "")}";
+                                        newChild.Attributes.Append(newAttribute);
+
+                                        node.ReplaceChild(newChild, child);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = node.Name, Value = node.InnerXml });
+
+                    break;
+                case "image":
+                    foreach (XmlAttribute attribute in node.Attributes)
+                    {
+                        if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
+                        {
+                            paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = node.Name, Value = $"{book.File}/{attribute.Value.Replace("#", "")}" });
+                        }
+                    }
+                    break;
+                default:
+                    if (node.HasChildNodes)
+                    {
+                        foreach (XmlNode child in node.ChildNodes)
+                        {
+                            ParseNode(child, paragraphs, doc, book);
+                        }
+                    }
+                    break;
+            }
         }
     }
 }

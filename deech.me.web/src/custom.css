@@ -45,6 +45,7 @@ body {
 p[pid]:hover {
   background-color:#302e2e;
   color: #eeeeee93;
+  cursor: pointer;
 }
 
 .book-image {

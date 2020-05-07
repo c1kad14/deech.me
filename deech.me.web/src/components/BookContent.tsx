@@ -12,16 +12,25 @@ const BookContent: React.FC = () => {
         return <Spinner />
     }
 
-    let content = book!.contents[0].replace(/<image xlink:href="#/g, `<img class="book-image" src="${domain}/books/${book.file}/`)
-    content = content.replace(/<img xlink:href="#/g, `<img class="book-image" src="${domain}/books/${book.file}/`)
-    content = content.replace(/<img l:href="#/g, `<img class="book-image" src="${domain}/books/${book.file}/`)
-    content = content.replace(/<image l:href="#/g, `<img class="book-image" src="${domain}/books/${book.file}/`)
+    let content = book!.paragraphs.map(paragraph => {
+        switch (paragraph.type) {
+            case "image":
+                return <img src={`${domain}/books/${paragraph.value}`} />
+            default:
+                const element = paragraph.value.replace(/<img src="/, `<img src="${domain}/books/`)
 
-    const rawMarkup = () => { return { __html: content } }
+                const rawMarkup = () => { return { __html: element } }
+                return <p key={paragraph.id} dangerouslySetInnerHTML={rawMarkup()}></p>
+
+        }
+
+    })
+
+    console.log(content)
+
     return <>
-        <span style={{ color: '#eeeeee' }} dangerouslySetInnerHTML={rawMarkup()} />
+        {content}
     </>
-
 }
 
 export default BookContent

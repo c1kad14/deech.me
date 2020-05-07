@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/deech.me.api/bin/Debug/netcoreapp3.1/deech.me.api.dll",
+            "program": "${workspaceFolder}/deech.me.import/bin/Debug/netcoreapp3.1/deech.me.import.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/deech.me.api",
+            "cwd": "${workspaceFolder}/deech.me.import",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false

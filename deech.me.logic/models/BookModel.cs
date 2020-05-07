@@ -6,7 +6,6 @@ namespace deech.me.logic.models
     {
         public TitleInfoModel Title { get; set; }
         public string File { get; set; }
-        public List<string> Contents { get; set; }
-        public List<string> Images { get; set; }
+        public List<ParagraphModel> Paragraphs { get; set; } = new List<ParagraphModel>();
     }
 }
