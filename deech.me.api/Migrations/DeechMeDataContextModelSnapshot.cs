@@ -61,15 +61,10 @@ namespace deech.me.api.Migrations
             modelBuilder.Entity("deech.me.data.entities.Book", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int?>("CustomInfoId")
                         .HasColumnType("int");
-
-                    b.Property<string>("File")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PublishInfoId")
                         .HasColumnType("int");
@@ -91,9 +86,7 @@ namespace deech.me.api.Migrations
             modelBuilder.Entity("deech.me.data.entities.CustomInfo", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -168,9 +161,7 @@ namespace deech.me.api.Migrations
             modelBuilder.Entity("deech.me.data.entities.PublishInfo", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<string>("BookName")
                         .HasColumnType("nvarchar(max)");
@@ -195,9 +186,7 @@ namespace deech.me.api.Migrations
             modelBuilder.Entity("deech.me.data.entities.TitleInfo", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
                     b.Property<int?>("AnnotationId")
                         .HasColumnType("int");

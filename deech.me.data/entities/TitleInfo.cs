@@ -1,10 +1,13 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using deech.me.data.abstractions;
 
 namespace deech.me.data.entities
 {
     public class TitleInfo : IReadEntity
     {
+
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public Annotation Annotation { get; set; }
         public List<TitleInfoAuthor> Authors { get; set; } = new List<TitleInfoAuthor>();

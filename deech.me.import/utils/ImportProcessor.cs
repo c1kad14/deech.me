@@ -105,15 +105,15 @@ namespace deech.me.import.utils
                     context.Add(book);
                     context.SaveChanges();
 
-                    var file = $"{Configuration.Instance.ImportFolder}/{book.File}.fb2";
-                    var destinationPath = new StringBuilder(file).Replace(Configuration.Instance.ImportFolder, $"{Configuration.Instance.ProcessedFolder}/{book.File}");
+                    var file = $"{Configuration.Instance.ImportFolder}/{book.Id}.fb2";
+                    var destinationPath = new StringBuilder(file).Replace(Configuration.Instance.ImportFolder, $"{Configuration.Instance.ProcessedFolder}/{book.Id}");
 
                     var fileInfo = new FileInfo(file);
                     fileInfo.MoveTo($"{destinationPath}");
                 }
                 catch (Exception ex)
                 {
-                    System.Console.WriteLine($"*** EXCEPTION ({book.File}) ***");
+                    System.Console.WriteLine($"*** EXCEPTION ({book.Id}) ***");
                     System.Console.WriteLine(ex.Message);
                     System.Console.WriteLine("----------------------");
                     System.Console.WriteLine(ex.InnerException);

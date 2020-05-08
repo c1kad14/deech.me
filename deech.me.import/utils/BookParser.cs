@@ -34,13 +34,13 @@ namespace deech.me.import.utils
                 var translators = root.SelectNodes("//bk:description/bk:title-info/bk:translator", bk);
                 var bodies = root.SelectNodes("//bk:body", bk);
                 var binary = root.SelectNodes("//bk:binary", bk);
-                var bookId = file.Name.Remove(file.Name.IndexOf(".fb2"), 4);
-                var directory = $"{Configuration.Instance.ProcessedFolder}/{bookId}";
+                book.Id = int.Parse(file.Name.Remove(file.Name.IndexOf(".fb2"), 4));
+                var directory = $"{Configuration.Instance.ProcessedFolder}/{book.Id}";
 
-                book.File = bookId;
 
                 book.TitleInfo = new TitleInfo
                 {
+                    Id = book.Id,
                     Title = root.SelectSingleNode("//bk:description/bk:title-info/bk:book-title", bk)?.InnerText,
                     Date = root.SelectSingleNode("//bk:description/bk:title-info/bk:date", bk)?.InnerText,
                 };
@@ -115,6 +115,7 @@ namespace deech.me.import.utils
                 {
                     book.PublishInfo = new PublishInfo
                     {
+                        Id = book.Id,
                         City = root.SelectSingleNode("//bk:description/bk:publish-info/bk:city", bk)?.InnerText,
                         Publisher = root.SelectSingleNode("//bk:description/bk:publish-info/bk:publisher", bk)?.InnerText,
                         Year = root.SelectSingleNode("//bk:description/bk:publish-info/bk:year", bk)?.InnerText,
@@ -124,7 +125,11 @@ namespace deech.me.import.utils
 
                 if (!string.IsNullOrEmpty(root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText))
                 {
-                    book.CustomInfo = new CustomInfo { Text = root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText };
+                    book.CustomInfo = new CustomInfo
+                    {
+                        Id = book.Id,
+                        Text = root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText
+                    };
                 }
                 var paragraphs = new List<Paragraph>();
 
@@ -160,7 +165,7 @@ namespace deech.me.import.utils
 
                         if (bin.Attributes["id"].Value == cover)
                         {
-                            book.TitleInfo.Cover = $"{bookId}/{bin.Attributes["id"].Value}";
+                            book.TitleInfo.Cover = $"{book.Id}/{bin.Attributes["id"].Value}";
                         }
                     }
                 }
@@ -184,52 +189,141 @@ namespace deech.me.import.utils
                 case "cite":
                 case "poem":
                 case "subtitle":
-                case "a":
                 case "table":
-                    if (node.HasChildNodes)
-                    {
-                        foreach (XmlNode child in node.ChildNodes)
-                        {
-                            if (child.Name == "image")
-                            {
-                                foreach (XmlAttribute attribute in child.Attributes)
-                                {
-                                    if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
-                                    {
-                                        var newChild = doc.CreateElement("img");
-                                        var newAttribute = doc.CreateAttribute("src");
-
-                                        newAttribute.Value = $"{book.File}/{attribute.Value.Replace("#", "")}";
-                                        newChild.Attributes.Append(newAttribute);
-
-                                        node.ReplaceChild(newChild, child);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    ParseChildNodesForParagraph(node, doc, book);
 
                     paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = node.Name, Value = node.InnerXml });
-
                     break;
                 case "image":
                     foreach (XmlAttribute attribute in node.Attributes)
                     {
                         if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
                         {
-                            paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = node.Name, Value = $"{book.File}/{attribute.Value.Replace("#", "")}" });
+                            paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = node.Name, Value = $"{book.Id}/{attribute.Value.Replace("#", "")}" });
                         }
+                    }
+                    break;
+                case "section":
+                    if (node.Attributes["id"] != null && !string.IsNullOrEmpty(node.Attributes["id"].Value))
+                    {
+                        //anchor to current note
+                        var refChild = doc.CreateElement("a");
+                        var refAttributeId = doc.CreateAttribute("id");
+                        refAttributeId.Value = node.Attributes["id"].Value;
+                        refChild.Attributes.Append(refAttributeId);
+                        node.PrependChild(refChild);
+
+                        var refBackElement = doc.CreateElement("a");
+                        var refBackAttribute = doc.CreateAttribute("href");
+
+                        refBackAttribute.Value = $"book/{book.Id}#ref{node.Attributes["id"].Value}";
+                        refBackElement.InnerText = "^^^";
+                        refBackElement.Attributes.Append(refBackAttribute);
+
+                        node.AppendChild(refBackElement);
+
+                        foreach (XmlNode child in node.ChildNodes)
+                        {
+                            if (child.Name == "title")
+                            {
+                                var newChild = doc.CreateElement("h3");
+                                newChild.InnerXml = child.InnerXml;
+                                node.ReplaceChild(newChild, child);
+                            }
+                        }
+
+                        paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = "p", Value = node.InnerXml });
+                    }
+                    else
+                    {
+                        ParseNodeWithChildren(node, paragraphs, doc, book);
                     }
                     break;
                 default:
-                    if (node.HasChildNodes)
+                    ParseNodeWithChildren(node, paragraphs, doc, book);
+                    break;
+            }
+        }
+
+        public void ParseNodeWithChildren(XmlNode node, List<Paragraph> paragraphs, XmlDocument doc, Book book)
+        {
+            if (node.HasChildNodes)
+            {
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    ParseNode(child, paragraphs, doc, book);
+                }
+            }
+        }
+
+        public void ParseChildNodesForParagraph(XmlNode node, XmlDocument doc, Book book)
+        {
+            if (node.HasChildNodes)
+            {
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    if (child.Name == "image")
                     {
-                        foreach (XmlNode child in node.ChildNodes)
+                        foreach (XmlAttribute attribute in child.Attributes)
                         {
-                            ParseNode(child, paragraphs, doc, book);
+                            if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
+                            {
+                                var newChild = doc.CreateElement("img");
+                                var newAttribute = doc.CreateAttribute("src");
+
+                                newAttribute.Value = $"{book.Id}/{attribute.Value.Replace("#", "")}";
+                                newChild.Attributes.Append(newAttribute);
+
+                                node.ReplaceChild(newChild, child);
+                            }
                         }
                     }
-                    break;
+                    else if (child.Name == "a")
+                    {
+                        foreach (XmlAttribute attribute in child.Attributes)
+                        {
+                            if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
+                            {
+                                var newChild = doc.CreateElement("a");
+                                var newAttribute = doc.CreateAttribute("href");
+
+                                newChild.InnerText = child.InnerText;
+
+                                if (child.Attributes["type"] != null && child.Attributes["type"].Value == "note")
+                                {
+                                    //anchor tp current paragaph
+                                    var refChild = doc.CreateElement("a");
+                                    var refAttributeId = doc.CreateAttribute("id");
+
+                                    refAttributeId.Value = $"ref{attribute.Value.Replace("#", "")}";
+                                    refChild.Attributes.Append(refAttributeId);
+                                    node.PrependChild(refChild);
+
+                                    //link to note
+                                    newAttribute.Value = $"book/{book.Id}{attribute.Value}";
+                                    newChild.Attributes.Append(newAttribute);
+
+                                    var wrapper = doc.CreateElement("sup");
+                                    wrapper.AppendChild(newChild);
+
+                                    node.ReplaceChild(wrapper, child);
+                                }
+                                else
+                                {
+                                    newAttribute.Value = attribute.Value;
+                                    newChild.Attributes.Append(newAttribute);
+
+                                    node.ReplaceChild(newChild, child);
+                                }
+
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ParseChildNodesForParagraph(child, doc, book);
+                    }
+                }
             }
         }
     }

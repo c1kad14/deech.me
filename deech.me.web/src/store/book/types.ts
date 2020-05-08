@@ -7,7 +7,8 @@ export enum BookTypes {
     SET_BOOK_ID = "@@book/SET_BOOK_ID"
 }
 
-interface Paragraph {
+export interface Paragraph {
+    sequence: number
     type: string
     value: string
     id: number

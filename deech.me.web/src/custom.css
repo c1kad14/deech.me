@@ -42,8 +42,12 @@ body {
   padding: 10%;
 }
 
-p[pid]:hover {
-  background-color:#302e2e;
+.paragraph-element {
+  color: #f7f7f7;
+}
+
+.paragraph-element:hover {
+  background-color: #302e2e;
   color: #eeeeee93;
   cursor: pointer;
 }

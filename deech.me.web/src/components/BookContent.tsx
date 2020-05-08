@@ -3,6 +3,9 @@ import { useSelector } from "react-redux"
 import { RootState } from "../store/rootReducer"
 import { Spinner } from "./Spinner"
 import { domain } from "../store/config"
+import { Paragraph } from "../store/book/types"
+
+const rawMarkup = (paragraph: Paragraph) => { return { __html: paragraph.value.replace(/<img src="/, `<img src="${domain}/books/`) } }
 
 const BookContent: React.FC = () => {
     let { book } = useSelector((state: RootState) => state.BookReducer)
@@ -12,18 +15,20 @@ const BookContent: React.FC = () => {
         return <Spinner />
     }
 
-    let content = book!.paragraphs.map(paragraph => {
+    const sorted = book.paragraphs.slice().sort((a, b) => a.sequence - b.sequence)
+    let content = sorted.map(paragraph => {
         switch (paragraph.type) {
             case "image":
-                return <img src={`${domain}/books/${paragraph.value}`} />
+                return <img className="paragraph-element" key={paragraph.id} src={`${domain}/books/${paragraph.value}`} />
+            case "title":
+                return <h3 className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></h3>
+            case "p":
+                return <p className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></p>
+            case "table":
+                return <table className="paragraph-element table" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></table>
             default:
-                const element = paragraph.value.replace(/<img src="/, `<img src="${domain}/books/`)
-
-                const rawMarkup = () => { return { __html: element } }
-                return <p key={paragraph.id} dangerouslySetInnerHTML={rawMarkup()}></p>
-
+                return <span className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
         }
-
     })
 
     console.log(content)
