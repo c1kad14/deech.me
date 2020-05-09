@@ -13,48 +13,50 @@ namespace deech.me.import.utils
     public class BookParser : IBookParser
     {
         private int _sequence;
+        private Book _book;
+        private XmlDocument _doc;
 
         public Book Parse(FileInfo file)
         {
             this._sequence = 0;
 
-            var book = new Book();
+            this._book = new Book();
             try
             {
-                var doc = new XmlDocument();
-                doc.Load(file.FullName);
+                this._doc = new XmlDocument();
+                this._doc.Load(file.FullName);
 
-                var bk = new XmlNamespaceManager(doc.NameTable);
+                var bk = new XmlNamespaceManager(this._doc.NameTable);
                 bk.AddNamespace("bk", "http://www.gribuser.ru/xml/fictionbook/2.0");
 
-                var root = doc.DocumentElement;
+                var root = this._doc.DocumentElement;
                 var cover = root.SelectSingleNode("//bk:description/bk:title-info/bk:coverpage/bk:image", bk)?.Attributes[0]?.Value?.Replace("#", "");
                 var genres = root.SelectNodes("//bk:description/bk:title-info/bk:genre", bk);
                 var authors = root.SelectNodes("//bk:description/bk:title-info/bk:author", bk);
                 var translators = root.SelectNodes("//bk:description/bk:title-info/bk:translator", bk);
                 var bodies = root.SelectNodes("//bk:body", bk);
                 var binary = root.SelectNodes("//bk:binary", bk);
-                book.Id = int.Parse(file.Name.Remove(file.Name.IndexOf(".fb2"), 4));
-                var directory = $"{Configuration.Instance.ProcessedFolder}/{book.Id}";
+                this._book.Id = int.Parse(file.Name.Remove(file.Name.IndexOf(".fb2"), 4));
+                var directory = $"{Configuration.Instance.ProcessedFolder}/{this._book.Id}";
 
 
-                book.TitleInfo = new TitleInfo
+                this._book.TitleInfo = new TitleInfo
                 {
-                    Id = book.Id,
+                    Id = this._book.Id,
                     Title = root.SelectSingleNode("//bk:description/bk:title-info/bk:book-title", bk)?.InnerText,
                     Date = root.SelectSingleNode("//bk:description/bk:title-info/bk:date", bk)?.InnerText,
                 };
 
                 if (!string.IsNullOrEmpty(root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", bk)?.InnerText))
                 {
-                    book.TitleInfo.Annotation = new Annotation { Text = root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", bk)?.InnerText };
+                    this._book.TitleInfo.Annotation = new Annotation { Text = root.SelectSingleNode("//bk:description/bk:title-info/bk:annotation", bk)?.InnerText };
                 }
 
                 foreach (XmlNode genre in genres)
                 {
-                    if (!book.TitleInfo.Genres.Exists(g => g.Genre.Code == genre.InnerText))
+                    if (!this._book.TitleInfo.Genres.Exists(g => g.Genre.Code == genre.InnerText))
                     {
-                        book.TitleInfo.Genres.Add(new TitleInfoGenre { TitleInfo = book.TitleInfo, Genre = new Genre { Code = genre.InnerText } });
+                        this._book.TitleInfo.Genres.Add(new TitleInfoGenre { TitleInfo = this._book.TitleInfo, Genre = new Genre { Code = genre.InnerText } });
                     }
                 }
 
@@ -64,18 +66,18 @@ namespace deech.me.import.utils
 
                     foreach (var keyword in keywords)
                     {
-                        if (!book.TitleInfo.Keywords.Exists(k => k.Keyword.Code == keyword.Trim()))
+                        if (!this._book.TitleInfo.Keywords.Exists(k => k.Keyword.Code == keyword.Trim()))
                         {
-                            book.TitleInfo.Keywords.Add(new TitleInfoKeyword { TitleInfo = book.TitleInfo, Keyword = new Keyword { Code = keyword.Trim() } });
+                            this._book.TitleInfo.Keywords.Add(new TitleInfoKeyword { TitleInfo = this._book.TitleInfo, Keyword = new Keyword { Code = keyword.Trim() } });
                         }
                     }
                 }
 
                 foreach (XmlNode author in authors)
                 {
-                    book.TitleInfo.Authors.Add(new TitleInfoAuthor
+                    this._book.TitleInfo.Authors.Add(new TitleInfoAuthor
                     {
-                        TitleInfo = book.TitleInfo,
+                        TitleInfo = this._book.TitleInfo,
                         Author = new Author
                         {
                             FirstName = author["first-name"]?.InnerText,
@@ -88,9 +90,9 @@ namespace deech.me.import.utils
 
                 foreach (XmlNode translator in translators)
                 {
-                    book.TitleInfo.Translators.Add(new TitleInfoTranslator
+                    this._book.TitleInfo.Translators.Add(new TitleInfoTranslator
                     {
-                        TitleInfo = book.TitleInfo,
+                        TitleInfo = this._book.TitleInfo,
                         Translator = new Translator
                         {
                             FirstName = translator["first-name"]?.InnerText,
@@ -103,19 +105,19 @@ namespace deech.me.import.utils
 
                 if (root.SelectSingleNode("//bk:description/bk:title-info/bk:lang", bk)?.InnerText != null)
                 {
-                    book.TitleInfo.Language = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:lang", bk).InnerText };
+                    this._book.TitleInfo.Language = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:lang", bk).InnerText };
                 }
 
                 if (root.SelectSingleNode("//bk:description/bk:title-info/bk:source-lang", bk)?.InnerText != null)
                 {
-                    book.TitleInfo.SourceLanguage = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:source-language", bk).InnerText };
+                    this._book.TitleInfo.SourceLanguage = new Language { Code = root.SelectSingleNode("//bk:description/bk:title-info/bk:source-language", bk).InnerText };
                 }
 
                 if (!string.IsNullOrEmpty(root.SelectSingleNode("//bk:description/bk:publish-info", bk)?.InnerText))
                 {
-                    book.PublishInfo = new PublishInfo
+                    this._book.PublishInfo = new PublishInfo
                     {
-                        Id = book.Id,
+                        Id = this._book.Id,
                         City = root.SelectSingleNode("//bk:description/bk:publish-info/bk:city", bk)?.InnerText,
                         Publisher = root.SelectSingleNode("//bk:description/bk:publish-info/bk:publisher", bk)?.InnerText,
                         Year = root.SelectSingleNode("//bk:description/bk:publish-info/bk:year", bk)?.InnerText,
@@ -125,9 +127,9 @@ namespace deech.me.import.utils
 
                 if (!string.IsNullOrEmpty(root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText))
                 {
-                    book.CustomInfo = new CustomInfo
+                    this._book.CustomInfo = new CustomInfo
                     {
-                        Id = book.Id,
+                        Id = this._book.Id,
                         Text = root.SelectSingleNode("//bk:description/bk:custom-info", bk)?.InnerText
                     };
                 }
@@ -135,10 +137,10 @@ namespace deech.me.import.utils
 
                 foreach (XmlNode body in bodies)
                 {
-                    ParseNode(body, paragraphs, doc, book);
+                    ParseNode(body, paragraphs);
                 }
 
-                book.Paragraphs = paragraphs;
+                this._book.Paragraphs = paragraphs;
 
                 if (!Directory.Exists(directory))
                 {
@@ -165,7 +167,7 @@ namespace deech.me.import.utils
 
                         if (bin.Attributes["id"].Value == cover)
                         {
-                            book.TitleInfo.Cover = $"{book.Id}/{bin.Attributes["id"].Value}";
+                            this._book.TitleInfo.Cover = $"{this._book.Id}/{bin.Attributes["id"].Value}";
                         }
                     }
                 }
@@ -176,10 +178,10 @@ namespace deech.me.import.utils
                 return null;
             }
 
-            return book;
+            return this._book;
         }
 
-        public void ParseNode(XmlNode node, List<Paragraph> paragraphs, XmlDocument doc, Book book)
+        public void ParseNode(XmlNode node, List<Paragraph> paragraphs)
         {
             switch (node.Name)
             {
@@ -188,18 +190,28 @@ namespace deech.me.import.utils
                 case "epigraph":
                 case "cite":
                 case "poem":
+                case "code":
                 case "subtitle":
                 case "table":
-                    ParseChildNodesForParagraph(node, doc, book);
+                    var newNode = this._doc.CreateNode(node.NodeType, node.Name, string.Empty);
 
-                    paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = node.Name, Value = node.InnerXml });
+                    if (node.HasChildNodes)
+                    {
+                        ParseChildNodesForParagraph(node, newNode);
+                    }
+                    else
+                    {
+                        newNode = node;
+                    }
+
+                    paragraphs.Add(new Paragraph { Book = this._book, Sequence = ++this._sequence, Type = node.Name, Value = newNode.InnerXml });
                     break;
                 case "image":
                     foreach (XmlAttribute attribute in node.Attributes)
                     {
                         if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
                         {
-                            paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = node.Name, Value = $"{book.Id}/{attribute.Value.Replace("#", "")}" });
+                            paragraphs.Add(new Paragraph { Book = this._book, Sequence = ++this._sequence, Type = node.Name, Value = $"{this._book.Id}/{attribute.Value.Replace("#", "")}" });
                         }
                     }
                     break;
@@ -207,16 +219,16 @@ namespace deech.me.import.utils
                     if (node.Attributes["id"] != null && !string.IsNullOrEmpty(node.Attributes["id"].Value))
                     {
                         //anchor to current note
-                        var refChild = doc.CreateElement("a");
-                        var refAttributeId = doc.CreateAttribute("id");
+                        var refChild = this._doc.CreateElement("a");
+                        var refAttributeId = this._doc.CreateAttribute("id");
                         refAttributeId.Value = node.Attributes["id"].Value;
                         refChild.Attributes.Append(refAttributeId);
                         node.PrependChild(refChild);
 
-                        var refBackElement = doc.CreateElement("a");
-                        var refBackAttribute = doc.CreateAttribute("href");
+                        var refBackElement = this._doc.CreateElement("a");
+                        var refBackAttribute = this._doc.CreateAttribute("href");
 
-                        refBackAttribute.Value = $"book/{book.Id}#ref{node.Attributes["id"].Value}";
+                        refBackAttribute.Value = $"book/{this._book.Id}#ref{node.Attributes["id"].Value}";
                         refBackElement.InnerText = "^^^";
                         refBackElement.Attributes.Append(refBackAttribute);
 
@@ -226,102 +238,104 @@ namespace deech.me.import.utils
                         {
                             if (child.Name == "title")
                             {
-                                var newChild = doc.CreateElement("h3");
+                                var newChild = this._doc.CreateElement("h3");
                                 newChild.InnerXml = child.InnerXml;
                                 node.ReplaceChild(newChild, child);
                             }
                         }
 
-                        paragraphs.Add(new Paragraph { Book = book, Sequence = ++this._sequence, Type = "p", Value = node.InnerXml });
+                        paragraphs.Add(new Paragraph { Book = this._book, Sequence = ++this._sequence, Type = "p", Value = node.InnerXml });
                     }
                     else
                     {
-                        ParseNodeWithChildren(node, paragraphs, doc, book);
+                        ParseChildNodes(node, paragraphs);
                     }
                     break;
                 default:
-                    ParseNodeWithChildren(node, paragraphs, doc, book);
+                    ParseChildNodes(node, paragraphs);
                     break;
             }
         }
 
-        public void ParseNodeWithChildren(XmlNode node, List<Paragraph> paragraphs, XmlDocument doc, Book book)
+        public void ParseChildNodes(XmlNode node, List<Paragraph> paragraphs)
         {
             if (node.HasChildNodes)
             {
                 foreach (XmlNode child in node.ChildNodes)
                 {
-                    ParseNode(child, paragraphs, doc, book);
+                    ParseNode(child, paragraphs);
                 }
             }
         }
 
-        public void ParseChildNodesForParagraph(XmlNode node, XmlDocument doc, Book book)
+        public void ParseChildNodesForParagraph(XmlNode node, XmlNode newNode)
         {
-            if (node.HasChildNodes)
+            for (var i = 0; i < node.ChildNodes.Count; i++)
             {
-                foreach (XmlNode child in node.ChildNodes)
+                if (node.ChildNodes[i].Name == "image")
                 {
-                    if (child.Name == "image")
-                    {
-                        foreach (XmlAttribute attribute in child.Attributes)
-                        {
-                            if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
-                            {
-                                var newChild = doc.CreateElement("img");
-                                var newAttribute = doc.CreateAttribute("src");
+                    var newChild = this._doc.CreateElement("img");
+                    var newAttribute = this._doc.CreateAttribute("src");
 
-                                newAttribute.Value = $"{book.Id}/{attribute.Value.Replace("#", "")}";
+                    for (var j = 0; j < node.ChildNodes[i].Attributes.Count; j++)
+                    {
+                        if (node.ChildNodes[i].Attributes[j].Name.Contains("href") && !string.IsNullOrEmpty(node.ChildNodes[i].Attributes[j].Value))
+                        {
+                            newAttribute.Value = $"{this._book.Id}/{node.ChildNodes[i].Attributes[j].Value.Replace("#", "")}";
+                            newChild.Attributes.Append(newAttribute);
+                        }
+                    }
+                    newNode.AppendChild(newChild);
+                }
+                else if (node.ChildNodes[i].Name == "a")
+                {
+                    var newChild = this._doc.CreateElement("a");
+                    var newAttribute = this._doc.CreateAttribute("href");
+
+                    newChild.InnerText = node.ChildNodes[i].InnerText;
+
+                    for (var j = 0; j < node.ChildNodes[i].Attributes.Count; j++)
+                    {
+                        if (node.ChildNodes[i].Attributes[j].Name.Contains("href") && !string.IsNullOrEmpty(node.ChildNodes[i].Attributes[j].Value))
+                        {
+                            if (node.ChildNodes[i].Attributes["type"]?.Value == "note")
+                            {
+                                //anchor tp current paragaph
+                                var refChild = this._doc.CreateElement("a");
+                                var refAttributeId = this._doc.CreateAttribute("id");
+
+                                refAttributeId.Value = $"ref{node.ChildNodes[i].Attributes[j].Value.Replace("#", "")}";
+                                refChild.Attributes.Append(refAttributeId);
+                                newNode.PrependChild(refChild);
+
+                                //link to note
+                                newAttribute.Value = $"book/{this._book.Id}{node.ChildNodes[i].Attributes[j].Value}";
                                 newChild.Attributes.Append(newAttribute);
 
-                                node.ReplaceChild(newChild, child);
+                                var wrapper = this._doc.CreateElement("sup");
+                                wrapper.AppendChild(newChild);
+                                newNode.AppendChild(wrapper);
+                            }
+                            else
+                            {
+                                newAttribute.Value = node.ChildNodes[i].Attributes[j].Value;
+                                newChild.Attributes.Append(newAttribute);
+                                newNode.AppendChild(newChild);
                             }
                         }
                     }
-                    else if (child.Name == "a")
+                }
+                else
+                {
+                    if (node.ChildNodes[i].HasChildNodes)
                     {
-                        foreach (XmlAttribute attribute in child.Attributes)
-                        {
-                            if (attribute.Name.Contains("href") && !string.IsNullOrEmpty(attribute.Value))
-                            {
-                                var newChild = doc.CreateElement("a");
-                                var newAttribute = doc.CreateAttribute("href");
-
-                                newChild.InnerText = child.InnerText;
-
-                                if (child.Attributes["type"] != null && child.Attributes["type"].Value == "note")
-                                {
-                                    //anchor tp current paragaph
-                                    var refChild = doc.CreateElement("a");
-                                    var refAttributeId = doc.CreateAttribute("id");
-
-                                    refAttributeId.Value = $"ref{attribute.Value.Replace("#", "")}";
-                                    refChild.Attributes.Append(refAttributeId);
-                                    node.PrependChild(refChild);
-
-                                    //link to note
-                                    newAttribute.Value = $"book/{book.Id}{attribute.Value}";
-                                    newChild.Attributes.Append(newAttribute);
-
-                                    var wrapper = doc.CreateElement("sup");
-                                    wrapper.AppendChild(newChild);
-
-                                    node.ReplaceChild(wrapper, child);
-                                }
-                                else
-                                {
-                                    newAttribute.Value = attribute.Value;
-                                    newChild.Attributes.Append(newAttribute);
-
-                                    node.ReplaceChild(newChild, child);
-                                }
-
-                            }
-                        }
+                        var newChildNode = this._doc.CreateNode(node.ChildNodes[i].NodeType, node.ChildNodes[i].Name, string.Empty);
+                        ParseChildNodesForParagraph(node.ChildNodes[i].Clone(), newChildNode);
+                        newNode.AppendChild(newChildNode);
                     }
                     else
                     {
-                        ParseChildNodesForParagraph(child, doc, book);
+                        newNode.AppendChild(node.ChildNodes[i].Clone());
                     }
                 }
             }

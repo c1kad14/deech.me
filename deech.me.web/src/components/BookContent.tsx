@@ -16,6 +16,8 @@ const BookContent: React.FC = () => {
     }
 
     const sorted = book.paragraphs.slice().sort((a, b) => a.sequence - b.sequence)
+
+    console.log(sorted)
     let content = sorted.map(paragraph => {
         switch (paragraph.type) {
             case "image":
