@@ -11,7 +11,7 @@ const NavMenu: React.FC = () => {
     }
 
     return (
-        <header>
+        <header className="sticky-top navbar-container">
             <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
                 <Container>
                     <NavbarBrand tag={Link} to="/" className="deech-me-logo">deech.me</NavbarBrand>

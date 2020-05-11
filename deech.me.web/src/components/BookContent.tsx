@@ -20,15 +20,15 @@ const BookContent: React.FC = () => {
     let content = sorted.map(paragraph => {
         switch (paragraph.type) {
             case "image":
-                return <img className="book-image" key={paragraph.id} src={`${domain}/books/${paragraph.value}`} />
+                return <img className="book-image no-select" key={paragraph.id} src={`${domain}/books/${paragraph.value}`} />
             case "title":
-                return <h3 className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></h3>
+                return <h3 className="paragraph-element no-select" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></h3>
             case "p":
-                return <p className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></p>
+                return <p className="paragraph-element no-select" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></p>
             case "table":
                 return <table className="paragraph-element table" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></table>
             default:
-                return <span className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
+                return <span className="paragraph-element no-select" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
         }
     })
 
