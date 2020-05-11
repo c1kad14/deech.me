@@ -223,6 +223,7 @@ namespace deech.me.import.utils
                         var refAttributeId = this._doc.CreateAttribute("id");
                         refAttributeId.Value = node.Attributes["id"].Value;
                         refChild.Attributes.Append(refAttributeId);
+                        refChild.InnerText = string.Empty;
                         node.PrependChild(refChild);
 
                         var refBackElement = this._doc.CreateElement("a");
@@ -302,11 +303,12 @@ namespace deech.me.import.utils
                             {
                                 //anchor tp current paragaph
                                 var refChild = this._doc.CreateElement("a");
+                                refChild.InnerText = string.Empty;
                                 var refAttributeId = this._doc.CreateAttribute("id");
 
                                 refAttributeId.Value = $"ref{node.ChildNodes[i].Attributes[j].Value.Replace("#", "")}";
                                 refChild.Attributes.Append(refAttributeId);
-                                newNode.PrependChild(refChild);
+                                newNode.AppendChild(refChild);
 
                                 //link to note
                                 newAttribute.Value = $"book/{this._book.Id}{node.ChildNodes[i].Attributes[j].Value}";

@@ -17,11 +17,10 @@ const BookContent: React.FC = () => {
 
     const sorted = book.paragraphs.slice().sort((a, b) => a.sequence - b.sequence)
 
-    console.log(sorted)
     let content = sorted.map(paragraph => {
         switch (paragraph.type) {
             case "image":
-                return <img className="paragraph-element" key={paragraph.id} src={`${domain}/books/${paragraph.value}`} />
+                return <img className="book-image" key={paragraph.id} src={`${domain}/books/${paragraph.value}`} />
             case "title":
                 return <h3 className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></h3>
             case "p":
@@ -32,8 +31,6 @@ const BookContent: React.FC = () => {
                 return <span className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
         }
     })
-
-    console.log(content)
 
     return <>
         {content}
