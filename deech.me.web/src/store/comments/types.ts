@@ -8,7 +8,7 @@ export enum CommentTypes {
 
 export interface IComment {
     id?: number
-    text: string
+    value: string
     paragraphId: number
     associated?: number
 }

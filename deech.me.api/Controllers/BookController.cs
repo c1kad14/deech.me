@@ -29,7 +29,7 @@ namespace deech.me.api.controllers
                                                        .Include(b => b.TitleInfo));
 
             var result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
-            var mapped = this._mapper.Map<Book, BookModel>(result);
+            var mapped = this._mapper.Map<BookModel>(result);
 
             return new JsonResult(mapped);
         }

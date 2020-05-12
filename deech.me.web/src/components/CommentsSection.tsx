@@ -2,7 +2,7 @@ import React from "react"
 import { useSelector } from "react-redux"
 import { RootState } from "../store/rootReducer"
 import { Spinner } from "./Spinner"
-import BookComment from "./BookComment"
+import BookComment from "./Comment"
 import NewComment from "./NewComment"
 
 const CommentsSection: React.FC = () => {

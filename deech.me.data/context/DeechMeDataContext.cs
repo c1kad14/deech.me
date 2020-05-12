@@ -14,6 +14,7 @@ namespace deech.me.data.context
         public DbSet<Annotation> Annotations { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Comment> Comments { get; set; }
         public DbSet<CustomInfo> CustomInfos { get; set; }
         public DbSet<Genre> Genres { get; set; }
         public DbSet<Keyword> Keywords { get; set; }
@@ -35,10 +36,12 @@ namespace deech.me.data.context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TitleInfoGenre>()
-                .HasKey(x => new { x.TitleInfoId, x.GenreCode });
+                .HasKey(t => new { t.TitleInfoId, t.GenreCode });
 
             modelBuilder.Entity<TitleInfoKeyword>()
-                .HasKey(x => new { x.TitleInfoId, x.KeywordCode });
+                .HasKey(t => new { t.TitleInfoId, t.KeywordCode });
+
+            modelBuilder.Entity<Comment>().HasOne(x => x.Associated).WithMany().HasForeignKey(x => x.AssociatedId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

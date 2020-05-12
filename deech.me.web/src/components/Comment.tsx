@@ -11,7 +11,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
     const reply = replyOpen && <NewComment paragraphId={comment.paragraphId} />
 
     return <div>
-        <div>{comment.text}</div>
+        <div>{comment.value}</div>
         <div>
             <input type="button" name="reply" value="Reply" onClick={() => setIsReplyOpen(!replyOpen)} />
         </div>

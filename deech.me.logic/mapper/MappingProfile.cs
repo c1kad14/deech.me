@@ -1,7 +1,9 @@
 using System;
-using AutoMapper;
+
 using deech.me.data.entities;
 using deech.me.logic.models;
+
+using AutoMapper;
 
 namespace deech.me.logic.mapper
 {
@@ -17,9 +19,9 @@ namespace deech.me.logic.mapper
                 .ForMember(dest => dest.Annotation, opt => opt.MapFrom(src => src.Annotation.Text))
                 .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.SourceLanguage.Code))
                 .ForMember(dest => dest.SourceLanguage, opt => opt.MapFrom(src => src.Language.Code));
-
             CreateMap<Paragraph, ParagraphModel>();
             CreateMap<Book, BookModel>();
+            CreateMap<Comment, CommentModel>();
         }
     }
 }
