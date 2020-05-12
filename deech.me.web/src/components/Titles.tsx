@@ -1,7 +1,6 @@
 import React from "react"
 import { useSelector } from "react-redux"
 import TitleTile from "./TitleTile"
-import { TitleState } from "../store/title/types"
 import { RootState } from "../store/rootReducer"
 
 const Titles: React.FC = () => {

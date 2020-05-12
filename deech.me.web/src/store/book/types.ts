@@ -1,4 +1,4 @@
-import { TitleInfo } from "../title/types"
+import { ITitleInfo } from "../title/types"
 import { Action } from "redux"
 
 export enum BookTypes {
@@ -7,28 +7,28 @@ export enum BookTypes {
     SET_BOOK_ID = "@@book/SET_BOOK_ID"
 }
 
-export interface Paragraph {
+export interface IParagraph {
+    id: number
     sequence: number
     type: string
     value: string
-    id: number
 }
 
-export interface Book {
-    title: TitleInfo
-    paragraphs: Paragraph[]
+export interface IBook {
+    title: ITitleInfo
+    paragraphs: IParagraph[]
     file: string
 }
 
-export interface BookState {
+export interface IBookState {
     readonly id?: string
-    readonly book?: Book
+    readonly book?: IBook
 }
 
-interface SetBook extends Action {
+export interface SetBook extends Action {
     type: BookTypes.SET_BOOK
     payload: {
-        book: Book
+        book: IBook
     }
 }
 
@@ -39,8 +39,6 @@ export interface SetBookId extends Action {
     }
 }
 
-interface ClearBook extends Action {
+export interface ClearBook extends Action {
     type: BookTypes.CLEAR_BOOK
 }
-
-export type BookActionTypes = SetBook | SetBookId | ClearBook

@@ -1,6 +1,6 @@
-import { BookTypes, BookActionTypes, Book } from "./types"
+import { BookTypes, IBook, ClearBook, SetBookId, SetBook } from "./types"
 
-export function setBookId(id: string): BookActionTypes {
+export function setBookId(id: string): SetBookId {
     return {
         type: BookTypes.SET_BOOK_ID,
         payload: {
@@ -9,7 +9,7 @@ export function setBookId(id: string): BookActionTypes {
     }
 }
 
-export function setBook(book: Book): BookActionTypes {
+export function setBook(book: IBook): SetBook {
     return {
         type: BookTypes.SET_BOOK,
         payload: {
@@ -18,7 +18,7 @@ export function setBook(book: Book): BookActionTypes {
     }
 }
 
-export function clearBook(): BookActionTypes {
+export function clearBook(): ClearBook {
     return {
         type: BookTypes.CLEAR_BOOK
     }

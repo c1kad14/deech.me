@@ -1,14 +1,14 @@
 import { Reducer } from "redux"
-import { TitleState, TitleTypes } from "./types"
+import { ITitleState, TitleTypes } from "./types"
 import produce from "immer"
 
-const initialState: TitleState = {
+const initialState: ITitleState = {
     filter: undefined,
     titles: []
 }
 
-const TitleReducer: Reducer<TitleState> = (state = initialState, action): TitleState => {
-    return produce<TitleState>(state, draft => {
+const TitleReducer: Reducer<ITitleState> = (state = initialState, action): ITitleState => {
+    return produce<ITitleState>(state, draft => {
         switch (action.type) {
             case TitleTypes.SET_FILTER:
                 draft.filter = action.payload.filter

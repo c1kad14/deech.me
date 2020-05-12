@@ -1,7 +1,5 @@
 import React, { useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
-import { RootState } from "../store/rootReducer"
-import { Spinner } from "../components/Spinner"
+import { useDispatch } from "react-redux"
 import BookContent from "../components/BookContent"
 import { setBookId } from "../store/book/actions"
 import { RouteComponentProps } from "react-router-dom"
@@ -19,7 +17,6 @@ const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
     }, [id])
 
     return <>
-
         <BookContent />
     </>
 }

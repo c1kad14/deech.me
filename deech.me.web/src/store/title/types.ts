@@ -8,14 +8,14 @@ export enum TitleTypes {
     CLEAR_TITLES = "@@title/CLEAR_TITLES"
 }
 
-export interface TitleFilter {
+export interface ITitleFilter {
     author?: string
     title?: string
     language?: string
     genre?: string
 }
 
-export interface TitleInfo {
+export interface ITitleInfo {
     annotation?: string
     authors?: string[]
     cover?: string
@@ -29,30 +29,30 @@ export interface TitleInfo {
     translators?: string[]
 }
 
-export interface TitleState {
-    readonly filter?: TitleFilter
-    readonly titles?: TitleInfo[]
+export interface ITitleState {
+    readonly filter?: ITitleFilter
+    readonly titles?: ITitleInfo[]
 }
 
-interface SetFilter extends Action {
+export interface SetFilter extends Action {
     type: TitleTypes.SET_FILTER
     payload: {
-        filter: TitleFilter
+        filter: ITitleFilter
     }
 }
 
-interface ResetFilter extends Action {
+export interface ResetFilter extends Action {
     type: TitleTypes.RESET_FILTER
 }
 
-interface SetTitles extends Action {
+export interface SetTitles extends Action {
     type: TitleTypes.SET_TITLES
     payload: {
-        titles: TitleInfo[]
+        titles: ITitleInfo[]
     }
 }
 
-interface ClearTitles extends Action {
+export interface ClearTitles extends Action {
     type: TitleTypes.CLEAR_TITLES
 }
 
@@ -62,5 +62,3 @@ export interface SearchTitles extends Action {
         title: string
     }
 }
-
-export type TitleActionTypes = SetFilter | ResetFilter | SetTitles | ClearTitles | SearchTitles

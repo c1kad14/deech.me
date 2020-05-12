@@ -1,6 +1,6 @@
-import { TitleFilter, TitleInfo, TitleTypes, TitleActionTypes } from "./types"
+import { ITitleFilter, ITitleInfo, TitleTypes, SetFilter, ResetFilter, SetTitles, ClearTitles, SearchTitles } from "./types"
 
-export function setFilter(filter: TitleFilter): TitleActionTypes {
+export function setFilter(filter: ITitleFilter): SetFilter {
     return {
         type: TitleTypes.SET_FILTER,
         payload: {
@@ -9,13 +9,13 @@ export function setFilter(filter: TitleFilter): TitleActionTypes {
     }
 }
 
-export function resetFilter(): TitleActionTypes {
+export function resetFilter(): ResetFilter {
     return {
         type: TitleTypes.RESET_FILTER
     }
 }
 
-export function setTitles(titles: TitleInfo[]): TitleActionTypes {
+export function setTitles(titles: ITitleInfo[]): SetTitles {
     return {
         type: TitleTypes.SET_TITLES,
         payload: {
@@ -24,13 +24,13 @@ export function setTitles(titles: TitleInfo[]): TitleActionTypes {
     }
 }
 
-export function clearTitles(): TitleActionTypes {
+export function clearTitles(): ClearTitles {
     return {
         type: TitleTypes.CLEAR_TITLES
     }
 }
 
-export function searchTitles(title: string): TitleActionTypes {
+export function searchTitles(title: string): SearchTitles {
     return {
         type: TitleTypes.SEARCH_TITLES,
         payload: {

@@ -1,14 +1,14 @@
 import { Reducer } from "redux"
 import produce from "immer"
-import { BookState, BookTypes } from "./types"
+import { IBookState, BookTypes } from "./types"
 
-const initialState: BookState = {
+const initialState: IBookState = {
     id: undefined,
     book: undefined
 }
 
-const BookReducer: Reducer<BookState> = (state = initialState, action): BookState => {
-    return produce<BookState>(state, draft => {
+const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookState => {
+    return produce<IBookState>(state, draft => {
         switch (action.type) {
             case BookTypes.SET_BOOK_ID:
                 draft.id = action.payload.id
