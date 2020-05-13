@@ -22,6 +22,7 @@ namespace deech.me.logic.mapper
             CreateMap<Paragraph, ParagraphModel>();
             CreateMap<Book, BookModel>();
             CreateMap<Comment, CommentModel>();
+            CreateMap<CommentModel, Comment>();
         }
     }
 }

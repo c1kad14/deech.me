@@ -1,9 +1,11 @@
 import { Action } from "redux"
 
 export enum CommentTypes {
-    ADD_COMMENT = "@@comments/ADD_COMMENT",
-    SHOW_COMMENTS = "@@comments/SHOW_COMMENTS",
-    SET_COMMENTS = "@@comments/SET_COMMENTS"
+    COMMENT_ADD = "@@comments/COMMENT_ADD",
+    COMMENT_ADDED = "@@comments/COMMENT_ADDED",
+    COMMENTS_SHOW = "@@comments/COMMENTS_SHOW",
+    COMMENTS_HIDE = "@@comments/COMMENTS_HIDE",
+    COMMENTS_LOADED = "@@comments/COMMENTS_LOADED"
 }
 
 export interface IComment {
@@ -11,6 +13,7 @@ export interface IComment {
     value: string
     paragraphId: number
     associated?: number
+    date?: Date
 }
 
 export interface ICommentsState {
@@ -18,23 +21,34 @@ export interface ICommentsState {
     readonly comments: IComment[]
 }
 
-export interface SetComments {
-    type: CommentTypes.SET_COMMENTS
+export interface AddComment extends Action {
+    type: CommentTypes.COMMENT_ADD
     payload: {
-        comments: IComment[]
+        comment: IComment
     }
 }
 
-export interface AddComment extends Action {
-    type: CommentTypes.ADD_COMMENT
+export interface CommentAdded extends Action {
+    type: CommentTypes.COMMENT_ADDED
     payload: {
         comment: IComment
     }
 }
 
 export interface ShowComments extends Action {
-    type: CommentTypes.SHOW_COMMENTS
+    type: CommentTypes.COMMENTS_SHOW
     payload: {
         paragraphId: number
+    }
+}
+
+export interface HideComments extends Action {
+    type: CommentTypes.COMMENTS_HIDE
+}
+
+export interface SetComments {
+    type: CommentTypes.COMMENTS_LOADED
+    payload: {
+        comments: IComment[]
     }
 }

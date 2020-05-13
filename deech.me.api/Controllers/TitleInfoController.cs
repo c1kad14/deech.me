@@ -39,7 +39,7 @@ namespace deech.me.api.controllers
             var result = this._readDataService.GetMultiple(t => t.Title.ToLower().Contains(title.ToLower().Trim()));
             var mapped = this._mapper.Map<List<TitleInfo>, List<TitleInfoModel>>(result);
 
-            return new JsonResult(mapped);
+            return Ok(mapped);
         }
 
         [HttpGet("byId")]
@@ -57,7 +57,7 @@ namespace deech.me.api.controllers
 
             var result = this._readDataService.GetSingle(t => t.Id == id);
 
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         [HttpGet("byGenre")]
@@ -67,7 +67,7 @@ namespace deech.me.api.controllers
 
             var result = this._readDataService.GetMultiple(t => t.Genres.Any(g => g.GenreCode == genre));
 
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

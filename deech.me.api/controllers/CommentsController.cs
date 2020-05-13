@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using AutoMapper;
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
@@ -17,8 +19,16 @@ namespace deech.me.api.controllers
             this._writeDataService = writeDataService;
         }
 
+        [HttpGet("byParagraphId")]
+        public ActionResult GetComments(int paragraphId)
+        {
+            var comments = this._writeDataService.GetMultiple(c => c.ParagraphId == paragraphId);
+            var result = this._mapper.Map<List<CommentModel>>(comments);
+            return Ok(result);
+        }
+
         [HttpPost]
-        public ActionResult AddComment(CommentModel comment)
+        public ActionResult AddComment([FromBody]CommentModel comment)
         {
             var newComment = this._mapper.Map<Comment>(comment);
             newComment = this._writeDataService.Add(newComment);

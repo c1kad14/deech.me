@@ -31,7 +31,7 @@ namespace deech.me.api.controllers
             var result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
             var mapped = this._mapper.Map<BookModel>(result);
 
-            return new JsonResult(mapped);
+            return Ok(mapped);
         }
 
         [HttpGet("byAuthorId")]
@@ -42,7 +42,7 @@ namespace deech.me.api.controllers
 
             var result = this._readDataService.GetSingle(b => b.TitleInfo.Authors.Any(a => a.AuthorId == authorId));
 
-            return new JsonResult(result);
+            return Ok(result);
         }
     }
 }

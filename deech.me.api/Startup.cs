@@ -39,6 +39,7 @@ namespace deech.me.api
             services.AddSingleton(mappingConfig.CreateMapper());
             services.Configure<WebEncoderOptions>(options => new TextEncoderSettings(UnicodeRanges.All));
             services.AddTransient(typeof(IReadDataService<>), typeof(ReadDataService<>));
+            services.AddTransient(typeof(IWriteDataService<>), typeof(ReadWriteDataService<>));
             services.AddDbContext<DeechMeDataContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DevelopersConnection"), b => b.MigrationsAssembly("deech.me.api")));
             services.AddCors(options =>

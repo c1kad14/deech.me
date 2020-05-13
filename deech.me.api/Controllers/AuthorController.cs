@@ -23,10 +23,10 @@ namespace deech.me.api.controllers
             || (a.FirstName + " " + a.MiddleName + " " + a.LastName).ToLower().Contains(author)
             || a.Nickname.ToLower().Contains(author));
 
-            return new JsonResult(result);
+            return Ok(result);
         }
 
         [HttpGet("byId")]
-        public ActionResult GetById(int id) => new JsonResult(this._readDataService.GetSingle(a => a.Id == id));
+        public ActionResult GetById(int id) => Ok(this._readDataService.GetSingle(a => a.Id == id));
     }
 }
