@@ -15,12 +15,14 @@ const CommentsReducer: Reducer<ICommentsState> = (state = initialState, action):
                 break
             case CommentTypes.COMMENTS_SHOW:
                 draft.paragraphId = action.payload.paragraphId
+                draft.comments = []
                 break
             case CommentTypes.COMMENTS_LOADED:
                 draft.comments = action.payload.comments
                 break
             case CommentTypes.COMMENTS_HIDE:
-                draft = initialState
+                draft.paragraphId = -1
+                draft.comments = []
                 break
             default:
                 return state

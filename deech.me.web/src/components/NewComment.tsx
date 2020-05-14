@@ -1,7 +1,9 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
 import { addComment } from "../store/comments/actions"
-import { IComment } from "../store/comments/types";
+import { IComment } from "../store/comments/types"
+import TextAreaAutoSize from "react-textarea-autosize"
+import moment from "moment"
 
 type NewCommentProps = {
     paragraphId: number
@@ -13,20 +15,26 @@ const NewComment: React.FC<NewCommentProps> = ({ paragraphId, associated }) => {
     const [comment, setComment] = useState("")
 
     const addNewComment = () => {
-        const newComment: IComment = {
-            associated,
-            paragraphId,
-            date: new Date(),
-            value: comment,
+        if (comment.trim() !== "") {
+            const newComment: IComment = {
+                associated,
+                paragraphId,
+                date: moment().format("YYYY-MM-DD HH:m"),
+                value: comment,
+            }
+
+            dispatch(addComment(newComment))
+            setComment("")
         }
-        dispatch(addComment(newComment))
     }
 
-    const commentInputChanged = (e: React.ChangeEvent<HTMLInputElement>) => setComment(e.target.value);
+    const commentInputChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
 
     return <div>
-        <input type="text" name="new-comment" placeholder="Leave comment" onChange={commentInputChanged} />
-        <input type="button" name="add-comment" value="Add" onClick={addNewComment} />
+        <TextAreaAutoSize className="form-control comment-input-dark rounded borderless" name="new-comment" placeholder="Leave comment" onChange={commentInputChanged} />
+        <div className="justify-content-end d-flex mt-2">
+            <input className="btn btn-outline-light btn-sm" type="button" name="add-comment" value="Add" onClick={addNewComment} />
+        </div>
     </div>
 }
 

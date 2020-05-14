@@ -32,7 +32,6 @@ export function* searchBookSaga(action: SetBookId) {
     try {
         yield put(setLoading())
         const payload = yield call(loadBook, action.payload.id)
-        console.log(payload)
         yield put(setBook(payload))
         yield put(setLoaded())
     } catch (error) {
@@ -45,7 +44,6 @@ export function* showCommentsSaga(action: ShowComments) {
     try {
         //yield put(setLoading())
         const payload = yield call(loadComments, action.payload.paragraphId)
-        console.log(payload)
         yield put(setComments(payload))
         //yield put(setLoaded())
     } catch (error) {
@@ -58,7 +56,6 @@ export function* addCommentSaga(action: AddComment) {
     try {
         // yield put(setLoading())
         const payload = yield call(addComment, action.payload.comment)
-        console.log(payload)
         yield put(commentAdded(payload))
         // yield put(setLoaded())
     } catch (error) {

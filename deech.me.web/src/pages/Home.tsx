@@ -25,15 +25,19 @@ const Home: React.FC = () => {
 
   const onKeyPressHandler = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
-      if (filter && filter)
+      if (filter)
         dispatch(searchTitles(filter))
     }
+  }
+
+  const searchButtonClickHandler = () => {
+    dispatch(searchTitles(filter))
   }
 
   return <div>
     <h1>Enter book title</h1>
     <input type="text" name="title" onChange={onFilterChange} onKeyPress={onKeyPressHandler} />
-
+    <input type="button" name="search" value="search" onTouchStart={searchButtonClickHandler} />
     {loading ? <Spinner /> : <Titles />}
   </div>
 }

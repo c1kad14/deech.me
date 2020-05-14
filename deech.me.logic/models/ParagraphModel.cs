@@ -6,5 +6,6 @@ namespace deech.me.logic.models
         public int Sequence { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
+        public int Comments { get; set; }
     }
 }

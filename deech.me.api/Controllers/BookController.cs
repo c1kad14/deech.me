@@ -26,6 +26,7 @@ namespace deech.me.api.controllers
         public ActionResult GetBookByTitleId(int titleId)
         {
             this._readDataService.SetIncludeFunc(i => i.Include(b => b.Paragraphs)
+                                                       .ThenInclude(p => p.Comments)
                                                        .Include(b => b.TitleInfo));
 
             var result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);

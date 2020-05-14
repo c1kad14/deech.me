@@ -8,7 +8,7 @@ namespace deech.me.data.entities
     {
         public int? AssociatedId { get; set; }
         public virtual Comment Associated { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
         public int Id { get; set; }
         public Paragraph Paragraph { get; set; }
         public int ParagraphId { get; set; }

@@ -13,7 +13,7 @@ export interface IComment {
     value: string
     paragraphId: number
     associated?: number
-    date?: Date
+    date: string
 }
 
 export interface ICommentsState {

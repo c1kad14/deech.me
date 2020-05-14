@@ -9,6 +9,7 @@ export enum BookTypes {
 
 export interface IParagraph {
     id: number
+    comments: number
     sequence: number
     type: string
     value: string

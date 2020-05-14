@@ -47,8 +47,9 @@ namespace deech.me.api
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:3000",
-                                                          "https://localhost:3000")
+                                      builder.AllowAnyOrigin()
+                                      //.WithOrigins("http://localhost:3000",
+                                                      //    "https://localhost:3000")
                                                               .AllowAnyHeader()
                                                               .AllowAnyMethod();
                                   });

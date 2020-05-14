@@ -36,7 +36,7 @@ export function setComments(comments: IComment[]): SetComments {
     }
 }
 
-export function hideComments(comments: IComment[]): HideComments {
+export function hideComments(): HideComments {
     return {
         type: CommentTypes.COMMENTS_HIDE
     }

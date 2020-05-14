@@ -19,7 +19,7 @@ namespace deech.me.logic.mapper
                 .ForMember(dest => dest.Annotation, opt => opt.MapFrom(src => src.Annotation.Text))
                 .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.SourceLanguage.Code))
                 .ForMember(dest => dest.SourceLanguage, opt => opt.MapFrom(src => src.Language.Code));
-            CreateMap<Paragraph, ParagraphModel>();
+            CreateMap<Paragraph, ParagraphModel>().ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments.Count));
             CreateMap<Book, BookModel>();
             CreateMap<Comment, CommentModel>();
             CreateMap<CommentModel, Comment>();

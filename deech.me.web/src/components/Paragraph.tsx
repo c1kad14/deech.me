@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { domain } from "../store/config"
 import { IParagraph } from "../store/book/types"
 import { useDispatch, useSelector } from "react-redux"
-import { showComments } from "../store/comments/actions"
+import { showComments, hideComments } from "../store/comments/actions"
 import { RootState } from "../store/rootReducer"
 import CommentsSection from "./CommentsSection"
 
@@ -17,12 +17,20 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     let { paragraphId } = useSelector((state: RootState) => state.CommentsReducer)
 
     const setParagraph = (id: number) => {
-        dispatch(showComments(id))
+        if (paragraphId === id) {
+            id = -1
+        }
+        if (id !== -1) {
+            dispatch(showComments(id))
+        } else {
+            dispatch(hideComments())
+        }
     }
 
-    return <><p className="paragraph-element" key={paragraph.id} dangerouslySetInnerHTML={rawMarkup(paragraph)} onClick={() => setParagraph(paragraph.id)}>
+    return <><p className="paragraph-element" key={paragraph.id} onClick={() => setParagraph(paragraph.id)}>
+        <span dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
+        {paragraph.comments > 0 && <span className="text-muted ml-2 px-1 paragraph-comments">{paragraph.comments}</span>}
     </p>
-
         {paragraphId === paragraph.id && <CommentsSection />}
     </>
 }

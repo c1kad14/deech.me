@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace deech.me.data.entities
 {
     public class Paragraph
@@ -8,5 +10,6 @@ namespace deech.me.data.entities
         public int Sequence { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
