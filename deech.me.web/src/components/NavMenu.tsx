@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from "reactstrap"
 import { Link } from "react-router-dom"
+import Search from "./Search"
 import "./NavMenu.css"
 
 const NavMenu: React.FC = () => {
@@ -8,25 +9,22 @@ const NavMenu: React.FC = () => {
 
     return (
         <header className="sticky-top navbar-container">
-            <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                <Container>
+            <div className="border-bottom box-shadow mb-3 p-2">
+                <div className="container">
                     <NavbarBrand tag={Link} to="/" className="deech-me-logo">deech.me</NavbarBrand>
-                    <NavbarToggler onClick={() => setIsOpen(!isOpen)} className="mr-2" />
-                    <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={isOpen} navbar>
-                        <ul className="navbar-nav flex-grow">
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                            </NavItem>
-                        </ul>
-                    </Collapse>
-                </Container>
-            </Navbar>
+
+
+                    <div className="d-sm-inline-flex flex-sm-row">
+                        <NavLink className="justify-content-start d-flex">Dashboard</NavLink>
+                        <NavLink className="justify-content-start d-flex">Library</NavLink>
+                        <div className="justify-content-end d-flex">
+                            <Search />
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
         </header>
     )
 }

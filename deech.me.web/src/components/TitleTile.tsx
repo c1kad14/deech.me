@@ -7,14 +7,24 @@ const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {
     const data = cover && `${domain}/books/${cover}`
     const history = useHistory();
 
-    const onHandleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const onHandleClick = (e: React.MouseEvent<HTMLElement>) => {
         history.push(`/book/${id}`);
     }
 
-    return <div key={id} className="card" onClick={onHandleClick}>
-        <img className="card-img-top" src={data} />
-        <h5 className="title-description crop">{title}</h5>
-    </div>
+    return <li key={id} className="results-item-wrap" onClick={onHandleClick}>
+        <span className="results-item">
+            <div className="result-item-preview-wrap">
+                <div className="result-item-preview" style={{ backgroundImage: `url(${data})` }}>
+                </div>
+            </div>
+
+            <div className="result-item-footer">
+                <div className="results-item-title">
+                    {title}
+                </div>
+            </div>
+        </span>
+    </li>
 }
 
 export default TitleTile    

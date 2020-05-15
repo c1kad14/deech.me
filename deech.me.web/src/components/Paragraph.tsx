@@ -27,9 +27,9 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
         }
     }
 
-    return <><p className="paragraph-element" key={paragraph.id} onClick={() => setParagraph(paragraph.id)}>
+    return <><p className="paragraph-element" key={paragraph.id}>
         <span dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
-        {paragraph.comments > 0 && <span className="text-muted ml-2 px-1 paragraph-comments">{paragraph.comments}</span>}
+        {<span className="text-muted ml-2 px-1 paragraph-comments" onClick={() => setParagraph(paragraph.id)}>{paragraph.comments}</span>}
     </p>
         {paragraphId === paragraph.id && <CommentsSection />}
     </>

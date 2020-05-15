@@ -9,7 +9,6 @@ type CommentProps = {
 
 const Comment: React.FC<CommentProps> = ({ comment }) => {
     const [replyOpen, setIsReplyOpen] = useState<boolean>(false)
-    const reply = replyOpen && <NewComment paragraphId={comment.paragraphId} associated={comment.id} />
 
     return <div className="comment-container mt-1 p-2">
         <div>
@@ -18,9 +17,9 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
         </div>
         <div className="text-light mt-1 pl-2">{comment.value}</div>
         <div className="justify-content-end d-flex mt-2">
-            {!reply && <input className="btn btn-outline-light btn-sm" type="button" name="reply" value="Reply" onClick={() => setIsReplyOpen(!replyOpen)} />}
+            {!replyOpen && <input className="btn btn-outline-light btn-sm" type="button" name="reply" value="Reply" onClick={() => setIsReplyOpen(!replyOpen)} />}
         </div>
-        {reply}
+        {replyOpen && <NewComment paragraphId={comment.paragraphId} associated={comment.id} />}
     </div>
 }
 

@@ -15,11 +15,11 @@ const CommentsSection: React.FC = () => {
 
     const commentsJSX = comments.map(comment => <BookComment key={comment.id} comment={comment} />)
 
-    return <>
+    return <div className="mb-3">
         <NewComment paragraphId={paragraphId} />
         <div className="h-divider"></div>
         {commentsJSX}
-    </>
+    </div>
 }
 
 export default CommentsSection

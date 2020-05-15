@@ -23,15 +23,15 @@ const NewComment: React.FC<NewCommentProps> = ({ paragraphId, associated }) => {
                 value: comment,
             }
 
-            dispatch(addComment(newComment))
             setComment("")
+            dispatch(addComment(newComment))
         }
     }
 
     const commentInputChanged = (e: React.ChangeEvent<HTMLTextAreaElement>) => setComment(e.target.value);
 
     return <div>
-        <TextAreaAutoSize className="form-control comment-input-dark rounded borderless" name="new-comment" placeholder="Leave comment" onChange={commentInputChanged} />
+        <TextAreaAutoSize className="form-control comment-input-dark rounded borderless" name="new-comment" placeholder="Leave comment" value={comment} onChange={commentInputChanged} />
         <div className="justify-content-end d-flex mt-2">
             <input className="btn btn-outline-light btn-sm" type="button" name="add-comment" value="Add" onClick={addNewComment} />
         </div>

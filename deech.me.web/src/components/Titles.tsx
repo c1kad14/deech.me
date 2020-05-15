@@ -7,9 +7,9 @@ const Titles: React.FC = () => {
     let { titles } = useSelector((state: RootState) => state.TitleReducer)
     let titleTiles = titles && titles.length > 0 && titles.map(title => <TitleTile key={title.id} id={title.id} cover={title.cover} title={title.title} />)
 
-    return <div className="row">
+    return <ul className="results">
         {titleTiles}
-    </div>
+    </ul>
 }
 
 export default Titles

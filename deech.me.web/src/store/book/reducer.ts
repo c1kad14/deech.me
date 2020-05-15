@@ -12,11 +12,14 @@ const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookSt
         switch (action.type) {
             case BookTypes.SET_BOOK_ID:
                 draft.id = action.payload.id
+                draft.book = undefined
                 break
             case BookTypes.SET_BOOK:
                 draft.book = action.payload.book
                 break
             case BookTypes.CLEAR_BOOK:
+                draft.book = undefined
+                break
             default:
                 return state
         }
