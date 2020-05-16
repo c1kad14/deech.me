@@ -22,7 +22,7 @@ namespace deech.me.api.controllers
         [HttpGet("byParagraphId")]
         public ActionResult GetComments(int paragraphId)
         {
-            var comments = this._writeDataService.GetMultiple(c => c.ParagraphId == paragraphId);
+            var comments = this._writeDataService.GetAll(c => c.ParagraphId == paragraphId);
             var result = this._mapper.Map<List<CommentModel>>(comments);
             return Ok(result);
         }

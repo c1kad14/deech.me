@@ -18,6 +18,7 @@ const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookSt
                 draft.book = action.payload.book
                 break
             case BookTypes.CLEAR_BOOK:
+                draft.id = undefined
                 draft.book = undefined
                 break
             default:

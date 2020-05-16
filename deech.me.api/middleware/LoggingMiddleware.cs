@@ -40,7 +40,8 @@ namespace deech.me.api.middleware
                 + $"{Environment.NewLine}"
                 + $"From: {context.Connection.RemoteIpAddress.ToString()}"
                 + $"{Environment.NewLine}"
-                + $"Body: {ReadStreamInChunks(requestStream)}");
+                // + $"Body: {ReadStreamInChunks(requestStream)}"
+                );
 
             context.Request.Body.Position = 0;
         }
@@ -63,7 +64,8 @@ namespace deech.me.api.middleware
                 + $"{Environment.NewLine}"
                 + $"From: {context.Connection.RemoteIpAddress.ToString()}"
                 + $"{Environment.NewLine}"
-                + $"Body: {text}");
+                // + $"Body: {text}"
+                );
 
             await responseBody.CopyToAsync(originalBodyStream);
         }

@@ -19,6 +19,9 @@ const TitleReducer: Reducer<ITitleState> = (state = initialState, action): ITitl
             case TitleTypes.SET_TITLES:
                 draft.titles = action.payload.titles
                 break
+            case TitleTypes.ADD_TITLES:
+                draft.titles.push(...action.payload.titles)
+                break
             case TitleTypes.CLEAR_TITLES:
                 draft.titles = []
                 break

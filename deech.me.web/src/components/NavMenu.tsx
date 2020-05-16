@@ -1,11 +1,11 @@
 import React, { useState } from "react"
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from "reactstrap"
+import { NavbarBrand, NavLink } from "reactstrap"
 import { Link } from "react-router-dom"
 import Search from "./Search"
 import "./NavMenu.css"
 
 const NavMenu: React.FC = () => {
-    const [isOpen, setIsOpen] = useState<boolean>(false)
+    const [] = useState<boolean>(false)
 
     return (
         <header className="sticky-top navbar-container">

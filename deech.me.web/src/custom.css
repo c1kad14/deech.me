@@ -6,6 +6,7 @@ a {
 
 .deech-me-logo {
   color: #e60d4e !important;
+  font-size: 1.2rem;
 }
 
 body {
@@ -180,7 +181,7 @@ body {
 }
 
 .titles-container {
-  width:100%
+  width:100%;
 }
 
 @media (min-width:768px) {
@@ -271,7 +272,7 @@ body {
 }
 
 .results-item-title {
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   line-height: 1;
   color: #fff
 }
@@ -285,4 +286,9 @@ body {
   background-color: hsla(0, 0%, 100%, .05);
   background-position: 50% 50%;
   background-size: cover !important;
+}
+
+.loader {
+  clear: both;
+  color: #ccc8c8;
 }

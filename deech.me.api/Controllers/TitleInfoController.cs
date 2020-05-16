@@ -25,7 +25,7 @@ namespace deech.me.api.controllers
         }
 
         [HttpGet("byTitle")]
-        public ActionResult GetByTitle(string title)
+        public ActionResult GetByTitle(string title, int skip = 0, int take = 20)
         {
             this._readDataService.SetIncludeFunc(i => i.Include(ti => ti.Authors)
                                                        .ThenInclude(tia => tia.Author)
@@ -36,7 +36,7 @@ namespace deech.me.api.controllers
                                                        .Include(ti => ti.SourceLanguage)
                                                        .Include(ti => ti.Language)
                                                        .Include(ti => ti.Keywords));
-            var result = this._readDataService.GetMultiple(t => t.Title.ToLower().Contains(title.ToLower().Trim()));
+            var result = !string.IsNullOrEmpty(title) ? this._readDataService.GetMultiple(t => t.Title.ToLower().Contains(title.ToLower().Trim()), skip, take) : this._readDataService.GetMultiple(null, skip, take);
             var mapped = this._mapper.Map<List<TitleInfo>, List<TitleInfoModel>>(result);
 
             return Ok(mapped);
@@ -61,11 +61,21 @@ namespace deech.me.api.controllers
         }
 
         [HttpGet("byGenre")]
-        public ActionResult GetByGenre(string genre)
+        public ActionResult GetByGenre(string genre, int skip = 0, int take = 20)
         {
             this._readDataService.SetIncludeFunc(i => i.Include(ti => ti.Genres));
+            var result = this._readDataService.GetMultiple(t => t.Genres.Any(g => g.GenreCode == genre), skip, take);
 
-            var result = this._readDataService.GetMultiple(t => t.Genres.Any(g => g.GenreCode == genre));
+            return Ok(result);
+        }
+
+        [HttpGet("all")]
+        public ActionResult GetAll(int skip = 0, int take = 20)
+        {
+            this._readDataService.SetIncludeFunc(i => i.Include(ti => ti.Authors)
+                                                       .ThenInclude(tia => tia.Author));
+
+            var result = this._readDataService.GetMultiple(null, skip, take);
 
             return Ok(result);
         }

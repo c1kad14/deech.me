@@ -11,7 +11,7 @@ const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {
         history.push(`/book/${id}`);
     }
 
-    return <li key={id} className="results-item-wrap" onClick={onHandleClick}>
+    return <li className="results-item-wrap" onClick={onHandleClick}>
         <span className="results-item">
             <div className="result-item-preview-wrap">
                 <div className="result-item-preview" style={{ backgroundImage: `url(${data})` }}>
@@ -19,7 +19,7 @@ const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {
             </div>
 
             <div className="result-item-footer">
-                <div className="results-item-title">
+                <div className="results-item-title crop">
                     {title}
                 </div>
             </div>

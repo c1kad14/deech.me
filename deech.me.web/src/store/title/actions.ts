@@ -1,4 +1,4 @@
-import { ITitleFilter, ITitleInfo, TitleTypes, SetFilter, ResetFilter, SetTitles, ClearTitles, SearchTitles } from "./types"
+import { ITitleFilter, ITitleInfo, TitleTypes, SetFilter, ResetFilter, SetTitles, ClearTitles, AddTitles, LoadTitles, LoadMoreTitles } from "./types"
 
 export function setFilter(filter: ITitleFilter): SetFilter {
     return {
@@ -30,11 +30,23 @@ export function clearTitles(): ClearTitles {
     }
 }
 
-export function searchTitles(title: string): SearchTitles {
+export function loadTitles(): LoadTitles {
     return {
-        type: TitleTypes.SEARCH_TITLES,
+        type: TitleTypes.LOAD_TITLES
+    }
+}
+
+export function loadMoreTitles(): LoadMoreTitles {
+    return {
+        type: TitleTypes.LOAD_MORE_TITLES
+    }
+}
+
+export function addTitles(titles: ITitleInfo[]): AddTitles {
+    return {
+        type: TitleTypes.ADD_TITLES,
         payload: {
-            title
+            titles
         }
     }
 }

@@ -3,9 +3,11 @@ import { Action } from "redux"
 export enum TitleTypes {
     SET_FILTER = "@@title/SET_FILTER",
     RESET_FILTER = "@@title/RESET_FILTER",
-    SEARCH_TITLES = "@@title/SEARCH_TITLES",
+    LOAD_TITLES = "@@title/LOAD_TITLES",
+    LOAD_MORE_TITLES = "@@title/LOAD_MORE_TITLES",
     SET_TITLES = "@@title/SET_TITLES",
-    CLEAR_TITLES = "@@title/CLEAR_TITLES"
+    CLEAR_TITLES = "@@title/CLEAR_TITLES",
+    ADD_TITLES = "@@title/ADD_TITLES"
 }
 
 export interface ITitleFilter {
@@ -31,7 +33,7 @@ export interface ITitleInfo {
 
 export interface ITitleState {
     readonly filter?: ITitleFilter
-    readonly titles?: ITitleInfo[]
+    readonly titles: ITitleInfo[]
 }
 
 export interface SetFilter extends Action {
@@ -56,9 +58,17 @@ export interface ClearTitles extends Action {
     type: TitleTypes.CLEAR_TITLES
 }
 
-export interface SearchTitles extends Action {
-    type: TitleTypes.SEARCH_TITLES
+export interface LoadTitles extends Action {
+    type: TitleTypes.LOAD_TITLES
+}
+
+export interface LoadMoreTitles extends Action {
+    type: TitleTypes.LOAD_MORE_TITLES
+}
+
+export interface AddTitles extends Action {
+    type: TitleTypes.ADD_TITLES,
     payload: {
-        title: string
+        titles: ITitleInfo[]
     }
 }

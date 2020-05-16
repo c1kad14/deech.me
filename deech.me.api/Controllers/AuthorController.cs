@@ -16,12 +16,12 @@ namespace deech.me.api.controllers
         }
 
         [HttpGet("byName")]
-        public ActionResult GetByName(string name)
+        public ActionResult GetByName(string name, int skip = 0, int take = 20)
         {
             var author = name.ToLower().Trim();
             var result = this._readDataService.GetMultiple(a => (a.FirstName + " " + a.LastName).ToLower().Contains(author)
             || (a.FirstName + " " + a.MiddleName + " " + a.LastName).ToLower().Contains(author)
-            || a.Nickname.ToLower().Contains(author));
+            || a.Nickname.ToLower().Contains(author), skip, take);
 
             return Ok(result);
         }

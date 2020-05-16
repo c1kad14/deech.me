@@ -11,6 +11,7 @@ namespace deech.me.logic.abstractions
     {
         void SetIncludeFunc(Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc);
         TEntity GetSingle(Expression<Func<TEntity, bool>> predicate);
-        List<TEntity> GetMultiple(Expression<Func<TEntity, bool>> predicate);
+        List<TEntity> GetMultiple(Expression<Func<TEntity, bool>> predicate, int skip, int take);
+        List<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate);
     }
 }

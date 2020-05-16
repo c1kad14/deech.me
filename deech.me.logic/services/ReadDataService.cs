@@ -26,21 +26,6 @@ namespace deech.me.logic.services
         {
             this.includeFunc = includeFunc;
         }
-
-        public List<TEntity> GetMultiple(Expression<Func<TEntity, bool>> predicate)
-        {
-            using var context = new DeechMeDataContext(this.dbContextOptions);
-            IQueryable<TEntity> query = context.Set<TEntity>();
-
-            if (predicate != null)
-                query = query.Where(predicate);
-
-            if (includeFunc != null)
-                query = includeFunc(query);
-
-            return query.ToList();
-        }
-
         public TEntity GetSingle(Expression<Func<TEntity, bool>> predicate)
         {
             using var context = new DeechMeDataContext(this.dbContextOptions);
@@ -53,6 +38,34 @@ namespace deech.me.logic.services
                 query = includeFunc(query);
 
             return query.FirstOrDefault();
+        }
+
+        public List<TEntity> GetMultiple(Expression<Func<TEntity, bool>> predicate, int skip, int take)
+        {
+            using var context = new DeechMeDataContext(this.dbContextOptions);
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            if (includeFunc != null)
+                query = includeFunc(query);
+
+            return query.Skip(skip).Take(take).ToList();
+        }
+
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
+        {
+            using var context = new DeechMeDataContext(this.dbContextOptions);
+            IQueryable<TEntity> query = context.Set<TEntity>();
+
+            if (predicate != null)
+                query = query.Where(predicate);
+
+            if (includeFunc != null)
+                query = includeFunc(query);
+
+            return query.ToList();
         }
     }
 }

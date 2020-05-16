@@ -1,5 +1,5 @@
 import React from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector } from "react-redux"
 import { RootState } from "../store/rootReducer"
 import { Spinner } from "./Spinner"
 import { domain } from "../store/config"
