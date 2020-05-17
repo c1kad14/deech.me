@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Xml;
@@ -7,6 +8,7 @@ using System.Xml;
 using deech.me.data.entities;
 using deech.me.import.abstractions;
 using deech.me.import.models;
+using ImageMagick;
 
 namespace deech.me.import.utils
 {
@@ -158,12 +160,8 @@ namespace deech.me.import.utils
                             File.Delete(filePath);
                         }
 
-                        using (var imageFile = new FileStream(filePath, FileMode.Create))
-                        {
-                            var imgBase64String = Convert.FromBase64String(bin.InnerXml);
-                            imageFile.Write(imgBase64String, 0, imgBase64String.Length);
-                            imageFile.Flush();
-                        }
+                        var imgBytes = Convert.FromBase64String(bin.InnerXml);
+                        TransformImageAndWrite(imgBytes, filePath);
 
                         if (bin.Attributes["id"].Value == cover)
                         {
@@ -341,6 +339,28 @@ namespace deech.me.import.utils
                     }
                 }
             }
+        }
+
+        private void TransformImageAndWrite(byte[] imgBytes, string filePath)
+        {
+            var size = 300;
+            int width = 0, height = 0;
+
+            using var image = new MagickImage(imgBytes);
+
+            if (image.Width > image.Height)
+            {
+                width = size;
+                height = Convert.ToInt32(image.Height * size / (double)image.Width);
+            }
+            else
+            {
+                height = size;
+                width = Convert.ToInt32(image.Width * size / (double)image.Height);
+            }
+
+            image.Resize(width, height);
+            image.Write(filePath);
         }
     }
 }
