@@ -4,7 +4,8 @@ import produce from "immer"
 
 const initialState: ITitleState = {
     filter: undefined,
-    titles: []
+    titles: [],
+    hasMore: true
 }
 
 const TitleReducer: Reducer<ITitleState> = (state = initialState, action): ITitleState => {
@@ -20,10 +21,15 @@ const TitleReducer: Reducer<ITitleState> = (state = initialState, action): ITitl
                 draft.titles = action.payload.titles
                 break
             case TitleTypes.ADD_TITLES:
-                draft.titles.push(...action.payload.titles)
+                if(action.payload.titles.length > 0) {
+                    draft.titles.push(...action.payload.titles)
+                } else {
+                    draft.hasMore = false
+                }
                 break
             case TitleTypes.CLEAR_TITLES:
                 draft.titles = []
+                draft.hasMore = true
                 break
             default:
                 return state

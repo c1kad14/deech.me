@@ -2,12 +2,16 @@ import React from "react"
 import { ITitleInfo } from "../store/title/types"
 import { domain } from "../store/config"
 import { useHistory } from "react-router-dom"
+import { setBookId } from "../store/book/actions"
+import { useDispatch } from "react-redux"
 
 const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {
+    const dispatch = useDispatch()
     const data = cover && `${domain}/books/${cover}`
     const history = useHistory();
 
     const onHandleClick = (e: React.MouseEvent<HTMLElement>) => {
+        dispatch(setBookId(id))
         history.push(`/book/${id}`);
     }
 

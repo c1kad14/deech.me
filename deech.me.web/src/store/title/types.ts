@@ -34,6 +34,7 @@ export interface ITitleInfo {
 export interface ITitleState {
     readonly filter?: ITitleFilter
     readonly titles: ITitleInfo[]
+    readonly hasMore: boolean
 }
 
 export interface SetFilter extends Action {
