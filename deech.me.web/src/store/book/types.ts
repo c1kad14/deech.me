@@ -4,7 +4,8 @@ import { Action } from "redux"
 export enum BookTypes {
     CLEAR_BOOK = "@@book/CLEAR_BOOK",
     SET_BOOK = "@@book/SET_BOOK",
-    SET_BOOK_ID = "@@book/SET_BOOK_ID"
+    SET_BOOK_ID = "@@book/SET_BOOK_ID",
+    SET_PROGRESS = "@@book/SET_PROGRESS"
 }
 
 export interface IParagraph {
@@ -24,6 +25,7 @@ export interface IBook {
 export interface IBookState {
     readonly id?: string
     readonly book?: IBook
+    readonly progress: number
 }
 
 export interface SetBook extends Action {
@@ -37,6 +39,13 @@ export interface SetBookId extends Action {
     type: BookTypes.SET_BOOK_ID
     payload: {
         id: string
+    }
+}
+
+export interface SetProgress extends Action {
+    type: BookTypes.SET_PROGRESS,
+    payload: {
+        progress: number
     }
 }
 
