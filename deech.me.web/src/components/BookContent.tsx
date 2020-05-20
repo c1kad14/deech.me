@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, ReactNode } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "../store/rootReducer"
 import { domain } from "../store/config"
@@ -8,9 +8,12 @@ import { setProgress } from "../store/book/actions"
 
 const rawMarkup = (paragraph: IParagraph) => { return { __html: paragraph.value.replace(/<img src="/, `<img src="${domain}/books/`) } }
 
+let number: number = 0
+
 const BookContent: React.FC = () => {
     const dispatch = useDispatch()
     let { book, progress } = useSelector((state: RootState) => state.BookReducer)
+    let content: ReactNode[] = []
 
     let options = {
         root: null, // relative to document viewport 
@@ -29,13 +32,14 @@ const BookContent: React.FC = () => {
                     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
                     rect.right <= (window.innerWidth || document.documentElement.clientWidth)) {
                     if (rect.top <= rect.height) {
-                        dispatch(setProgress(paragraphSeq))
+                        // dispatch(setProgress(paragraphSeq))
+                        number = paragraphSeq
                     }
-
                 }
                 else {
                     if (rect.top < 0) {
-                        dispatch(setProgress(paragraphSeq))
+                        // dispatch(setProgress(paragraphSeq))
+                        number = paragraphSeq
                     }
                 }
             }
@@ -43,23 +47,42 @@ const BookContent: React.FC = () => {
     }
 
     useEffect(() => {
+        const elements = document.getElementsByClassName("paragraph-element")
         const observer = new IntersectionObserver(
             handleCallback,
             options
         )
-        const elements = document.getElementsByClassName("paragraph-element")
-        Array.from(elements).forEach(function (item) {
+
+        Array.from(elements).forEach((item) => {
             observer.observe(item)
         })
 
+        if (progress > 0) {
+            const anchor = Array.from(elements).filter(elem => {
+                const attr = elem.attributes.getNamedItem("paragraph-seq")
+                return attr && attr.value && Number(attr.value) === progress
+            })
+
+            if (anchor.length > 0) {
+                anchor[0].scrollIntoView()
+            }
+        }
+        const unloadHandler = () => {
+            dispatch(setProgress(number))
+        }
+
+        window.addEventListener("beforeunload", unloadHandler)
+
         return () => {
+            dispatch(setProgress(number))
             observer.disconnect()
+            window.removeEventListener("beforeunload", unloadHandler)
         }
     }, [])
 
+    console.log("*** BOOK CONTENT RERENDER ***")
     const sorted = book!.paragraphs.slice().sort((a, b) => a.sequence - b.sequence)
-
-    let content = sorted.map(paragraph => {
+    content = sorted.map(paragraph => {
         switch (paragraph.type) {
             case "image":
                 return <img className="book-image paragraph-element" key={paragraph.id} paragraph-seq={paragraph.sequence} src={`${domain}/books/${paragraph.value}`} />
@@ -75,7 +98,7 @@ const BookContent: React.FC = () => {
     })
 
     return <div className="no-select">
-        {content}
+        {content.length > 0 && content}
     </div>
 }
 

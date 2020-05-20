@@ -16,7 +16,6 @@ const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
     const bookId = useSelector((state: RootState) => state.BookReducer.id)
     let { book } = useSelector((state: RootState) => state.BookReducer)
     const { id } = match.params
-
     let { loading } = useSelector((state: RootState) => state.AppReducer)
 
     useEffect(() => {
@@ -31,6 +30,7 @@ const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
     if (!book || loading) {
         return <Spinner />
     }
+
     return <Container>
         <BookContent />
     </Container>
