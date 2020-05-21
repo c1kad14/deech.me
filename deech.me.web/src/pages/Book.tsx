@@ -13,10 +13,10 @@ interface BookParams {
 
 const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
     const dispatch = useDispatch()
-    const bookId = useSelector((state: RootState) => state.BookReducer.id)
-    let { book } = useSelector((state: RootState) => state.BookReducer)
+    const bookId = useSelector((state: RootState) => state.book.id)
+    let { book } = useSelector((state: RootState) => state.book)
     const { id } = match.params
-    let { loading } = useSelector((state: RootState) => state.AppReducer)
+    let { loading } = useSelector((state: RootState) => state.app)
 
     useEffect(() => {
         if (!bookId) {

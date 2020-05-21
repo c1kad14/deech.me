@@ -19,11 +19,11 @@ export function* sagaWatcher() {
 }
 
 const getTitleCount = ((state: RootState) => {
-    return state.TitleReducer.titles.length
+    return state.title.titles.length
 })
 
 const getTitleFilter = ((state: RootState) => {
-    return state.TitleReducer.filter
+    return state.title.filter
 })
 
 export function* loadTitlesSaga() {

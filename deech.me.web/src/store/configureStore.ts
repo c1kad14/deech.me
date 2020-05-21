@@ -18,19 +18,17 @@ const enhancer = (window as any)["devToolsExtension"] && process.env.NODE_ENV ==
     )
     : middleware
 
-
-//
-
 const persistConfig = {
     key: 'root',
     storage,
+    blacklist: ['app']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
+let store = createStore(persistedReducer, enhancer)
+let persistor = persistStore(store)
+sagaMiddleware.run(sagaWatcher)
 
 export default () => {
-    let store = createStore(persistedReducer, enhancer)
-    sagaMiddleware.run(sagaWatcher)
-    let persistor = persistStore(store)
     return { store, persistor }
 }

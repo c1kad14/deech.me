@@ -11,10 +11,10 @@ const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href") as
 const history = createBrowserHistory({ basename: baseUrl })
 
 const rootReducer = combineReducers({
-    ...AppReducer,
-    ...BookReducer,
-    ...TitleReducer,
-    ...CommentsReducer,
+    app: AppReducer.AppReducer,
+    book: BookReducer.BookReducer,
+    title: TitleReducer.TitleReducer,
+    comments: CommentsReducer.CommentsReducer,
     router: connectRouter(history)
 })
 

@@ -18,7 +18,7 @@ namespace deech.me.api
                     webBuilder
                     .UseKestrel()
                     .UseContentRoot(Directory.GetCurrentDirectory())
-                    .UseUrls("http://192.168.20.103:5000")
+                    .UseUrls("http://192.168.50.204:5000")
                     .UseStartup<Startup>();
                 });
     }

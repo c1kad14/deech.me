@@ -12,7 +12,7 @@ let number: number = 0
 
 const BookContent: React.FC = () => {
     const dispatch = useDispatch()
-    let { book, progress } = useSelector((state: RootState) => state.BookReducer)
+    let { book, progress } = useSelector((state: RootState) => state.book)
     let content: ReactNode[] = []
 
     let options = {

@@ -17,3 +17,12 @@ html {
 .box-shadow {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
+
+.deech-me-logo {
+    color: #e60d4e !important;
+    font-size: 1.2rem;
+}
+
+.deech-me-logo:hover {
+    opacity: 0.7;
+}

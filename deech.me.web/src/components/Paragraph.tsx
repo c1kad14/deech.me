@@ -15,8 +15,8 @@ type ParagraphProps = {
 
 const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     const dispatch = useDispatch()
-    let { paragraphId } = useSelector((state: RootState) => state.CommentsReducer)
-    let { progress } = useSelector((state: RootState) => state.BookReducer)
+    let { paragraphId } = useSelector((state: RootState) => state.comments)
+    let { progress } = useSelector((state: RootState) => state.book)
 
     // useEffect(() => {
     //     const checkScrollDirectionIsUp = () => {

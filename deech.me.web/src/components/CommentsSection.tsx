@@ -6,8 +6,8 @@ import BookComment from "./Comment"
 import NewComment from "./NewComment"
 
 const CommentsSection: React.FC = () => {
-    let { comments, paragraphId } = useSelector((state: RootState) => state.CommentsReducer)
-    let { loading } = useSelector((state: RootState) => state.AppReducer)
+    let { comments, paragraphId } = useSelector((state: RootState) => state.comments)
+    let { loading } = useSelector((state: RootState) => state.app)
 
     if (!comments || loading) {
         return <Spinner />
