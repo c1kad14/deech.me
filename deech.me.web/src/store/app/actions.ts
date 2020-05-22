@@ -1,18 +1,18 @@
-import { AppActionTypes, AppTypes } from "./types"
+import { AppTypes, SetError, SetLoaded, SetLoading } from "./types"
 
-export function setLoading(): AppActionTypes {
+export function setLoading(): SetLoading {
     return {
         type: AppTypes.LOADING
     }
 }
 
-export function setLoaded(): AppActionTypes {
+export function setLoaded(): SetLoaded {
     return {
         type: AppTypes.LOADED
     }
 }
 
-export function setError(error: string): AppActionTypes {
+export function setError(error: string): SetError {
     return {
         type: AppTypes.ERROR,
         paylaod: {

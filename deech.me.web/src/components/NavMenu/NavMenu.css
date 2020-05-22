@@ -19,10 +19,16 @@ html {
 }
 
 .deech-me-logo {
-    color: #e60d4e !important;
-    font-size: 1.2rem;
+    border: 1px rgb(36, 36, 36) solid;
+    border-radius: 55%;
+    padding: 8px 5px 5px 0;
+    background-color: rgba(250, 69, 69, 0.75);
 }
 
 .deech-me-logo:hover {
-    opacity: 0.7;
+    background-color: rgb(36, 36, 36);
+}
+
+.deech-me-logo:hover .deech {
+    fill: rgba(250, 69, 69, 0.75);
 }

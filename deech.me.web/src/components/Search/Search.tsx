@@ -10,7 +10,7 @@ const Search: React.FC = () => {
             <div className="input-group-prepend">
                 <SearchDropdown />
             </div>
-            <div className="comment-input-dark">
+            <div className="search-input-container">
                 <SearchInput />
             </div>
             <div className="input-group-append">

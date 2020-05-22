@@ -28,7 +28,7 @@ const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
     }, [])
 
     if (!book || loading) {
-        return <Spinner />
+        return <div className="text-center pt-5 mt-5"><Spinner /></div>
     }
 
     return <Container>

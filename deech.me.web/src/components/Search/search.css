@@ -22,10 +22,16 @@
     border-bottom-left-radius: 0.25rem !important;
 }
 
+.search-input-container {
+    width: 100%;
+    background-color: #424141c2;
+    padding-top: .1rem;
+}
+
 .search-input {
     align-content: center;
-    width: 100%;
     flex-grow: 1;
+    padding-bottom: 2.5rem;
 }
 
 .search-button {

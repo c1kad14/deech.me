@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/jquery": "^3.3.38",
     "@types/react-textarea-autosize": "^4.3.5",
     "axios": "^0.19.2",
     "bootstrap": "^4.3.1",

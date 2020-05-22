@@ -1,0 +1,25 @@
+.menu-button {
+    cursor: pointer;
+}
+
+.menu-fullscreen {
+    inset: 0px;
+    display: none;
+    overflow: hidden;
+    perspective: 70vh;
+    position: fixed;
+    z-index: 100;
+}
+
+.list-group li {
+    list-style-type: none;
+    cursor: pointer;
+    padding-left: 2rem;
+    font-weight: 100;
+    line-height: 2rem;
+}
+
+.list-group li:hover{
+    text-decoration: underline;
+    opacity: 0.8;
+}

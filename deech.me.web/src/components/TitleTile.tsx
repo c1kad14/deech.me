@@ -8,11 +8,11 @@ import { useDispatch } from "react-redux"
 const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {
     const dispatch = useDispatch()
     const data = cover && `${domain}/books/${cover}`
-    const history = useHistory();
+    const history = useHistory()
 
     const onHandleClick = (e: React.MouseEvent<HTMLElement>) => {
         dispatch(setBookId(id))
-        history.push(`/book/${id}`);
+        history.push(`/book/${id}`)
     }
 
     return <li className="results-item-wrap" onClick={onHandleClick}>
