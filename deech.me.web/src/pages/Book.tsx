@@ -31,9 +31,9 @@ const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
         return <div className="text-center pt-5 mt-5"><Spinner /></div>
     }
 
-    return <Container>
+    return <div className="container pt-3">
         <BookContent />
-    </Container>
+    </div>
 }
 
 export default Book

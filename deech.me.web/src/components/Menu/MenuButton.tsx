@@ -1,5 +1,4 @@
 import React from "react"
-import $ from "jquery"
 import "./menu.css"
 
 type MenuButtonProps = {

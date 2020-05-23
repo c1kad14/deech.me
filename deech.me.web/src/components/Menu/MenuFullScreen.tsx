@@ -26,10 +26,9 @@ export const MenuFullScreen: React.FC<MenuFullScreenProps> = ({ isOpen, menuClos
             <div className="col text-light ml-5">
                 <NavLink tag={Link} to="/" className="text-white" onClick={menuCloseClick}>DEECH.ME</NavLink>
             </div>
-
             <div className="col mr-5">
                 <button type="button" className="close" aria-label="Close" onClick={menuCloseClick}>
-                    <svg className="bi bi-x-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="white" xmlns="http://www.w3.org/2000/svg">
+                    <svg className="bi bi-x-circle" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="white" xmlns="http://www.w3.org/2000/svg">
                         <path fillRule="evenodd" d="M8 15A7 7 0 108 1a7 7 0 000 14zm0 1A8 8 0 108 0a8 8 0 000 16z" clipRule="evenodd" />
                         <path fillRule="evenodd" d="M11.854 4.146a.5.5 0 010 .708l-7 7a.5.5 0 01-.708-.708l7-7a.5.5 0 01.708 0z" clipRule="evenodd" />
                         <path fillRule="evenodd" d="M4.146 4.146a.5.5 0 000 .708l7 7a.5.5 0 00.708-.708l-7-7a.5.5 0 00-.708 0z" clipRule="evenodd" />
@@ -37,7 +36,7 @@ export const MenuFullScreen: React.FC<MenuFullScreenProps> = ({ isOpen, menuClos
                 </button>
             </div>
         </div>
-        <div className="text-white pl-5">
+        <div className="text-white text-center">
             <div className="row py-3">
                 <div className="col-4">
                     <h3>My Library</h3>

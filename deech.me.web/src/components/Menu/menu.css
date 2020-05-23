@@ -1,5 +1,6 @@
 .menu-button {
     cursor: pointer;
+    margin-bottom: .5rem;
 }
 
 .menu-fullscreen {
@@ -15,7 +16,7 @@
     list-style-type: none;
     cursor: pointer;
     padding-left: 2rem;
-    font-weight: 100;
+    font-weight: 300;
     line-height: 2rem;
 }
 

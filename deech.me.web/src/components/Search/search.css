@@ -1,8 +1,5 @@
 .search-container-wrapper {
     width: 100%;
-    position: relative;
-    align-items: center;
-    left: 0px;
 }
 
 .search-container {
@@ -26,12 +23,13 @@
     width: 100%;
     background-color: #424141c2;
     padding-top: .1rem;
+    padding-bottom: .6em;
+    padding-left: .5rem;
 }
 
 .search-input {
     align-content: center;
     flex-grow: 1;
-    padding-bottom: 2.5rem;
 }
 
 .search-button {

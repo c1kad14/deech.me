@@ -1,5 +1,6 @@
 .sign-in-button {
     cursor: pointer;
+    margin-top: .1rem;
 }
 
 .sign-in-button:hover {
