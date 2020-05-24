@@ -1,9 +1,13 @@
-.sign-in-button {
+.sign-in-button, .sign-out-button {
     cursor: pointer;
     margin-top: .1rem;
 }
 
 .sign-in-button:hover {
     border-bottom: 1px solid #dee2e6 !important;
+    opacity: 0.8;
+}
+
+.sign-out-button:hover {
     opacity: 0.8;
 }

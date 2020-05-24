@@ -4,11 +4,15 @@ import { Link } from "react-router-dom"
 import { Search } from "../Search"
 import { MenuButton, MenuFullScreen } from "../Menu"
 import { SignInButton } from "../SignIn/SignInButton"
+import { SignOutButton } from "../SignIn/SignOutButton"
 import { Deech } from "./Deech"
 import "./navmenu.css"
+import { useSelector } from "react-redux"
+import { RootState } from "../../store/rootReducer"
 
 const NavMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
+    let { username } = useSelector((state: RootState) => state.app)
     const menuOpenClick = () => setIsOpen(true)
     const menuCloseClick = () => setIsOpen(false)
 
@@ -26,7 +30,7 @@ const NavMenu: React.FC = () => {
                         <Search />
                     </div>
                     <div className="">
-                        <SignInButton />
+                        {username ? <SignOutButton /> : <SignInButton />}
                     </div>
                 </div>
             </div>
