@@ -21,15 +21,16 @@
 
 .search-input-container {
     width: 100%;
-    background-color: #424141c2;
-    padding-top: .1rem;
-    padding-bottom: .6em;
-    padding-left: .5rem;
 }
 
 .search-input {
     align-content: center;
+    background-color: #424141c2;
+    width: 100% !important;
     flex-grow: 1;
+    padding-top: .5rem;
+    padding-bottom: .5rem;
+    padding-left: .5rem;
 }
 
 .search-button {

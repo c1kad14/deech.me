@@ -12,11 +12,11 @@ export function setLoaded(): SetLoaded {
     }
 }
 
-export function setUser(username: string): SetUser {
+export function setUser(user: string): SetUser {
     return {
         type: AppTypes.SET_USER,
         payload: {
-            username
+            user
         }
     }
 }
@@ -30,7 +30,7 @@ export function clearUser(): ClearUser {
 export function setError(error: string): SetError {
     return {
         type: AppTypes.ERROR,
-        paylaod: {
+        payload: {
             error
         }
     }

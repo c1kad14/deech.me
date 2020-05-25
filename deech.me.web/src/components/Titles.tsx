@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import TitleTile from "./TitleTile"
 import { Spinner } from "reactstrap"
 import { RootState } from "../store/rootReducer"
 import InfiniteScroll from 'react-infinite-scroller'
-import { loadTitles, loadMoreTitles, clearTitles } from "../store/title/actions"
+import { loadMoreTitles, clearTitles } from "../store/title/actions"
 
 const Titles: React.FC = () => {
     const dispatch = useDispatch()
@@ -27,12 +27,10 @@ const Titles: React.FC = () => {
         hasMore={hasMore}
         loader={<div key="loader" className="text-center text-danger p-5">
             <span style={loadingCSS}><Spinner /></span>
-        </div>}
-    >
+        </div>} >
         <ul className="results">
             {titleTiles}
         </ul>
-
     </InfiniteScroll>
 }
 

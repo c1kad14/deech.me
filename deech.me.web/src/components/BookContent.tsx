@@ -1,7 +1,7 @@
 import React, { useEffect, useState, ReactNode } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "../store/rootReducer"
-import { domain } from "../store/config"
+import { domain } from "../config"
 import { IParagraph } from "../store/book/types"
 import Paragraph from "./Paragraph"
 import { setProgress } from "../store/book/actions"

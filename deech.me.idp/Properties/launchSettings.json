@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "SelfHost": {
+    "deech.me.idp": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

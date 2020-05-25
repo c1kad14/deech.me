@@ -4,7 +4,7 @@ import Titles from "../components/Titles"
 const Home: React.FC = () => {
   return <div className="home-wrapper">
     <div className="titles-container">
-      {/* <Titles /> */}
+      <Titles />
     </div>
   </div>
 }

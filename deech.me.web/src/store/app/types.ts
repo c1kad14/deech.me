@@ -13,7 +13,7 @@ export enum AppTypes {
 export interface AppState {
     readonly loading: boolean
     readonly error?: string
-    readonly username?: string
+    readonly user?: string
 }
 
 export interface SetLoading extends Action {
@@ -27,7 +27,7 @@ export interface SetLoaded extends Action {
 export interface SetUser extends Action {
     type: AppTypes.SET_USER,
     payload: {
-        username: string
+        user: string
     }
 }
 
@@ -37,7 +37,7 @@ export interface ClearUser extends Action {
 
 export interface SetError extends Action {
     type: AppTypes.ERROR,
-    paylaod: {
+    payload: {
         error: string
     }
 }

@@ -1,20 +1,11 @@
 import React from "react"
+import Oidc from "oidc-client"
+import { userManagerSettings } from "../../config"
 import "./signin.css"
-import Oidc from "oidc-client";
 
 export const SignInButton: React.FC = () => {
-    var config = {
-        authority: "https://localhost:5050",
-        client_id: "js",
-        redirect_uri: "https://localhost:3000/callback",
-        response_type: "code",
-        scope: "openid profile api1",
-        post_logout_redirect_uri: "https://localhost:3000/",
-    }
-
-    var mgr = new Oidc.UserManager(config)
-
     const signInClick = async () => {
+        var mgr = new Oidc.UserManager(userManagerSettings)
         await mgr.signinRedirect()
     }
 

@@ -3,25 +3,26 @@ import { useHistory } from "react-router"
 import Oidc from "oidc-client"
 import { useDispatch } from "react-redux"
 import { setUser } from "../store/app/actions"
+import { userManagerSettings } from "../config"
 
-const Callback: React.FC = () => {
+const SignInCallback: React.FC = () => {
     const history = useHistory()
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const manager = new Oidc.UserManager({ response_mode: "query" })
-        manager.signinRedirectCallback().then(function () {
-            manager.getUser().then(function (user) {
+        const mgr = new Oidc.UserManager(userManagerSettings)
+        mgr.signinRedirectCallback().then(() => {
+            mgr.getUser().then((user) => {
                 if (user) {
-                    console.log("User logged in", user)
                     if (user.profile.name) {
+                        console.log(`User ${user.profile.name} logged in`)
                         dispatch(setUser(user.profile.name))
-                        history.push("/")
                     }
                 }
                 else {
                     console.log("User not logged in");
                 }
+                history.push("/")
             })
         }).catch(function (e) {
             console.error(e);
@@ -31,4 +32,4 @@ const Callback: React.FC = () => {
     return <></>
 }
 
-export default Callback
+export default SignInCallback

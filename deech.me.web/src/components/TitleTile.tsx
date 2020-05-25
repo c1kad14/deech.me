@@ -1,6 +1,6 @@
 import React from "react"
 import { ITitleInfo } from "../store/title/types"
-import { domain } from "../store/config"
+import { domain } from "../config"
 import { useHistory } from "react-router-dom"
 import { setBookId } from "../store/book/actions"
 import { useDispatch } from "react-redux"

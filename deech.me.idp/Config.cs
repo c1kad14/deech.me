@@ -35,9 +35,9 @@ namespace deech.me.idp
                     RequireClientSecret = false,
                     RequireConsent = false,
 
-                    RedirectUris =           { "https://localhost:3000/callback" },
-                    PostLogoutRedirectUris = { "https://localhost:3000" },
-                    AllowedCorsOrigins =     { "https://localhost:3000" },
+                    RedirectUris =           { "http://localhost:3000/sicb" },
+                    PostLogoutRedirectUris = { "http://localhost:3000/socb" },
+                    AllowedCorsOrigins =     { "http://localhost:3000" },
 
                     AllowedScopes =
                     {

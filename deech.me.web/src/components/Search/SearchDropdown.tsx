@@ -5,7 +5,6 @@ const SearchDropdown: React.FC = () => {
     const [selectedItem, setSelectedItem] = useState('All')
 
     const dropdownItemChanged = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        console.log(event)
         if (event.currentTarget.textContent) {
             setSelectedItem(event.currentTarget.textContent)
         }

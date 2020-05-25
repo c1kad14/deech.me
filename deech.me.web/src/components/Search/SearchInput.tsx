@@ -19,7 +19,7 @@ const SearchInput: React.FC = () => {
 
     const title = filter ? filter.title : ''
 
-    return <input className="input pl-1 pt-2 pr-5 borderless comment-input-dark w-100" type="text" name="title" placeholder="type book or author" onChange={onFilterChange} onKeyPress={onKeyPressHandler} value={title} />
+    return <input className="search-input input borderless comment-input-dark" type="text" name="title" placeholder="type book or author" onChange={onFilterChange} onKeyPress={onKeyPressHandler} value={title} />
 }
 
 export default SearchInput

@@ -3,14 +3,21 @@ import { Route } from "react-router"
 import Layout from "./components/Layout"
 import Home from "./pages/Home"
 import Book from "./pages/Book"
-import Callback from "./pages/Callback"
-
+import SignInCallback from "./pages/SignInCallback"
+import SignOutCallback from "./pages/SignOutCallback"
+import { useEffect } from "react"
+import Oidc from "oidc-client"
+import { useSelector } from "react-redux"
+import { RootState } from "./store/rootReducer"
 import "./custom.css"
 
-export default () => (
-    <Layout>
+const App: React.FC = () => {
+    return <Layout>
         <Route exact path="/" component={Home} />
         <Route exact path="/book/:id" component={Book} />
-        <Route exact path="/callback" component={Callback} />
+        <Route exact path="/sicb" component={SignInCallback} />
+        <Route exact path="/socb" component={SignOutCallback} />
     </Layout>
-)
+}
+
+export default App

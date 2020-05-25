@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { domain } from "../store/config"
+import { domain } from "../config"
 import { IParagraph } from "../store/book/types"
 import { useDispatch, useSelector } from "react-redux"
 import { showComments, hideComments } from "../store/comments/actions"
