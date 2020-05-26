@@ -1,21 +1,19 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
+﻿using System.Linq;
+using System.Reflection;
 
-
-using deech.me.idp.data;
-using IdentityServer4;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Identity;
-using System.Reflection;
+
 using IdentityServer4.EntityFramework.DbContexts;
-using System.Linq;
 using IdentityServer4.EntityFramework.Mappers;
+
+using deech.me.idp.data;
+using deech.me.idp.etc;
+using Microsoft.AspNetCore.Identity;
 
 namespace deech.me.idp
 {
@@ -39,8 +37,11 @@ namespace deech.me.idp
                 options.UseSqlServer(Configuration.GetConnectionString("DevelopersConnection"),
                  sql => sql.MigrationsAssembly(migrationsAssembly)));
 
+            services.AddIdentityCore<IdentityUser>()
+                .AddEntityFrameworkStores<DeechIdentityDbContext>()
+                .AddDefaultTokenProviders();
+
             services.AddIdentityServer()
-                .AddTestUsers(TestUsers.Users)
                 .AddConfigurationStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
@@ -83,7 +84,7 @@ namespace deech.me.idp
         {
             using var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope();
             serviceScope.ServiceProvider.GetRequiredService<PersistedGrantDbContext>().Database.Migrate();
-           
+
             var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
             context.Database.Migrate();
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace deech.me.api.Migrations
+namespace deech.me.api.migrations
 {
     public partial class initial : Migration
     {

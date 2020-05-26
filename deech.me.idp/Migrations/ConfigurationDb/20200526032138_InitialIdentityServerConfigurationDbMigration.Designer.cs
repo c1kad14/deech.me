@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace deech.me.idp.Migrations.ConfigurationDb
+namespace deech.me.idp.migrations.configurationDb
 {
     [DbContext(typeof(ConfigurationDbContext))]
     [Migration("20200526032138_InitialIdentityServerConfigurationDbMigration")]

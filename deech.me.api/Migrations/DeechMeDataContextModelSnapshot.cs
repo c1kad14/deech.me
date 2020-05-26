@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deech.me.data.context;
 
-namespace deech.me.api.Migrations
+namespace deech.me.api.migrations
 {
     [DbContext(typeof(DeechMeDataContext))]
     partial class DeechMeDataContextModelSnapshot : ModelSnapshot

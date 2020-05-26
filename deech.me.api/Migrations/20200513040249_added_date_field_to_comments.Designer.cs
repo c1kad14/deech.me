@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deech.me.data.context;
 
-namespace deech.me.api.Migrations
+namespace deech.me.api.migrations
 {
     [DbContext(typeof(DeechMeDataContext))]
     [Migration("20200513040249_added_date_field_to_comments")]

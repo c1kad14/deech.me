@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace deech.me.idp.Migrations.ConfigurationDb
+namespace deech.me.idp.migrations.configurationDb
 {
     public partial class InitialIdentityServerConfigurationDbMigration : Migration
     {

@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deech.me.idp.data;
 
-namespace deech.me.idp.Migrations.DeechIdentityDb
+namespace deech.me.idp.migrations.deechIdentityDb
 {
     [DbContext(typeof(DeechIdentityDbContext))]
     [Migration("20200526032248_InitialIdentityMigration")]

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace deech.me.api.Migrations
+namespace deech.me.api.migrations
 {
     public partial class added_date_field_to_comments : Migration
     {
