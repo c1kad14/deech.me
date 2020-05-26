@@ -2,14 +2,13 @@ import { call, put, takeEvery, select, takeLatest } from "redux-saga/effects"
 import Axios from "axios"
 import { TitleTypes } from "./title/types"
 import { setTitles, addTitles } from "./title/actions"
-import { domain, userManagerSettings } from "../config"
+import { domain } from "../config"
 import { setLoading, setLoaded } from "./app/actions"
 import { BookTypes, SetBookId } from "./book/types"
 import { setBook } from "./book/actions"
 import { CommentTypes, AddComment, IComment, ShowComments } from "./comments/types"
 import { commentAdded, setComments } from "./comments/actions"
 import { RootState } from "./rootReducer"
-import Oidc from "oidc-client"
 
 export function* sagaWatcher() {
     yield takeLatest(TitleTypes.LOAD_TITLES, loadTitlesSaga)
@@ -119,15 +118,9 @@ async function loadTitlesApiCall(title: string) {
 }
 
 async function loadMoreTitlesApiCall(title: string, skip: number) {
-    const mgr = new Oidc.UserManager(userManagerSettings)
-    const token = await mgr.getUser()
-    if (token) {
-        const url = `${domain}/titleinfo/bytitle?title=${title}&skip=${skip}`
-        Axios.defaults.headers["Authorization"] = `Bearer ${token.access_token}`
-        const response = await Axios.get(url)
-        return await response.data
-    }
-    return undefined
+    const url = `${domain}/titleinfo/bytitle?title=${title}&skip=${skip}`
+    const response = await Axios.get(url)
+    return await response.data
 }
 
 async function loadBookApiCall(id: string) {
