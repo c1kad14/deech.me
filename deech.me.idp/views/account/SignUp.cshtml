@@ -20,11 +20,11 @@
                             </div>
                             <div class="form-group">
                                 <label asp-for="Password"></label>
-                                <input asp-for="Password" class="form-control" />
+                                <input asp-for="Password" type="password" class="form-control" />
                             </div>
                             <div class="form-group">
                                 <label asp-for="ConfirmPassword">Confirm Password</label>
-                                <input asp-for="ConfirmPassword" class="form-control" />
+                                <input asp-for="ConfirmPassword" type="password" class="form-control" />
                             </div>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-default">Sign up</button>
@@ -41,4 +41,19 @@
     </div>
 
     <partial name="_ValidationSummary" />
+
+    @if(Model.Errors != null)
+    {
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="alert alert-danger">
+                    <strong>Error</strong>
+                        @foreach (var error in Model.Errors)
+                        {
+                            <div class="danger">@error.Description</div>
+                        }
+                </div>
+            </div>
+        </div>
+    }
 </div>

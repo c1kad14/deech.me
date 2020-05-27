@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
+
 namespace deech.me.idp.viewmodels
 {
     public class RegisterViewModel
@@ -7,5 +10,6 @@ namespace deech.me.idp.viewmodels
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string ReturnUrl { get; set; }
+        public IEnumerable<IdentityError> Errors { get; set; }
     }
 }

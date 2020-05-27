@@ -19,6 +19,7 @@ using IdentityModel;
 using deech.me.idp.etc;
 using deech.me.idp.models;
 using deech.me.idp.viewmodels;
+using System.Collections.Generic;
 
 namespace deech.me.idp.controllers
 {
@@ -71,6 +72,7 @@ namespace deech.me.idp.controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignUp(RegisterInputModel model)
         {
+            RegisterViewModel vm;
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser
@@ -84,10 +86,14 @@ namespace deech.me.idp.controllers
                 {
                     return Redirect(model.ReturnUrl);
                 }
+                vm = BuildRegisterViewModel(model, result.Errors);
+            }
+            else
+            {
+                // something went wrong, show form with error
+                vm = BuildRegisterViewModel(model);
             }
 
-            // something went wrong, show form with error
-            var vm = BuildRegisterViewModel(model);
             return View(vm);
         }
 
@@ -142,7 +148,6 @@ namespace deech.me.idp.controllers
 
             if (ModelState.IsValid)
             {
-
                 var user = await _userManager.FindByNameAsync(model.Username);
                 // validate username/password against in-memory store
                 if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
@@ -386,12 +391,12 @@ namespace deech.me.idp.controllers
             };
         }
 
-        private RegisterViewModel BuildRegisterViewModel(RegisterInputModel model)
+        private RegisterViewModel BuildRegisterViewModel(RegisterInputModel model, IEnumerable<IdentityError> errors = null)
         {
             var vm = BuildRegisterViewModel(model.ReturnUrl);
             vm.Username = model.Username;
+            vm.Errors = errors;
             return vm;
         }
-
     }
 }
