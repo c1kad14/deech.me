@@ -1,0 +1,44 @@
+@model deech.me.idp.viewmodels.RegisterViewModel
+
+<div class="register-page">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3">
+             <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Sign up</h3>
+                </div>
+                <div class="panel-body">
+                    <form asp-route="signup">
+                        <fieldset>
+                            <div class="form-group">
+                                <label asp-for="Username"></label>
+                                <input asp-for="Username" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Email"></label>
+                                <input asp-for="Email" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Password"></label>
+                                <input asp-for="Password" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ConfirmPassword">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-default">Sign up</button>
+                            </div>
+                            <div class="form-group">
+                                <label>Have an account?</label>
+                                <a class="page-scroll" href="/signin">Sign in</a>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <partial name="_ValidationSummary" />
+</div>

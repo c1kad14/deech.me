@@ -23,12 +23,11 @@ using deech.me.idp.viewmodels;
 namespace deech.me.idp.controllers
 {
     /// <summary>
-    /// This sample controller implements a typical login/logout/provision workflow for local and external accounts.
-    /// The login service encapsulates the interactions with the user data store. This data store is in-memory only and cannot be used for production!
-    /// The interaction service provides a way for the UI to communicate with identityserver for validation and context retrieval
+    /// account controller that manages sign in/sign up process
     /// </summary>
     [SecurityHeaders]
     [AllowAnonymous]
+    [Route("/")]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
@@ -44,8 +43,6 @@ namespace deech.me.idp.controllers
             IEventService events,
             UserManager<IdentityUser> userManager)
         {
-            // if the TestUserStore is not in DI, then we'll just use the global users collection
-            // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
             _userManager = userManager;
             _interaction = interaction;
             _clientStore = clientStore;
@@ -53,67 +50,71 @@ namespace deech.me.idp.controllers
             _events = events;
         }
 
-        //
-        // GET: /Account/Register
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Register(string returnUrl = null)
+        public IActionResult Index()
         {
-            ViewData["ReturnUrl"] = returnUrl;
-            return View();
+            return Redirect("signin");
         }
 
-        //
-        // POST: /Account/Register
-        [HttpPost]
+        [HttpGet("signup")]
+        [AllowAnonymous]
+        public IActionResult SignUp(string returnUrl = null)
+        {
+            // build a model so we know what to show on the sign up page
+            var vm = BuildRegisterViewModel(returnUrl);
+            return View(vm);
+        }
+
+        [HttpPost("signup")]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public async Task<IActionResult> SignUp(RegisterInputModel model)
         {
-            ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser
                 {
-                    UserName = model.Email,
+                    UserName = model.Username,
                     Email = model.Email
                 };
 
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    return Redirect(returnUrl);
+                    return Redirect(model.ReturnUrl);
                 }
             }
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+            // something went wrong, show form with error
+            var vm = BuildRegisterViewModel(model);
+            return View(vm);
         }
 
         /// <summary>
-        /// Entry point into the login workflow
+        /// Entry point into the sign in workflow
         /// </summary>
-        [HttpGet]
-        public async Task<IActionResult> Login(string returnUrl)
+        [HttpGet("signin")]
+        public async Task<IActionResult> SignIn(string returnUrl)
         {
-            // build a model so we know what to show on the login page
+            // build a model so we know what to show on the sign in page
             var vm = await BuildLoginViewModelAsync(returnUrl);
 
             return View(vm);
         }
 
         /// <summary>
-        /// Handle postback from username/password login
+        /// Handle postback from username/password sign in
         /// </summary>
-        [HttpPost]
+        [HttpPost("signin")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginInputModel model, string button)
+        public async Task<IActionResult> SignIn(LoginInputModel model, string button)
         {
             // check if we are in the context of an authorization request
             var context = await _interaction.GetAuthorizationContextAsync(model.ReturnUrl);
 
             // the user clicked the "cancel" button
-            if (button != "login")
+            if (button != "signin")
             {
                 if (context != null)
                 {
@@ -206,11 +207,10 @@ namespace deech.me.idp.controllers
             return View(vm);
         }
 
-
         /// <summary>
         /// Show logout page
         /// </summary>
-        [HttpGet]
+        [HttpGet("logout")]
         public async Task<IActionResult> Logout(string logoutId)
         {
             // build a model so the logout page knows what to display
@@ -229,7 +229,7 @@ namespace deech.me.idp.controllers
         /// <summary>
         /// Handle logout page postback
         /// </summary>
-        [HttpPost]
+        [HttpPost("logout")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout(LogoutInputModel model)
         {
@@ -260,12 +260,11 @@ namespace deech.me.idp.controllers
             return View("LoggedOut", vm);
         }
 
-        [HttpGet]
+        [HttpGet("accessdenied")]
         public IActionResult AccessDenied()
         {
             return View();
         }
-
 
         /*****************************************/
         /* helper APIs for the AccountController */
@@ -378,5 +377,21 @@ namespace deech.me.idp.controllers
 
             return vm;
         }
+
+        private RegisterViewModel BuildRegisterViewModel(string returnUrl)
+        {
+            return new RegisterViewModel
+            {
+                ReturnUrl = returnUrl,
+            };
+        }
+
+        private RegisterViewModel BuildRegisterViewModel(RegisterInputModel model)
+        {
+            var vm = BuildRegisterViewModel(model.ReturnUrl);
+            vm.Username = model.Username;
+            return vm;
+        }
+
     }
 }
