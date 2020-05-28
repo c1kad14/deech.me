@@ -3,6 +3,10 @@ using System.Reflection;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,7 +17,7 @@ using IdentityServer4.EntityFramework.Mappers;
 
 using deech.me.idp.data;
 using deech.me.idp.etc;
-using Microsoft.AspNetCore.Identity;
+
 
 namespace deech.me.idp
 {
@@ -41,13 +45,25 @@ namespace deech.me.idp
                 .AddEntityFrameworkStores<DeechIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+            })
+            .AddCookie(IdentityConstants.ApplicationScheme, options =>
+            {
+                options.LoginPath = new PathString("/signin");
+                options.LogoutPath = new PathString("/signout");
+                options.AccessDeniedPath = new PathString("/accessdenied");
+            });
+
             services.AddIdentityServer()
                 .AddConfigurationStore(options =>
-                {
-                    options.ConfigureDbContext = builder =>
+                    {
+                        options.ConfigureDbContext = builder =>
                                builder.UseSqlServer(Configuration.GetConnectionString("DevelopersConnection"),
                                    sql => sql.MigrationsAssembly(migrationsAssembly));
-                })
+                    })
                 .AddOperationalStore(options =>
                 {
                     options.ConfigureDbContext = builder =>
@@ -55,6 +71,7 @@ namespace deech.me.idp
                             sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
                 .AddDeveloperSigningCredential();
+
         }
 
         public void Configure(IApplicationBuilder app)

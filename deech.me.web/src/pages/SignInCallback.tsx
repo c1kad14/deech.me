@@ -11,22 +11,20 @@ const SignInCallback: React.FC = () => {
 
     useEffect(() => {
         const mgr = new Oidc.UserManager(userManagerSettings)
-        mgr.signinRedirectCallback().then(() => {
-            mgr.getUser().then((user) => {
-                if (user) {
-                    if (user.profile.name) {
-                        console.log(`User ${user.profile.name} logged in`)
-                        dispatch(setUser(user.profile.name))
-                    }
-                }
-                else {
-                    console.log("User not logged in");
-                }
+        mgr.signinRedirectCallback().then((user) => {
+            console.log(user)
+            if (user) {
+                console.log(`User ${user.profile.sub} logged in`)
+                dispatch(setUser(user.profile.sub))
                 history.push("/")
-            })
+            }
+            else {
+                console.log("User not logged in")
+                history.push("/")
+            }
         }).catch(function (e) {
-            console.error(e);
-        });
+            console.error(e)
+        })
     }, [])
 
     return <></>

@@ -215,7 +215,7 @@ namespace deech.me.idp.controllers
         /// <summary>
         /// Show logout page
         /// </summary>
-        [HttpGet("logout")]
+        [HttpGet("signout")]
         public async Task<IActionResult> Logout(string logoutId)
         {
             // build a model so the logout page knows what to display
@@ -234,7 +234,7 @@ namespace deech.me.idp.controllers
         /// <summary>
         /// Handle logout page postback
         /// </summary>
-        [HttpPost("logout")]
+        [HttpPost("signout")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout(LogoutInputModel model)
         {
@@ -244,7 +244,7 @@ namespace deech.me.idp.controllers
             if (User?.Identity.IsAuthenticated == true)
             {
                 // delete local authentication cookie
-                await HttpContext.SignOutAsync();
+                await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
                 // raise the logout event
                 await _events.RaiseAsync(new UserLogoutSuccessEvent(User.GetSubjectId(), User.GetDisplayName()));
