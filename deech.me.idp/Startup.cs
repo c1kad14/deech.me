@@ -70,6 +70,7 @@ namespace deech.me.idp
                         builder.UseSqlServer(Configuration.GetConnectionString("DevelopersConnection"),
                             sql => sql.MigrationsAssembly(migrationsAssembly));
                 })
+                .AddProfileService<ProfileService>()
                 .AddDeveloperSigningCredential();
 
         }
