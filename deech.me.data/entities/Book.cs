@@ -6,7 +6,6 @@ namespace deech.me.data.entities
 {
     public class Book : IReadEntity
     {
-
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
         public List<Paragraph> Paragraphs { get; set; } = new List<Paragraph>();
