@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { IComment } from "../store/comments/types"
+import { IComment } from "../../store/comments/types"
 import NewComment from "./NewComment"
 import moment from "moment"
 

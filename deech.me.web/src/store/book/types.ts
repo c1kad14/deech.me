@@ -5,7 +5,8 @@ export enum BookTypes {
     CLEAR_BOOK = "@@book/CLEAR_BOOK",
     SET_BOOK = "@@book/SET_BOOK",
     SET_BOOK_ID = "@@book/SET_BOOK_ID",
-    SET_PROGRESS = "@@book/SET_PROGRESS"
+    SET_PROGRESS = "@@book/SET_PROGRESS",
+    SET_PARAGRAPH = "@@book/SET_PARAGRAPH"
 }
 
 export interface IParagraph {
@@ -26,6 +27,7 @@ export interface IBookState {
     readonly id?: string
     readonly book?: IBook
     readonly progress: number
+    readonly paragraphId: number
 }
 
 export interface SetBook extends Action {
@@ -51,4 +53,11 @@ export interface SetProgress extends Action {
 
 export interface ClearBook extends Action {
     type: BookTypes.CLEAR_BOOK
+}
+
+export interface SetParagraph extends Action {
+    type: BookTypes.SET_PARAGRAPH
+    payload: {
+        paragraphId: number
+    }
 }

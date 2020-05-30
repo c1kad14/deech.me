@@ -1,8 +1,8 @@
 import React from "react"
-import { ITitleInfo } from "../store/title/types"
-import { domain } from "../config"
+import { ITitleInfo } from "../../store/title/types"
+import { domain } from "../../config"
 import { useHistory } from "react-router-dom"
-import { setBookId } from "../store/book/actions"
+import { setBookId } from "../../store/book/actions"
 import { useDispatch } from "react-redux"
 
 const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {

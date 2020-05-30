@@ -2,9 +2,9 @@ import React, { useEffect } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import TitleTile from "./TitleTile"
 import { Spinner } from "reactstrap"
-import { RootState } from "../store/rootReducer"
+import { RootState } from "../../store/rootReducer"
 import InfiniteScroll from 'react-infinite-scroller'
-import { loadMoreTitles, clearTitles } from "../store/title/actions"
+import { loadMoreTitles, clearTitles } from "../../store/title/actions"
 
 const Titles: React.FC = () => {
     const dispatch = useDispatch()

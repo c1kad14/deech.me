@@ -1,10 +1,11 @@
 import React, { useEffect, useState, ReactNode } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { RootState } from "../store/rootReducer"
-import { domain } from "../config"
-import { IParagraph } from "../store/book/types"
+import { RootState } from "../../store/rootReducer"
+import { domain } from "../../config"
+import { IParagraph } from "../../store/book/types"
 import Paragraph from "./Paragraph"
-import { setProgress } from "../store/book/actions"
+import { setProgress } from "../../store/book/actions"
+import "./book.css"
 
 const rawMarkup = (paragraph: IParagraph) => { return { __html: paragraph.value.replace(/<img src="/, `<img src="${domain}/books/`) } }
 

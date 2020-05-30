@@ -1,4 +1,4 @@
-import { BookTypes, IBook, ClearBook, SetBookId, SetBook, SetProgress } from "./types"
+import { BookTypes, IBook, ClearBook, SetBookId, SetBook, SetProgress, SetParagraph } from "./types"
 
 export function setBookId(id: string): SetBookId {
     return {
@@ -29,6 +29,15 @@ export function setProgress(progress: number): SetProgress {
         type: BookTypes.SET_PROGRESS,
         payload: {
             progress
+        }
+    }
+}
+
+export function setParagraph(paragraphId: number): SetParagraph {
+    return {
+        type: BookTypes.SET_PARAGRAPH,
+        payload: {
+            paragraphId
         }
     }
 }

@@ -1,7 +1,7 @@
 import React from "react"
 import { useSelector } from "react-redux"
-import { RootState } from "../store/rootReducer"
-import { Spinner } from "./Spinner"
+import { RootState } from "../../store/rootReducer"
+import { Spinner } from "../Shared/Spinner"
 import BookComment from "./Comment"
 import NewComment from "./NewComment"
 

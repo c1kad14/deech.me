@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Route } from "react-router"
-import Layout from "./components/Layout"
+import Layout from "./components/Shared/Layout"
 import Home from "./pages/Home"
 import Book from "./pages/Book"
 import SignInCallback from "./pages/SignInCallback"

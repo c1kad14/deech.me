@@ -51,17 +51,6 @@ body {
   color: #eeeeeed0;
 }
 
-.paragraph-element:active::after {
-  position: absolute;
-  top: 0;
-  right: -10px;
-  bottom: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 10px solid #303030;
-  content: "";
-}
-
 .book-image {
   display: flex;
   margin: auto;

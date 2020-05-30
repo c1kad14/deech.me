@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { addComment } from "../store/comments/actions"
-import { IComment } from "../store/comments/types"
+import { addComment } from "../../store/comments/actions"
+import { IComment } from "../../store/comments/types"
 import TextAreaAutoSize from "react-textarea-autosize"
 import moment from "moment"
 

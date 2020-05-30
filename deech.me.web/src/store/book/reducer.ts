@@ -5,7 +5,8 @@ import { IBookState, BookTypes } from "./types"
 const initialState: IBookState = {
     id: undefined,
     book: undefined,
-    progress: 0
+    progress: 0,
+    paragraphId: -1
 }
 
 const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookState => {
@@ -20,6 +21,9 @@ const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookSt
                 break
             case BookTypes.SET_PROGRESS:
                 draft.progress = action.payload.progress === 1 ? 0 : action.payload.progress
+                break
+            case BookTypes.SET_PARAGRAPH:
+                draft.paragraphId = action.payload.paragraphId
                 break
             case BookTypes.CLEAR_BOOK:
                 draft.id = undefined

@@ -1,11 +1,10 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import BookContent from "../components/BookContent"
+import BookContent from "../components/Book/BookContent"
 import { setBookId, clearBook } from "../store/book/actions"
 import { RouteComponentProps } from "react-router-dom"
-import { Container } from "reactstrap"
 import { RootState } from "../store/rootReducer"
-import { Spinner } from "../components/Spinner"
+import { Spinner } from "../components/Shared/Spinner"
 
 interface BookParams {
     id: string
