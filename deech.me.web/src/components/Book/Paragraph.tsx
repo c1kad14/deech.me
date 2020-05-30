@@ -42,8 +42,8 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     }
 
     return <>
-        <p className={paragraphClasses} onClick={(e) => paragraphSelected(e, paragraph.id)}>
-            <Section id={paragraph.id} sequence={paragraph.sequence} type={paragraph.type} value={paragraph.value} />
+        <p className={paragraphClasses} paragraph-seq={paragraph.sequence} onClick={(e) => paragraphSelected(e, paragraph.id)}>
+            <Section id={paragraph.id} type={paragraph.type} value={paragraph.value} />
 
             {paragraph.id === paragraphId && <span className="justify-content-end d-flex">
                 <>
