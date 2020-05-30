@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux"
 
 const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {
     const dispatch = useDispatch()
-    const data = cover && `${domain}/books/${cover}`
+    const data = cover ? `${domain}/books/${cover}` : `${domain}/images/cover.png`
     const history = useHistory()
 
     const onHandleClick = (e: React.MouseEvent<HTMLElement>) => {

@@ -21,7 +21,7 @@ export const MenuFullScreen: React.FC<MenuFullScreenProps> = ({ isOpen, menuClos
         }
     }, [isOpen])
 
-    return <div id="menu-id" className="container-fluid menu-fullscreen bg-dark">
+    return <div id="menu-id" className="container-fluid menu-fullscreen">
         <div className="row p-4">
             <div className="col text-light ml-5">
                 <NavLink tag={Link} to="/" className="text-white" onClick={menuCloseClick}>DEECH.ME</NavLink>

@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useState } from "react"
 import { domain } from "../../config"
 import { IParagraph } from "../../store/book/types"
 import { useDispatch, useSelector } from "react-redux"
-import { showComments, hideComments } from "../../store/comments/actions"
 import { RootState } from "../../store/rootReducer"
 import CommentsSection from "../Comments/CommentsSection"
 import { setParagraph } from "../../store/book/actions"
@@ -10,8 +9,9 @@ import { ReplyButton } from "./ReplyButton"
 import { CitationButton } from "./CitationButton"
 import { BookmarkButton } from "./BookmarkButton"
 import { NoteButton } from "./NoteButton"
-
-const rawMarkup = (paragraph: IParagraph) => { return { __html: paragraph.value.replace(/<img src="/, `<img src="${domain}/books/`) } }
+import { rawMarkupHelper } from "../../utils/helpers"
+import { Section } from "./Section"
+import "./book.css"
 
 type ParagraphProps = {
     paragraph: IParagraph
@@ -20,34 +20,8 @@ type ParagraphProps = {
 const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     const dispatch = useDispatch()
     // let { paragraphId } = useSelector((state: RootState) => state.comments)
-    let { progress, paragraphId } = useSelector((state: RootState) => state.book)
-
-    // useEffect(() => {
-    //     const checkScrollDirectionIsUp = () => {
-    //         const currentY = window.pageYOffset || document.documentElement.scrollTop
-    //         setPrevY(currentY)
-    //         return currentY > prevY
-    //     }
-
-    //     window.addEventListener("scroll", function (event) {
-    //         const rect = element.current!.getBoundingClientRect()
-    //         if (
-    //             rect.top >= 0 &&
-    //             rect.left >= 0 &&
-    //             rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-    //             rect.right <= (window.innerWidth || document.documentElement.clientWidth)) {
-    //             if (checkScrollDirectionIsUp()) {
-    //                 if (paragraph.sequence > progress) {
-    //                     dispatch(setProgress(paragraph.sequence))
-    //                 }
-    //             } else {
-    //                 if (paragraph.sequence < progress) {
-    //                     dispatch(setProgress(paragraph.sequence))
-    //                 }
-    //             }
-    //         }
-    //     })
-    // }, [])
+    let { paragraphId } = useSelector((state: RootState) => state.book)
+    const [reply, setReply] = useState(false)
 
 
     // const showParagraphComments = (id: number) => {
@@ -60,28 +34,31 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     //         dispatch(hideComments())
     //     }
     // }
+    const paragraphClasses = paragraphId === paragraph.id ? "paragraph-element paragraph-element-selected rounded" : "paragraph-element"
 
-    const paragraphSelected = (event: React.MouseEvent<HTMLParagraphElement, MouseEvent>, id: number) => {
+    const paragraphSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>, id: number) => {
         event.stopPropagation();
         dispatch(setParagraph(id))
     }
 
-    return <><p className="paragraph-element" key={paragraph.id} paragraph-seq={paragraph.sequence} onClick={(e) => paragraphSelected(e, paragraph.id)}>
-        <span dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
+    return <>
+        <p className={paragraphClasses} onClick={(e) => paragraphSelected(e, paragraph.id)}>
+            <Section id={paragraph.id} sequence={paragraph.sequence} type={paragraph.type} value={paragraph.value} />
 
-        {paragraph.id === paragraphId && <>
-            <BookmarkButton />
-            <NoteButton />
-            <CitationButton />
+            {paragraph.id === paragraphId && <span className="justify-content-end d-flex">
+                <>
+                    <BookmarkButton />
+                    <NoteButton />
+                    <CitationButton />
+                    <ReplyButton onClick={_ => setReply(!reply)} />
+                    <span className="paragraph-comments">({paragraph.comments})</span>
+                </>
+            </span>
+            }
 
+        </p>
 
-            <ReplyButton>
-
-            </ReplyButton>
-        </>}
-        {/* {<span className="text-muted ml-2 px-1 paragraph-comments" onClick={() => showParagraphComments(paragraph.id)}>{paragraph.comments}</span>} */}
-    </p>
-        {paragraphId === paragraph.id && <CommentsSection />}
+        {paragraphId === paragraph.id && reply && <CommentsSection />}
     </>
 }
 

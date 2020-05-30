@@ -39,16 +39,14 @@ body {
 
 .paragraph-element {
   color: #f7f7f7;
-}
-
-.paragraph-element {
   cursor: pointer;
   text-align: justify;
 }
 
-.paragraph-element:active {
-  background-color: #302e2e;
-  color: #eeeeeed0;
+.paragraph-element-selected {
+  padding: 0.5em !important;
+  background-color: #302e2e !important;
+  color: #eeeeeed0 !important;
 }
 
 .book-image {
@@ -56,6 +54,8 @@ body {
   margin: auto;
   max-width: 80vw;
   padding-bottom: 10px;
+  text-align: justify;
+  cursor: pointer;
 }
 
 .navbar-container {
@@ -82,7 +82,8 @@ body {
 }
 
 .paragraph-comments {
-  border-bottom: 1px #ccc8c8 solid;
+  padding-top: .75em;
+  font-size: small
 }
 
 .home-wrapper {

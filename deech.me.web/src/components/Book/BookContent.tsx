@@ -1,13 +1,9 @@
-import React, { useEffect, useState, ReactNode } from "react"
+import React, { useEffect, ReactNode } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "../../store/rootReducer"
-import { domain } from "../../config"
-import { IParagraph } from "../../store/book/types"
 import Paragraph from "./Paragraph"
 import { setProgress } from "../../store/book/actions"
 import "./book.css"
-
-const rawMarkup = (paragraph: IParagraph) => { return { __html: paragraph.value.replace(/<img src="/, `<img src="${domain}/books/`) } }
 
 let number: number = 0
 
@@ -22,7 +18,7 @@ const BookContent: React.FC = () => {
         threshold: 1.0 // visible amount of item shown in relation to root
     }
 
-    const handleCallback: IntersectionObserverCallback = (changes, observer) => {
+    const handleCallback: IntersectionObserverCallback = (changes) => {
         const paragraphSeqAttr = changes[0].target.attributes.getNamedItem("paragraph-seq")
         const rect = changes[0].boundingClientRect
         if (paragraphSeqAttr && paragraphSeqAttr.value) {
@@ -33,13 +29,11 @@ const BookContent: React.FC = () => {
                     rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
                     rect.right <= (window.innerWidth || document.documentElement.clientWidth)) {
                     if (rect.top <= rect.height) {
-                        // dispatch(setProgress(paragraphSeq))
                         number = paragraphSeq
                     }
                 }
                 else {
                     if (rect.top < 0) {
-                        // dispatch(setProgress(paragraphSeq))
                         number = paragraphSeq
                     }
                 }
@@ -83,20 +77,7 @@ const BookContent: React.FC = () => {
 
     console.log("*** BOOK CONTENT RERENDER ***")
     const sorted = book!.paragraphs.slice().sort((a, b) => a.sequence - b.sequence)
-    content = sorted.map(paragraph => {
-        switch (paragraph.type) {
-            case "image":
-                return <img className="book-image paragraph-element" key={paragraph.id} paragraph-seq={paragraph.sequence} src={`${domain}/books/${paragraph.value}`} />
-            case "title":
-                return <h3 className="paragraph-element" key={paragraph.id} paragraph-seq={paragraph.sequence} dangerouslySetInnerHTML={rawMarkup(paragraph)}></h3>
-            case "p":
-                return <Paragraph key={paragraph.id} paragraph={paragraph} />
-            case "table":
-                return <table className="paragraph-element table" key={paragraph.id} paragraph-seq={paragraph.sequence} dangerouslySetInnerHTML={rawMarkup(paragraph)}></table>
-            default:
-                return <span className="paragraph-element" key={paragraph.id} paragraph-seq={paragraph.sequence} dangerouslySetInnerHTML={rawMarkup(paragraph)}></span>
-        }
-    })
+    content = sorted.map(paragraph => <Paragraph paragraph={paragraph} />)
 
     return <div className="no-select">
         {content.length > 0 && content}
