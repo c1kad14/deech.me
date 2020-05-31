@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 
-type ActionButtonProps = {
-    icon: JSX.Element,
-    hoverIcon: JSX.Element
+export type ActionButtonProps = {
+    icon?: JSX.Element,
+    hoverIcon?: JSX.Element
     onClick?: ((event: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void)
 }
 

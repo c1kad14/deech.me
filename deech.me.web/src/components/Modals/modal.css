@@ -1,0 +1,8 @@
+.modal-window *{
+    background-color: #302e2e;
+    color: #fff;
+}
+
+.modal-window div {
+    border-top: 1px solid #302e2e;
+}

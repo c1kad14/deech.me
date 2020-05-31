@@ -9,8 +9,8 @@ import { ReplyButton } from "./ReplyButton"
 import { CitationButton } from "./CitationButton"
 import { BookmarkButton } from "./BookmarkButton"
 import { NoteButton } from "./NoteButton"
-import { rawMarkupHelper } from "../../utils/helpers"
 import { Section } from "./Section"
+import SignInRequired from "../Modals/SignInRequired"
 import "./book.css"
 
 type ParagraphProps = {
@@ -21,7 +21,9 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     const dispatch = useDispatch()
     // let { paragraphId } = useSelector((state: RootState) => state.comments)
     let { paragraphId } = useSelector((state: RootState) => state.book)
+    let { user } = useSelector((state: RootState) => state.app)
     const [reply, setReply] = useState(false)
+    const [showSignInRequired, setShowSignInRequired] = useState(false)
 
 
     // const showParagraphComments = (id: number) => {
@@ -37,8 +39,23 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     const paragraphClasses = paragraphId === paragraph.id ? "paragraph-element paragraph-element-selected rounded" : "paragraph-element"
 
     const paragraphSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>, id: number) => {
-        event.stopPropagation();
+        event.stopPropagation()
+        if (id === paragraphId) {
+            id = -1
+        }
         dispatch(setParagraph(id))
+    }
+
+    const replyButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        event.stopPropagation()
+        setReply(!reply)
+    }
+
+    const bookmarkButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
+        event.stopPropagation()
+        if (!user) {
+            setShowSignInRequired(true)
+        }
     }
 
     return <>
@@ -47,10 +64,10 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
 
             {paragraph.id === paragraphId && <span className="justify-content-end d-flex">
                 <>
-                    <BookmarkButton />
+                    <BookmarkButton onClick={bookmarkButtonClick} />
                     <NoteButton />
                     <CitationButton />
-                    <ReplyButton onClick={_ => setReply(!reply)} />
+                    <ReplyButton onClick={replyButtonClick} />
                     <span className="paragraph-comments">({paragraph.comments})</span>
                 </>
             </span>
@@ -59,6 +76,8 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
         </p>
 
         {paragraphId === paragraph.id && reply && <CommentsSection />}
+
+        <SignInRequired isOpen={showSignInRequired} setIsOpen={setShowSignInRequired} />
     </>
 }
 
