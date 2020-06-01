@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react"
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./modal.css"
+import Oidc from "oidc-client"
+import { userManagerSettings } from "../../config"
 
 type SignInRequiredProps = {
     isOpen: boolean
@@ -8,6 +10,11 @@ type SignInRequiredProps = {
 }
 
 const SignInRequired: React.FC<SignInRequiredProps> = ({ isOpen, setIsOpen }) => {
+    const signInClick = async () => {
+        var mgr = new Oidc.UserManager(userManagerSettings)
+        await mgr.signinRedirect()
+    }
+
     return <Modal isOpen={isOpen} className="modal-window">
         <ModalHeader>Sign in required</ModalHeader>
         <ModalBody>
@@ -15,7 +22,7 @@ const SignInRequired: React.FC<SignInRequiredProps> = ({ isOpen, setIsOpen }) =>
         </ModalBody>
         <ModalFooter>
             <button className="btn btn-default" onClick={_ => setIsOpen(false)}>Close</button>
-            <button className="btn btn-secondary">Sign in</button>
+            <button className="btn btn-secondary" onClick={signInClick}>Sign in</button>
         </ModalFooter>
     </Modal>
 }

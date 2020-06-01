@@ -1,9 +1,9 @@
+using deech.me.data.abstractions;
+
 namespace deech.me.data.entities
 {
-    public class Citation
+    public class Citation : IWriteEntity
     {
-        public int TitleInfoId { get; set; }
-        public TitleInfo TitleInfo { get; set; }
         public string Created { get; set; }
         public int Id { get; set; }
         public int ParagraphId { get; set; }

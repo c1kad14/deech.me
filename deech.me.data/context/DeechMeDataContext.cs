@@ -42,6 +42,9 @@ namespace deech.me.data.context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Bookmark>()
+                .HasKey(fb => new { fb.ParagraphId, fb.UserInfoId });
+
             modelBuilder.Entity<FavouriteBook>()
                 .HasKey(fb => new { fb.BookId, fb.UserInfoId });
 

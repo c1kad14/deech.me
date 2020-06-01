@@ -22,6 +22,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     // let { paragraphId } = useSelector((state: RootState) => state.comments)
     let { paragraphId } = useSelector((state: RootState) => state.book)
     let { user } = useSelector((state: RootState) => state.app)
+    const [selected, setSelected] = useState(false)
     const [reply, setReply] = useState(false)
     const [showSignInRequired, setShowSignInRequired] = useState(false)
 
@@ -36,18 +37,17 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     //         dispatch(hideComments())
     //     }
     // }
-    const paragraphClasses = paragraphId === paragraph.id ? "paragraph-element paragraph-element-selected rounded" : "paragraph-element"
+    const paragraphClasses = selected ? "paragraph-element paragraph-element-selected rounded" : "paragraph-element"
 
-    const paragraphSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>, id: number) => {
+    const paragraphSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation()
-        if (id === paragraphId) {
-            id = -1
-        }
-        dispatch(setParagraph(id))
+        setSelected(!selected)
     }
 
     const replyButtonClick = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation()
+
+        dispatch(setParagraph(paragraph.id))
         setReply(!reply)
     }
 
@@ -58,11 +58,11 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
         }
     }
 
-    return <>
-        <p className={paragraphClasses} paragraph-seq={paragraph.sequence} onClick={(e) => paragraphSelected(e, paragraph.id)}>
+    return <div>
+        <div className={paragraphClasses} paragraph-seq={paragraph.sequence} onClick={(e) => paragraphSelected(e)}>
             <Section id={paragraph.id} type={paragraph.type} value={paragraph.value} />
 
-            {paragraph.id === paragraphId && <span className="justify-content-end d-flex">
+            {selected && <span className="justify-content-end d-flex">
                 <>
                     <BookmarkButton onClick={bookmarkButtonClick} />
                     <NoteButton />
@@ -73,12 +73,12 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
             </span>
             }
 
-        </p>
+        </div>
 
         {paragraphId === paragraph.id && reply && <CommentsSection />}
 
         <SignInRequired isOpen={showSignInRequired} setIsOpen={setShowSignInRequired} />
-    </>
+    </div>
 }
 
 export default Paragraph

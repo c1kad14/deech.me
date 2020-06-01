@@ -76,11 +76,13 @@ const BookContent: React.FC = () => {
     }, [])
 
     console.log("*** BOOK CONTENT RERENDER ***")
-    const sorted = book!.paragraphs.slice().sort((a, b) => a.sequence - b.sequence)
-    content = sorted.map(paragraph => <Paragraph paragraph={paragraph} />)
+
+    if (book) {
+        content = book.paragraphs.map(paragraph => <Paragraph key={paragraph.id} paragraph={paragraph} />)
+    }
 
     return <div className="no-select">
-        {content.length > 0 && content}
+        {content}
     </div>
 }
 

@@ -10,7 +10,7 @@ const SearchDropdown: React.FC = () => {
         }
     }
 
-    const dropdownItems = TitleFilters.map(filter => <button className="dropdown-item text-light" onClick={dropdownItemChanged}>{filter}</button>)
+    const dropdownItems = TitleFilters.map(filter => <button key={filter} className="dropdown-item text-light" onClick={dropdownItemChanged}>{filter}</button>)
 
     return (<div className="search-dropdown rounded-left bg-dark borderless">
         <button className="search-dropdown-button text-muted dropdown-toggle btn pt-2" type="button"
