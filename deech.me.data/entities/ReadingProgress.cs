@@ -7,7 +7,6 @@ namespace deech.me.data.entities
         public string Created { get; set; }
         public int Progress { get; set; }
         public string Updated { get; set; }
-        public string UserInfoId { get; set; }
-        public UserInfo UserInfo { get; set; }
+        public string UserId { get; set; }
     }
 }

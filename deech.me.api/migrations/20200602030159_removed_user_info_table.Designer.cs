@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using deech.me.data.context;
 
 namespace deech.me.api.migrations
 {
     [DbContext(typeof(DeechMeDataContext))]
-    partial class DeechMeDataContextModelSnapshot : ModelSnapshot
+    [Migration("20200602030159_removed_user_info_table")]
+    partial class removed_user_info_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

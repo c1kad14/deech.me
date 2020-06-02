@@ -33,7 +33,6 @@ namespace deech.me.data.context
         public DbSet<TitleInfoKeyword> TitleInfoKeywords { get; set; }
         public DbSet<TitleInfoTranslator> TitleInfoTranslators { get; set; }
         public DbSet<Translator> Translators { get; set; }
-        public DbSet<UserInfo> UserInfos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -43,13 +42,16 @@ namespace deech.me.data.context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Bookmark>()
-                .HasKey(fb => new { fb.ParagraphId, fb.UserInfoId });
+                .HasKey(b => new { b.ParagraphId, b.UserId });
 
             modelBuilder.Entity<FavouriteBook>()
-                .HasKey(fb => new { fb.BookId, fb.UserInfoId });
+                .HasKey(fb => new { fb.BookId, fb.UserId });
+
+            modelBuilder.Entity<Note>()
+                .HasKey(n => new { n.ParagraphId, n.UserId });
 
             modelBuilder.Entity<ReadingProgress>()
-                .HasKey(rp => new { rp.BookId, rp.UserInfoId });
+                .HasKey(rp => new { rp.BookId, rp.UserId });
 
             modelBuilder.Entity<TitleInfoGenre>()
                 .HasKey(t => new { t.TitleInfoId, t.GenreCode });

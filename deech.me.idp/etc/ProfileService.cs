@@ -26,7 +26,8 @@ namespace deech.me.idp.etc
 
             var claims = new List<Claim>
             {
-                new Claim("name", user.UserName)
+                new Claim("name", user.UserName),
+                new Claim("id", user.Id)
             };
             
             context.IssuedClaims.AddRange(claims);

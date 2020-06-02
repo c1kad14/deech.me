@@ -18,6 +18,9 @@ using deech.me.logic.services;
 using Newtonsoft.Json;
 using AutoMapper;
 using deech.me.logic.mapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace deech.me.api
 {
@@ -55,7 +58,7 @@ namespace deech.me.api
                                   });
             });
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-            services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("Bearer", options =>
             {
                 options.Authority = "https://localhost:5050";
                 options.RequireHttpsMetadata = false;

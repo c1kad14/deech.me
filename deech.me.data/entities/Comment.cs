@@ -13,8 +13,7 @@ namespace deech.me.data.entities
         public Paragraph Paragraph { get; set; }
         public int ParagraphId { get; set; }
         public string Value { get; set; }
-        public string UserInfoId { get; set; }
-        public UserInfo UserInfo { get; set; }
+        public string UserId { get; set; }
         public string Username { get; set; }
     }
 }

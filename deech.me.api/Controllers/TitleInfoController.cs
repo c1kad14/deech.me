@@ -4,11 +4,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using AutoMapper;
+
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
 using deech.me.logic.models;
-
-using AutoMapper;
 
 namespace deech.me.api.controllers
 {
