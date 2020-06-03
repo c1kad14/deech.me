@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useHistory } from "react-router"
 import Oidc from "oidc-client"
 import { useDispatch } from "react-redux"
-import { clearUser } from "../store/app/actions"
+import { clearAuth } from "../store/app/actions"
 import { userManagerSettings } from "../config"
 
 const SignOutCallback: React.FC = () => {
@@ -12,7 +12,7 @@ const SignOutCallback: React.FC = () => {
     useEffect(() => {
         const mgr = new Oidc.UserManager(userManagerSettings)
         mgr.signoutRedirectCallback().then(() => {
-            dispatch(clearUser())
+            dispatch(clearAuth())
             history.push("/")
         }).catch(function (e) {
             console.error(e);

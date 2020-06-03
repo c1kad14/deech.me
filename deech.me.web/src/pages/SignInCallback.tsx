@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useHistory } from "react-router"
 import Oidc from "oidc-client"
 import { useDispatch } from "react-redux"
-import { setUser } from "../store/app/actions"
+import { setAuth } from "../store/app/actions"
 import { userManagerSettings } from "../config"
 
 const SignInCallback: React.FC = () => {
@@ -13,9 +13,9 @@ const SignInCallback: React.FC = () => {
         const mgr = new Oidc.UserManager(userManagerSettings)
         mgr.signinRedirectCallback().then((user) => {
             console.log(user)
-            if (user) {
-                console.log(`User ${user.profile.sub} logged in`)
-                dispatch(setUser(user.profile.sub))
+            if (user.profile.name) {
+                console.log(`User ${user.profile.name} logged in`)
+                dispatch(setAuth(user.profile.name, user.access_token))
                 history.push("/")
             }
             else {

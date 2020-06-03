@@ -9,11 +9,12 @@ export enum CommentTypes {
 }
 
 export interface IComment {
+    associated?: number
+    date: string
     id?: number
     value: string
     paragraphId: number
-    associated?: number
-    date: string
+    username: string
 }
 
 export interface ICommentsState {

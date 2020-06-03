@@ -26,13 +26,34 @@ namespace deech.me.api.controllers
         [HttpGet("byTitleId")]
         public ActionResult GetBookByTitleId(int titleId)
         {
-            this._readDataService.SetIncludeFunc(i => i.Include(b => b.Paragraphs)
-                                                       .ThenInclude(p => p.Comments)
-                                                       .Include(b => b.TitleInfo));
+            Func<IQueryable<Book>, IQueryable<Book>> func;
+            Book result;
+            var userId = GetUserId();
 
-            var result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
+            if (!string.IsNullOrEmpty(userId))
+            {
+                func = i => i.Include(b => b.Paragraphs)
+                                    .ThenInclude(bm => bm.Bookmarks)
+                                .Include(b => b.Paragraphs)
+                                    .ThenInclude(bm => bm.Citations)
+                                .Include(b => b.Paragraphs)
+                                    .ThenInclude(bm => bm.Notes)
+                                .Include(b => b.Paragraphs)
+                                    .ThenInclude(p => p.Comments)
+                                .Include(b => b.TitleInfo);
+                this._readDataService.SetIncludeFunc(func);
+                result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
+            }
+
+            else
+            {
+                func = i => i.Include(b => b.Paragraphs)
+                                    .ThenInclude(p => p.Comments)
+                                    .Include(b => b.TitleInfo);
+                this._readDataService.SetIncludeFunc(func);
+                result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
+            }
             var mapped = this._mapper.Map<BookModel>(result);
-
             return Ok(mapped);
         }
 
@@ -46,5 +67,7 @@ namespace deech.me.api.controllers
 
             return Ok(result);
         }
+
+        private string GetUserId() => HttpContext.User?.Claims?.ToList().SingleOrDefault(c => c.Type == "id")?.Value;
     }
 }

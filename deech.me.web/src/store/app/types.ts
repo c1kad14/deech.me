@@ -6,14 +6,15 @@ export enum AppTypes {
     LOADED = "@@app/LOADED",
     ERROR = "@@app/ERROR",
     MENU_TOGGLE = "@@app/MENU_TOGGLE",
-    SET_USER = "@@app/SET_USER",
-    CLEAR_USER = "@@app/CLEAR_USER"
+    SET_AUTH = "@@app/SET_AUTH",
+    CLEAR_AUTH = "@@app/CLEAR_AUTH"
 }
 
 export interface AppState {
     readonly loading: boolean
     readonly error?: string
-    readonly user?: string
+    readonly username?: string
+    readonly access_token?: string
 }
 
 export interface SetLoading extends Action {
@@ -24,15 +25,16 @@ export interface SetLoaded extends Action {
     type: AppTypes.LOADED
 }
 
-export interface SetUser extends Action {
-    type: AppTypes.SET_USER,
+export interface SetAuth extends Action {
+    type: AppTypes.SET_AUTH,
     payload: {
-        user: string
+        username: string,
+        access_token: string
     }
 }
 
-export interface ClearUser extends Action {
-    type: AppTypes.CLEAR_USER
+export interface ClearAuth extends Action {
+    type: AppTypes.CLEAR_AUTH
 }
 
 export interface SetError extends Action {

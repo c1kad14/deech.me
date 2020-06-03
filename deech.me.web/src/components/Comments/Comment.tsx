@@ -12,7 +12,7 @@ const Comment: React.FC<CommentProps> = ({ comment }) => {
 
     return <div className="comment-container mt-1 p-2">
         <div>
-            <span className="text-white rounded bg-success p-1">username </span>
+            <span className="text-white rounded bg-success p-1">{comment.username}</span>
             <span className="text-muted p-1">{moment(comment.date).fromNow()}</span>
         </div>
         <div className="text-light mt-1 pl-2">{comment.value}</div>

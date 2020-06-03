@@ -12,7 +12,7 @@ import { RootState } from "../../store/rootReducer"
 
 const NavMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
-    let { user } = useSelector((state: RootState) => state.app)
+    let { username } = useSelector((state: RootState) => state.app)
     const menuOpenClick = () => setIsOpen(true)
     const menuCloseClick = () => setIsOpen(false)
 
@@ -30,7 +30,7 @@ const NavMenu: React.FC = () => {
                         <Search />
                     </div>
                     <div className="mt-2">
-                        {user ? <SignOutButton /> : <SignInButton />}
+                        {username ? <SignOutButton /> : <SignInButton />}
                     </div>
                 </div>
             </div>

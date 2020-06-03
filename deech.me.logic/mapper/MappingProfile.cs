@@ -17,12 +17,18 @@ namespace deech.me.logic.mapper
             CreateMap<TitleInfoTranslator, String>().ConvertUsing(r => r.Translator.ToString());
             CreateMap<TitleInfo, TitleInfoModel>()
                 .ForMember(dest => dest.Annotation, opt => opt.MapFrom(src => src.Annotation.Text))
-                .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.SourceLanguage.Code))
-                .ForMember(dest => dest.SourceLanguage, opt => opt.MapFrom(src => src.Language.Code));
-            CreateMap<Paragraph, ParagraphModel>().ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments.Count));
-            CreateMap<Book, BookModel>();
+                .ForMember(dest => dest.Language, opt => opt.MapFrom(src => src.Language.Code))
+                .ForMember(dest => dest.SourceLanguage, opt => opt.MapFrom(src => src.SourceLanguage.Code));
+            CreateMap<BookmarkModel, Bookmark>();
+            CreateMap<Bookmark, BookmarkModel>();
+            CreateMap<CitationModel, Citation>();
+            CreateMap<Citation, CitationModel>();
             CreateMap<Comment, CommentModel>();
             CreateMap<CommentModel, Comment>();
+            CreateMap<CitationModel, Citation>();
+            CreateMap<Citation, CitationModel>();
+            CreateMap<Paragraph, ParagraphModel>().ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments.Count));
+            CreateMap<Book, BookModel>();
         }
     }
 }

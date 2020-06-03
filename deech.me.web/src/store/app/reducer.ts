@@ -5,7 +5,8 @@ import produce from "immer"
 const initialState: AppState = {
     loading: false,
     error: undefined,
-    user: undefined
+    username: undefined,
+    access_token: undefined
 }
 
 const AppReducer: Reducer<AppState> = (state = initialState, action): AppState => {
@@ -21,11 +22,13 @@ const AppReducer: Reducer<AppState> = (state = initialState, action): AppState =
                 draft.loading = false
                 draft.error = action.payload.error
                 break
-            case AppTypes.SET_USER:
-                draft.user = action.payload.user
+            case AppTypes.SET_AUTH:
+                draft.username = action.payload.username
+                draft.access_token = action.payload.access_token
                 break
-            case AppTypes.CLEAR_USER:
-                draft.user = undefined
+            case AppTypes.CLEAR_AUTH:
+                draft.username = undefined
+                draft.access_token = undefined
                 break
             default:
                 return state

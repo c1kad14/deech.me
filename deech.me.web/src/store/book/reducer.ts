@@ -29,6 +29,36 @@ const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookSt
                 draft.id = undefined
                 draft.book = undefined
                 break
+            case BookTypes.BOOKMARK_ADDED:
+                if (draft.book) {
+                    draft.book.paragraphs.filter((p) => p.id === action.payload.bookmark.paragraphId)[0].bookmark = action.payload.bookmark
+                }
+                break
+            case BookTypes.CITATION_ADDED:
+                if (draft.book) {
+                    draft.book.paragraphs.filter(p => p.id === action.payload.citation.paragraphId)[0].citation = action.payload.citation
+                }
+                break
+            case BookTypes.NOTE_ADDED:
+                if (draft.book) {
+                    draft.book.paragraphs.filter(p => p.id === action.payload.note.paragraphId)[0].note = action.payload.note
+                }
+                break
+            case BookTypes.BOOKMARK_DELETED:
+                if (draft.book) {
+                    draft.book.paragraphs.filter(p => p.id === action.payload.bookmark.paragraphId)[0].bookmark = undefined
+                }
+                break
+            case BookTypes.CITATION_DELETED:
+                if (draft.book) {
+                    draft.book.paragraphs.filter(p => p.id === action.payload.citation.paragraphId)[0].citation = undefined
+                }
+                break
+            case BookTypes.NOTE_DELETED:
+                if (draft.book) {
+                    draft.book.paragraphs.filter(p => p.id === action.payload.note.paragraphId)[0].note = undefined
+                }
+                break
             default:
                 return state
         }
