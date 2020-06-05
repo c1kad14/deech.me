@@ -41,6 +41,7 @@ export interface IBook {
 }
 
 export interface IBookmark {
+    bookId: number
     created: string
     paragraphId: number
     userId?: string
@@ -61,7 +62,7 @@ export interface INote {
 }
 
 export interface IBookState {
-    readonly id?: string
+    readonly id: number
     readonly book?: IBook
     readonly progress: number
     readonly paragraphId: number

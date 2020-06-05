@@ -3,7 +3,7 @@ import produce from "immer"
 import { IBookState, BookTypes } from "./types"
 
 const initialState: IBookState = {
-    id: undefined,
+    id: -1,
     book: undefined,
     progress: 0,
     paragraphId: -1
@@ -26,7 +26,7 @@ const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookSt
                 draft.paragraphId = action.payload.paragraphId
                 break
             case BookTypes.CLEAR_BOOK:
-                draft.id = undefined
+                draft.id = -1
                 draft.book = undefined
                 break
             case BookTypes.BOOKMARK_ADDED:

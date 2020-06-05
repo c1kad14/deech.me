@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+
 using deech.me.data.abstractions;
 
 namespace deech.me.data.entities
@@ -11,9 +12,6 @@ namespace deech.me.data.entities
         public int Sequence { get; set; }
         public string Type { get; set; }
         public string Value { get; set; }
-        public List<Bookmark> Bookmarks { get; set; }
-        public List<Citation> Citations { get; set; }
         public List<Comment> Comments { get; set; }
-        public List<Note> Notes { get; set; }
     }
 }

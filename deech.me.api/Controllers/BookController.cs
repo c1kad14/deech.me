@@ -3,9 +3,10 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
+using AutoMapper;
+
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
-using AutoMapper;
 using deech.me.logic.models;
 using System;
 
@@ -15,55 +16,70 @@ namespace deech.me.api.controllers
     public class BookController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IReadDataService<Book> _readDataService;
+        private readonly IReadDataService<Book> _bookDataService;
+        private readonly IWriteDataService<UserBook> _userBookDataService;
 
-        public BookController(IReadDataService<Book> readDataService, IMapper mapper)
+        public BookController(IReadDataService<Book> bookDataService, IWriteDataService<UserBook> userBookDataService, IMapper mapper)
         {
-            this._readDataService = readDataService;
+            this._userBookDataService = userBookDataService;
+            this._bookDataService = bookDataService;
             this._mapper = mapper;
         }
 
-        [HttpGet("byTitleId")]
-        public ActionResult GetBookByTitleId(int titleId)
+        [HttpGet]
+        public ActionResult Get(int id)
         {
-            Func<IQueryable<Book>, IQueryable<Book>> func;
-            Book result;
             var userId = GetUserId();
 
-            if (!string.IsNullOrEmpty(userId))
+            if (string.IsNullOrEmpty(userId))
             {
-                func = i => i.Include(b => b.Paragraphs)
-                                    .ThenInclude(bm => bm.Bookmarks)
-                                .Include(b => b.Paragraphs)
-                                    .ThenInclude(bm => bm.Citations)
-                                .Include(b => b.Paragraphs)
-                                    .ThenInclude(bm => bm.Notes)
-                                .Include(b => b.Paragraphs)
-                                    .ThenInclude(p => p.Comments)
-                                .Include(b => b.TitleInfo);
-                this._readDataService.SetIncludeFunc(func);
-                result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
-            }
+                this._bookDataService.SetIncludeFunc(i => i.Include(b => b.Paragraphs)
+                                                           .ThenInclude(p => p.Comments)
+                                                           .Include(b => b.TitleInfo));
 
+                var result = this._bookDataService.GetSingle(b => b.TitleInfo.Id == id);
+                var mapped = this._mapper.Map<BookModel>(result);
+
+                return Ok(mapped);
+            }
             else
             {
-                func = i => i.Include(b => b.Paragraphs)
-                                    .ThenInclude(p => p.Comments)
-                                    .Include(b => b.TitleInfo);
-                this._readDataService.SetIncludeFunc(func);
-                result = this._readDataService.GetSingle(b => b.TitleInfo.Id == titleId);
+                this._userBookDataService.SetIncludeFunc(x => x.Include(u => u.Book)
+                                                        .ThenInclude(b => b.Paragraphs)
+                                                        .ThenInclude(p => p.Comments)
+                                                        .Include(b => b.Book)
+                                                        .ThenInclude(b => b.TitleInfo)
+                                                        .Include(u => u.Bookmarks)
+                                                        .Include(u => u.Citations)
+                                                        .Include(u => u.Notes));
+                var result = this._userBookDataService.GetSingle(b => b.UserId == userId && b.BookId == id);
+
+                if (result == null)
+                {
+                    this._userBookDataService.Add(
+                        new UserBook
+                        {
+                            UserId = userId,
+                            BookId = id,
+                            Created = DateTime.Now.ToString("YYYY-MM-DD HH:m")
+                        });
+
+                    result = this._userBookDataService.GetSingle(b => b.UserId == userId && b.BookId == id);
+                }
+
+                var mapped = this._mapper.Map<UserBookModel>(result);
+                
+                return Ok(mapped);
             }
-            var mapped = this._mapper.Map<BookModel>(result);
-            return Ok(mapped);
         }
 
         [HttpGet("byAuthorId")]
         public ActionResult GetBookByAuthorId(int authorId)
         {
-            this._readDataService.SetIncludeFunc(i => i.Include(b => b.TitleInfo)
+            this._bookDataService.SetIncludeFunc(i => i.Include(b => b.TitleInfo)
                                                        .ThenInclude(bti => bti.Authors));
 
-            var result = this._readDataService.GetSingle(b => b.TitleInfo.Authors.Any(a => a.AuthorId == authorId));
+            var result = this._bookDataService.GetSingle(b => b.TitleInfo.Authors.Any(a => a.AuthorId == authorId));
 
             return Ok(result);
         }

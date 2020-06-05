@@ -22,6 +22,7 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     const dispatch = useDispatch()
     let { paragraphId } = useSelector((state: RootState) => state.comments)
     let { username } = useSelector((state: RootState) => state.app)
+    let { id } = useSelector((state: RootState) => state.book)
     const [selected, setSelected] = useState(false)
     const [reply, setReply] = useState(false)
     const [showSignInRequired, setShowSignInRequired] = useState(false)
@@ -43,12 +44,12 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
         if (!username) {
             setShowSignInRequired(true)
         } else {
-            dispatch(addBookmark({ paragraphId: paragraph.id, created: moment().format("YYYY-MM-DD HH:m") }))
+            dispatch(addBookmark({ bookId: id, paragraphId: paragraph.id, created: moment().format("YYYY-MM-DD HH:m") }))
         }
     }
 
     return <div>
-        {paragraph.bookmark && <span>YO</span>}
+        {paragraph.bookmark && <span>***</span>}
         <div className={paragraphClasses} paragraph-seq={paragraph.sequence} onClick={(e) => paragraphSelected(e)}>
             <Section id={paragraph.id} type={paragraph.type} value={paragraph.value} />
 

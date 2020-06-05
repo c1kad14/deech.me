@@ -26,7 +26,7 @@ namespace deech.me.data.context
         public DbSet<Note> Notes { get; set; }
         public DbSet<Paragraph> Paragraphs { get; set; }
         public DbSet<PublishInfo> PublishInfos { get; set; }
-        public DbSet<ReadingProgress> ReadingProgresses { get; set; }
+        public DbSet<UserBook> UserBooks { get; set; }
         public DbSet<TitleInfo> TitleInfos { get; set; }
         public DbSet<TitleInfoAuthor> TitleInfoAuthors { get; set; }
         public DbSet<TitleInfoGenre> TitleInfoGenres { get; set; }
@@ -42,22 +42,28 @@ namespace deech.me.data.context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Bookmark>()
-                .HasKey(b => new { b.ParagraphId, b.UserId });
+                .HasKey(b => new { b.ParagraphId, b.UserBookId });
 
             modelBuilder.Entity<FavouriteBook>()
                 .HasKey(fb => new { fb.BookId, fb.UserId });
 
             modelBuilder.Entity<Note>()
-                .HasKey(n => new { n.ParagraphId, n.UserId });
+                .HasKey(n => new { n.ParagraphId, n.UserBookId });
 
-            modelBuilder.Entity<ReadingProgress>()
-                .HasKey(rp => new { rp.BookId, rp.UserId });
+            modelBuilder.Entity<UserBook>()
+                .HasIndex(rp => new { rp.BookId, rp.UserId });
 
             modelBuilder.Entity<TitleInfoGenre>()
                 .HasKey(t => new { t.TitleInfoId, t.GenreCode });
 
             modelBuilder.Entity<TitleInfoKeyword>()
                 .HasKey(t => new { t.TitleInfoId, t.KeywordCode });
+
+            modelBuilder.Entity<Bookmark>().HasOne(x => x.UserBook).WithMany().HasForeignKey(x => x.UserBookId).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Citation>().HasOne(x => x.UserBook).WithMany().HasForeignKey(x => x.UserBookId).OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Note>().HasOne(x => x.UserBook).WithMany().HasForeignKey(x => x.UserBookId).OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Comment>().HasOne(x => x.Associated).WithMany().HasForeignKey(x => x.AssociatedId).OnDelete(DeleteBehavior.Restrict);
         }

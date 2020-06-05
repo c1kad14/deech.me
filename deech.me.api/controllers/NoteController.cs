@@ -68,7 +68,7 @@ namespace deech.me.api.controllers
         public IActionResult Get(int bookId)
         {
             var userId = GetUserId();
-            var entities = _noteDataService.GetMultiple(b => b.Paragraph.BookId == bookId && b.UserId == userId, 0, 10000);
+            var entities = _noteDataService.GetMultiple(b => b.UserBook.BookId == bookId && b.UserBook.UserId == userId, 0, 10000);
             var result = _mapper.Map<NoteModel>(entities);
 
             return Ok(result);

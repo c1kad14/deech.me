@@ -68,7 +68,7 @@ namespace deech.me.api.controllers
         public IActionResult Get(int bookId)
         {
             var userId = GetUserId();
-            var bookmarks = _bookmarkDataService.GetMultiple(b => b.Paragraph.BookId == bookId && b.UserId == userId, 0, 10000);
+            var bookmarks = _bookmarkDataService.GetMultiple(b => b.UserBook.BookId == bookId && b.UserBook.UserId == userId, 0, 10000);
             var result = _mapper.Map<BookmarkModel>(bookmarks);
 
             return Ok(result);

@@ -4,7 +4,7 @@ import { TitleTypes } from "./title/types"
 import { setTitles, addTitles } from "./title/actions"
 import { domain } from "../config"
 import { setLoading, setLoaded } from "./app/actions"
-import { BookTypes, SetBookId, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph } from "./book/types"
+import { BookTypes, SetBookId, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph, DeleteBookmark } from "./book/types"
 import { setBook, bookmarkAdded, citationAdded, noteAdded, noteDeleted, citationDeleted } from "./book/actions"
 import { CommentTypes, AddComment, IComment, ShowComments } from "./comments/types"
 import { commentAdded, setComments } from "./comments/actions"
@@ -149,11 +149,11 @@ export function* addNoteSaga(action: AddNote) {
     }
 }
 
-export function* deleteBookmarkSaga(action: DeleteNote) {
+export function* deleteBookmarkSaga(action: DeleteBookmark) {
     try {
         const accessToken = yield select(getAccessToken)
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
-        const payload = yield call(deleteBookmarkApiCall, action.payload.note)
+        const payload = yield call(deleteBookmarkApiCall, action.payload.bookmark)
         yield put(noteDeleted(payload))
     } catch (error) {
         console.log(error)
