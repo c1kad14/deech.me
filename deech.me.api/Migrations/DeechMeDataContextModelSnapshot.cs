@@ -121,14 +121,9 @@ namespace deech.me.api.migrations
                     b.Property<string>("Created")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserBookId1")
-                        .HasColumnType("int");
-
                     b.HasKey("ParagraphId", "UserBookId");
 
                     b.HasIndex("UserBookId");
-
-                    b.HasIndex("UserBookId1");
 
                     b.ToTable("Bookmarks");
                 });
@@ -149,19 +144,14 @@ namespace deech.me.api.migrations
                     b.Property<int>("UserBookId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("UserBookId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParagraphId");
-
                     b.HasIndex("UserBookId");
 
-                    b.HasIndex("UserBookId1");
+                    b.HasIndex("ParagraphId", "UserBookId");
 
                     b.ToTable("Citations");
                 });
@@ -213,22 +203,6 @@ namespace deech.me.api.migrations
                     b.ToTable("CustomInfos");
                 });
 
-            modelBuilder.Entity("deech.me.data.entities.FavouriteBook", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Created")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BookId", "UserId");
-
-                    b.ToTable("FavouriteBooks");
-                });
-
             modelBuilder.Entity("deech.me.data.entities.Genre", b =>
                 {
                     b.Property<string>("Code")
@@ -276,17 +250,12 @@ namespace deech.me.api.migrations
                     b.Property<string>("Created")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UserBookId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ParagraphId", "UserBookId");
 
                     b.HasIndex("UserBookId");
-
-                    b.HasIndex("UserBookId1");
 
                     b.ToTable("Notes");
                 });
@@ -492,6 +461,9 @@ namespace deech.me.api.migrations
                     b.Property<string>("Created")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Favourite")
+                        .HasColumnType("bit");
+
                     b.Property<int>("Progress")
                         .HasColumnType("int");
 
@@ -532,14 +504,10 @@ namespace deech.me.api.migrations
                         .IsRequired();
 
                     b.HasOne("deech.me.data.entities.UserBook", "UserBook")
-                        .WithMany()
+                        .WithMany("Bookmarks")
                         .HasForeignKey("UserBookId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("deech.me.data.entities.UserBook", null)
-                        .WithMany("Bookmarks")
-                        .HasForeignKey("UserBookId1");
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Citation", b =>
@@ -551,14 +519,10 @@ namespace deech.me.api.migrations
                         .IsRequired();
 
                     b.HasOne("deech.me.data.entities.UserBook", "UserBook")
-                        .WithMany()
+                        .WithMany("Citations")
                         .HasForeignKey("UserBookId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("deech.me.data.entities.UserBook", null)
-                        .WithMany("Citations")
-                        .HasForeignKey("UserBookId1");
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Comment", b =>
@@ -575,15 +539,6 @@ namespace deech.me.api.migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("deech.me.data.entities.FavouriteBook", b =>
-                {
-                    b.HasOne("deech.me.data.entities.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("deech.me.data.entities.Note", b =>
                 {
                     b.HasOne("deech.me.data.entities.Paragraph", "Paragraph")
@@ -593,14 +548,10 @@ namespace deech.me.api.migrations
                         .IsRequired();
 
                     b.HasOne("deech.me.data.entities.UserBook", "UserBook")
-                        .WithMany()
+                        .WithMany("Notes")
                         .HasForeignKey("UserBookId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
-
-                    b.HasOne("deech.me.data.entities.UserBook", null)
-                        .WithMany("Notes")
-                        .HasForeignKey("UserBookId1");
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Paragraph", b =>

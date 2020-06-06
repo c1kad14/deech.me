@@ -12,6 +12,7 @@ namespace deech.me.data.entities
         public int Progress { get; set; }
         public string Updated { get; set; }
         public string UserId { get; set; }
+        public bool Favourite { get; set; }
         public List<Bookmark> Bookmarks { get; set; }
         public List<Citation> Citations { get; set; }
         public List<Note> Notes { get; set; }

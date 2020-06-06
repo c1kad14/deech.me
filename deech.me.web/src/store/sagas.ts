@@ -4,7 +4,7 @@ import { TitleTypes } from "./title/types"
 import { setTitles, addTitles } from "./title/actions"
 import { domain } from "../config"
 import { setLoading, setLoaded } from "./app/actions"
-import { BookTypes, SetBookId, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph, DeleteBookmark } from "./book/types"
+import { BookTypes, GetBook, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph, DeleteBookmark } from "./book/types"
 import { setBook, bookmarkAdded, citationAdded, noteAdded, noteDeleted, citationDeleted } from "./book/actions"
 import { CommentTypes, AddComment, IComment, ShowComments } from "./comments/types"
 import { commentAdded, setComments } from "./comments/actions"
@@ -13,7 +13,7 @@ import { RootState } from "./rootReducer"
 export function* sagaWatcher() {
     yield takeLatest(TitleTypes.LOAD_TITLES, loadTitlesSaga)
     yield takeLatest(TitleTypes.LOAD_MORE_TITLES, loadMoreTitlesSaga)
-    yield takeEvery(BookTypes.SET_BOOK_ID, loadBookSaga)
+    yield takeEvery(BookTypes.GET_BOOK, loadBookSaga)
     yield takeEvery(CommentTypes.COMMENT_ADD, addCommentSaga)
     yield takeEvery(CommentTypes.COMMENTS_SHOW, showCommentsSaga)
 
@@ -80,7 +80,7 @@ export function* loadMoreTitlesSaga() {
     }
 }
 
-export function* loadBookSaga(action: SetBookId) {
+export function* loadBookSaga(action: GetBook) {
     const accessToken = yield select(getAccessToken)
     Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
     try {
@@ -200,8 +200,8 @@ async function loadMoreTitlesApiCall(title: string, skip: number) {
     return await response.data
 }
 
-async function loadBookApiCall(id: string) {
-    const url = `${domain}/book/bytitleid?titleid=${id}`
+async function loadBookApiCall(id: number) {
+    const url = `${domain}/book?id=${id}`
     const response = await Axios.get(url)
     return await response.data
 }

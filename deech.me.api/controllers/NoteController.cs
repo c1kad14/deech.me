@@ -27,7 +27,6 @@ namespace deech.me.api.controllers
         [HttpPost]
         public IActionResult Add([FromBody] NoteModel note)
         {
-            note.UserId = GetUserId();
             var entity = _mapper.Map<Note>(note);
             entity = _noteDataService.Add(entity);
             var result = _mapper.Map<NoteModel>(entity);
@@ -38,11 +37,6 @@ namespace deech.me.api.controllers
         [HttpPut]
         public IActionResult Update([FromBody] NoteModel note)
         {
-            if (note.UserId != GetUserId())
-            {
-                return BadRequest();
-            }
-
             var entity = _mapper.Map<Note>(note);
             entity = _noteDataService.Update(entity);
             var result = _mapper.Map<NoteModel>(entity);
@@ -53,11 +47,6 @@ namespace deech.me.api.controllers
         [HttpDelete]
         public IActionResult Delete([FromBody] NoteModel note)
         {
-            if (note.UserId != GetUserId())
-            {
-                return BadRequest();
-            }
-
             var entity = _mapper.Map<Note>(note);
             _noteDataService.Delete(entity);
 

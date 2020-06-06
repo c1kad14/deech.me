@@ -3,11 +3,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using AutoMapper;
+
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
 using deech.me.logic.models;
-
-using AutoMapper;
 
 namespace deech.me.api.controllers
 {
@@ -27,7 +27,6 @@ namespace deech.me.api.controllers
         [HttpPost]
         public IActionResult Add([FromBody] CitationModel citation)
         {
-            citation.UserId = GetUserId();
             var entity = _mapper.Map<Citation>(citation);
             entity = _citationDataService.Add(entity);
             var result = _mapper.Map<CitationModel>(entity);
@@ -38,11 +37,6 @@ namespace deech.me.api.controllers
         [HttpPut]
         public IActionResult Update([FromBody] CitationModel citation)
         {
-            if (citation.UserId != GetUserId())
-            {
-                return BadRequest();
-            }
-
             var entity = _mapper.Map<Citation>(citation);
             entity = _citationDataService.Update(entity);
             var result = _mapper.Map<CitationModel>(entity);
@@ -53,11 +47,6 @@ namespace deech.me.api.controllers
         [HttpDelete]
         public IActionResult Delete([FromBody] CitationModel citation)
         {
-            if (citation.UserId != GetUserId())
-            {
-                return BadRequest();
-            }
-
             var entity = _mapper.Map<Citation>(citation);
             _citationDataService.Delete(entity);
 

@@ -1,13 +1,13 @@
 using System.Linq;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using AutoMapper;
 
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
 using deech.me.logic.models;
-
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 
 namespace deech.me.api.controllers
 {
@@ -27,7 +27,6 @@ namespace deech.me.api.controllers
         [HttpPost]
         public IActionResult Add([FromBody] BookmarkModel bookmark)
         {
-            bookmark.UserId = GetUserId();
             var entity = _mapper.Map<Bookmark>(bookmark);
             entity = _bookmarkDataService.Add(entity);
             var result = _mapper.Map<BookmarkModel>(entity);
@@ -38,11 +37,6 @@ namespace deech.me.api.controllers
         [HttpPut]
         public IActionResult Update([FromBody] BookmarkModel bookmark)
         {
-            if (bookmark.UserId != GetUserId())
-            {
-                return BadRequest();
-            }
-
             var entity = _mapper.Map<Bookmark>(bookmark);
             entity = _bookmarkDataService.Update(entity);
             var result = _mapper.Map<BookmarkModel>(entity);
@@ -53,11 +47,6 @@ namespace deech.me.api.controllers
         [HttpDelete]
         public IActionResult Delete([FromBody] BookmarkModel bookmark)
         {
-            if (bookmark.UserId != GetUserId())
-            {
-                return BadRequest();
-            }
-
             var entity = _mapper.Map<Bookmark>(bookmark);
             _bookmarkDataService.Delete(entity);
 

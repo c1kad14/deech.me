@@ -10,8 +10,8 @@ using deech.me.data.context;
 namespace deech.me.api.migrations
 {
     [DbContext(typeof(DeechMeDataContext))]
-    [Migration("20200529035449_user_based_entities_added")]
-    partial class user_based_entities_added
+    [Migration("20200606041344_added_user_based_book_action_entities")]
+    partial class added_user_based_book_action_entities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,37 +104,28 @@ namespace deech.me.api.migrations
                     b.Property<string>("Updated")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserInfoId");
 
                     b.ToTable("BookCollections");
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Bookmark", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ParagraphId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserBookId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Created")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ParagraphId")
-                        .HasColumnType("int");
+                    b.HasKey("ParagraphId", "UserBookId");
 
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParagraphId");
-
-                    b.HasIndex("UserInfoId");
+                    b.HasIndex("UserBookId");
 
                     b.ToTable("Bookmarks");
                 });
@@ -152,22 +143,17 @@ namespace deech.me.api.migrations
                     b.Property<int>("ParagraphId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TitleInfoId")
+                    b.Property<int>("UserBookId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ParagraphId");
+                    b.HasIndex("UserBookId");
 
-                    b.HasIndex("TitleInfoId");
-
-                    b.HasIndex("UserInfoId");
+                    b.HasIndex("ParagraphId", "UserBookId");
 
                     b.ToTable("Citations");
                 });
@@ -188,8 +174,8 @@ namespace deech.me.api.migrations
                     b.Property<int>("ParagraphId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
@@ -202,8 +188,6 @@ namespace deech.me.api.migrations
                     b.HasIndex("AssociatedId");
 
                     b.HasIndex("ParagraphId");
-
-                    b.HasIndex("UserInfoId");
 
                     b.ToTable("Comments");
                 });
@@ -219,24 +203,6 @@ namespace deech.me.api.migrations
                     b.HasKey("Id");
 
                     b.ToTable("CustomInfos");
-                });
-
-            modelBuilder.Entity("deech.me.data.entities.FavouriteBook", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Date")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BookId", "UserInfoId");
-
-                    b.HasIndex("UserInfoId");
-
-                    b.ToTable("FavouriteBooks");
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Genre", b =>
@@ -277,28 +243,21 @@ namespace deech.me.api.migrations
 
             modelBuilder.Entity("deech.me.data.entities.Note", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("ParagraphId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserBookId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Created")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ParagraphId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("ParagraphId", "UserBookId");
 
-                    b.HasIndex("ParagraphId");
-
-                    b.HasIndex("UserInfoId");
+                    b.HasIndex("UserBookId");
 
                     b.ToTable("Notes");
                 });
@@ -352,30 +311,6 @@ namespace deech.me.api.migrations
                     b.HasKey("Id");
 
                     b.ToTable("PublishInfos");
-                });
-
-            modelBuilder.Entity("deech.me.data.entities.ReadingProgress", b =>
-                {
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserInfoId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("Created")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Progress")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Updated")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BookId", "UserInfoId");
-
-                    b.HasIndex("UserInfoId");
-
-                    b.ToTable("ReadingProgresses");
                 });
 
             modelBuilder.Entity("deech.me.data.entities.TitleInfo", b =>
@@ -515,17 +450,36 @@ namespace deech.me.api.migrations
                     b.ToTable("Translators");
                 });
 
-            modelBuilder.Entity("deech.me.data.entities.UserInfo", b =>
+            modelBuilder.Entity("deech.me.data.entities.UserBook", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Username")
+                    b.Property<int>("BookId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Created")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Favourite")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Progress")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Updated")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("UserInfos");
+                    b.HasIndex("BookId", "UserId");
+
+                    b.ToTable("UserBooks");
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Book", b =>
@@ -543,13 +497,6 @@ namespace deech.me.api.migrations
                         .HasForeignKey("TitleInfoId");
                 });
 
-            modelBuilder.Entity("deech.me.data.entities.BookCollection", b =>
-                {
-                    b.HasOne("deech.me.data.entities.UserInfo", "UserInfo")
-                        .WithMany("Collections")
-                        .HasForeignKey("UserInfoId");
-                });
-
             modelBuilder.Entity("deech.me.data.entities.Bookmark", b =>
                 {
                     b.HasOne("deech.me.data.entities.Paragraph", "Paragraph")
@@ -558,9 +505,11 @@ namespace deech.me.api.migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("deech.me.data.entities.UserInfo", "UserInfo")
+                    b.HasOne("deech.me.data.entities.UserBook", "UserBook")
                         .WithMany("Bookmarks")
-                        .HasForeignKey("UserInfoId");
+                        .HasForeignKey("UserBookId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Citation", b =>
@@ -571,15 +520,11 @@ namespace deech.me.api.migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("deech.me.data.entities.TitleInfo", "TitleInfo")
-                        .WithMany()
-                        .HasForeignKey("TitleInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("deech.me.data.entities.UserInfo", "UserInfo")
+                    b.HasOne("deech.me.data.entities.UserBook", "UserBook")
                         .WithMany("Citations")
-                        .HasForeignKey("UserInfoId");
+                        .HasForeignKey("UserBookId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Comment", b =>
@@ -594,25 +539,6 @@ namespace deech.me.api.migrations
                         .HasForeignKey("ParagraphId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("deech.me.data.entities.UserInfo", "UserInfo")
-                        .WithMany("Comments")
-                        .HasForeignKey("UserInfoId");
-                });
-
-            modelBuilder.Entity("deech.me.data.entities.FavouriteBook", b =>
-                {
-                    b.HasOne("deech.me.data.entities.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("deech.me.data.entities.UserInfo", "UserInfo")
-                        .WithMany("Books")
-                        .HasForeignKey("UserInfoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Note", b =>
@@ -623,9 +549,11 @@ namespace deech.me.api.migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("deech.me.data.entities.UserInfo", "UserInfo")
+                    b.HasOne("deech.me.data.entities.UserBook", "UserBook")
                         .WithMany("Notes")
-                        .HasForeignKey("UserInfoId");
+                        .HasForeignKey("UserBookId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("deech.me.data.entities.Paragraph", b =>
@@ -633,21 +561,6 @@ namespace deech.me.api.migrations
                     b.HasOne("deech.me.data.entities.Book", "Book")
                         .WithMany("Paragraphs")
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("deech.me.data.entities.ReadingProgress", b =>
-                {
-                    b.HasOne("deech.me.data.entities.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("deech.me.data.entities.UserInfo", "UserInfo")
-                        .WithMany()
-                        .HasForeignKey("UserInfoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -727,6 +640,15 @@ namespace deech.me.api.migrations
                     b.HasOne("deech.me.data.entities.Translator", "Translator")
                         .WithMany()
                         .HasForeignKey("TranslatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("deech.me.data.entities.UserBook", b =>
+                {
+                    b.HasOne("deech.me.data.entities.Book", "Book")
+                        .WithMany()
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

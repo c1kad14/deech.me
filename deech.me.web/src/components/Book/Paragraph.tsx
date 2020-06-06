@@ -4,7 +4,7 @@ import { IParagraph } from "../../store/book/types"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/rootReducer"
 import CommentsSection from "../Comments/CommentsSection"
-import { setParagraph, addBookmark } from "../../store/book/actions"
+import { addBookmark } from "../../store/book/actions"
 import { ReplyButton } from "./ReplyButton"
 import { CitationButton } from "./CitationButton"
 import { BookmarkButton } from "./BookmarkButton"
@@ -22,11 +22,12 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     const dispatch = useDispatch()
     let { paragraphId } = useSelector((state: RootState) => state.comments)
     let { username } = useSelector((state: RootState) => state.app)
-    let { id } = useSelector((state: RootState) => state.book)
+    let { book } = useSelector((state: RootState) => state.book)
     const [selected, setSelected] = useState(false)
     const [reply, setReply] = useState(false)
     const [showSignInRequired, setShowSignInRequired] = useState(false)
     const paragraphClasses = selected ? "paragraph-element paragraph-element-selected rounded" : "paragraph-element"
+    let bookmark;
 
     const paragraphSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation()
@@ -44,12 +45,18 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
         if (!username) {
             setShowSignInRequired(true)
         } else {
-            dispatch(addBookmark({ bookId: id, paragraphId: paragraph.id, created: moment().format("YYYY-MM-DD HH:m") }))
+            if (book && book.userBookId) {
+                dispatch(addBookmark({ userBookId: book.userBookId, paragraphId: paragraph.id, created: moment().format("YYYY-MM-DD HH:mm") }))
+            }
         }
     }
 
+    if (book && book.bookmarks) {
+        bookmark = book.bookmarks.filter(b => b.paragraphId === paragraph.id)[0]
+    }
+
     return <div>
-        {paragraph.bookmark && <span>***</span>}
+        {bookmark && <span>***</span>}
         <div className={paragraphClasses} paragraph-seq={paragraph.sequence} onClick={(e) => paragraphSelected(e)}>
             <Section id={paragraph.id} type={paragraph.type} value={paragraph.value} />
 

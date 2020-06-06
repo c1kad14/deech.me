@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import BookContent from "../components/Book/BookContent"
-import { setBookId, clearBook } from "../store/book/actions"
+import { getBook, clearBook } from "../store/book/actions"
 import { RouteComponentProps } from "react-router-dom"
 import { RootState } from "../store/rootReducer"
 import { Spinner } from "../components/Shared/Spinner"
@@ -12,14 +12,13 @@ interface BookParams {
 
 const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
     const dispatch = useDispatch()
-    const bookId = useSelector((state: RootState) => state.book.id)
     let { book } = useSelector((state: RootState) => state.book)
     const { id } = match.params
     let { loading } = useSelector((state: RootState) => state.app)
 
     useEffect(() => {
-        if (!bookId) {
-            dispatch(setBookId(id))
+        if (!book || book.id !== parseInt(id)) {
+            dispatch(getBook(parseInt(id)))
         }
         return () => {
             dispatch(clearBook())

@@ -21,7 +21,7 @@ const enhancer = (window as any)["devToolsExtension"] && process.env.NODE_ENV ==
 const persistConfig = {
     key: 'root',
     storage,
-    blacklist: ['router']
+    whitelist: ['app']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

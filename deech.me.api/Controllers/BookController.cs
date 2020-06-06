@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,6 @@ using AutoMapper;
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
 using deech.me.logic.models;
-using System;
 
 namespace deech.me.api.controllers
 {
@@ -36,7 +36,6 @@ namespace deech.me.api.controllers
                 this._bookDataService.SetIncludeFunc(i => i.Include(b => b.Paragraphs)
                                                            .ThenInclude(p => p.Comments)
                                                            .Include(b => b.TitleInfo));
-
                 var result = this._bookDataService.GetSingle(b => b.TitleInfo.Id == id);
                 var mapped = this._mapper.Map<BookModel>(result);
 
@@ -61,7 +60,7 @@ namespace deech.me.api.controllers
                         {
                             UserId = userId,
                             BookId = id,
-                            Created = DateTime.Now.ToString("YYYY-MM-DD HH:m")
+                            Created = DateTime.Now.ToString("yyyy-MM-dd HH:mm")
                         });
 
                     result = this._userBookDataService.GetSingle(b => b.UserId == userId && b.BookId == id);

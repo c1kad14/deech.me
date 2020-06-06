@@ -1,10 +1,9 @@
-import { ITitleInfo } from "../title/types"
 import { Action } from "redux"
 
 export enum BookTypes {
     CLEAR_BOOK = "@@book/CLEAR_BOOK",
     SET_BOOK = "@@book/SET_BOOK",
-    SET_BOOK_ID = "@@book/SET_BOOK_ID",
+    GET_BOOK = "@@book/GET_BOOK",
     SET_PROGRESS = "@@book/SET_PROGRESS",
     SET_PARAGRAPH = "@@book/SET_PARAGRAPH",
     ADD_BOOKMARK = "@@book/ADD_BOOKMARK",
@@ -18,37 +17,43 @@ export enum BookTypes {
     NOTE_ADDED = "@@book/NOTE_ADDED",
     BOOKMARK_DELETED = "@@book/BOOKMARK_DELETED",
     CITATION_DELETED = "@@book/CITATION_DELETED",
-    NOTE_DELETED = "@@book/NOTE_DELETED",
-    BOOKMARK_DELETE = "BOOKMARK_DELETE"
+    NOTE_DELETED = "@@book/NOTE_DELETED"
 }
 
 export interface IParagraph {
     id: number
-    bookmark?: IBookmark
-    citation?: ICitation
     comments: number
-    note?: INote
     sequence: number
     type: string
     value: string
-
 }
 
 export interface IBook {
-    title: ITitleInfo
-    paragraphs: IParagraph[]
+    bookmarks?: IBookmark []
+    citations?: ICitation []
     file: string
+    id: number
+    notes?: INote []
+    paragraphs: IParagraph[]
+    progress: number
+    userBookId?: number
 }
 
 export interface IBookmark {
-    bookId: number
+    userBookId: number
     created: string
     paragraphId: number
     userId?: string
 }
 
+export interface IBookState {
+    paragraphId: number
+    book?: IBook
+}
+
 export interface ICitation {
     created: string
+    id: number
     paragraphId: number
     userId?: string
     value: string
@@ -61,24 +66,17 @@ export interface INote {
     value: string
 }
 
-export interface IBookState {
-    readonly id: number
-    readonly book?: IBook
-    readonly progress: number
-    readonly paragraphId: number
+export interface GetBook extends Action {
+    type: BookTypes.GET_BOOK
+    payload: {
+        id: number
+    }
 }
 
 export interface SetBook extends Action {
     type: BookTypes.SET_BOOK
     payload: {
         book: IBook
-    }
-}
-
-export interface SetBookId extends Action {
-    type: BookTypes.SET_BOOK_ID
-    payload: {
-        id: string
     }
 }
 

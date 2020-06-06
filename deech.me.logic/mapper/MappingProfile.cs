@@ -27,6 +27,8 @@ namespace deech.me.logic.mapper
             CreateMap<CommentModel, Comment>();
             CreateMap<CitationModel, Citation>();
             CreateMap<Citation, CitationModel>();
+            CreateMap<UserBookModel, UserBook>();
+            CreateMap<UserBook, UserBookModel>().ForMember(dest => dest.Paragraphs, opt => opt.MapFrom(src => src.Book.Paragraphs)).ForMember(dest => dest.UserBookId, opt => opt.MapFrom(src => src.Id));
             CreateMap<Paragraph, ParagraphModel>().ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments.Count));
             CreateMap<Book, BookModel>();
         }

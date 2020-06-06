@@ -1,8 +1,8 @@
-import { BookTypes, IBook, ClearBook, SetBookId, SetBook, SetProgress, SetParagraph, IBookmark, AddBookmark, AddNote, AddCitation, ICitation, INote, DeleteBookmark, DeleteCitation, DeleteNote, BookmarkAdded, BookmarkDeleted, CitationAdded, CitationDeleted, NoteAdded, NoteDeleted } from "./types"
+import { BookTypes, IBook, ClearBook, GetBook, SetBook, SetProgress, SetParagraph, IBookmark, AddBookmark, AddNote, AddCitation, ICitation, INote, DeleteBookmark, DeleteCitation, DeleteNote, BookmarkAdded, BookmarkDeleted, CitationAdded, CitationDeleted, NoteAdded, NoteDeleted } from "./types"
 
-export function setBookId(id: string): SetBookId {
+export function getBook(id: number): GetBook {
     return {
-        type: BookTypes.SET_BOOK_ID,
+        type: BookTypes.GET_BOOK,
         payload: {
             id
         }

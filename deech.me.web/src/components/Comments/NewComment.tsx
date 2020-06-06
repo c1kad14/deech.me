@@ -21,7 +21,7 @@ const NewComment: React.FC<NewCommentProps> = ({ paragraphId, associated }) => {
             const newComment: IComment = {
                 associated,
                 paragraphId,
-                date: moment().format("YYYY-MM-DD HH:m"),
+                date: moment().format("YYYY-MM-DD HH:mm"),
                 value: comment,
                 username: username
             }

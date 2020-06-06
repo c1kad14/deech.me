@@ -9,7 +9,7 @@ let number: number = 0
 
 const BookContent: React.FC = () => {
     const dispatch = useDispatch()
-    let { book, progress } = useSelector((state: RootState) => state.book)
+    let { book } = useSelector((state: RootState) => state.book)
     let content: ReactNode[] = []
 
     let options = {
@@ -52,10 +52,10 @@ const BookContent: React.FC = () => {
             observer.observe(item)
         })
 
-        if (progress > 0) {
+        if (book && book.progress > 0) {
             const anchor = Array.from(elements).filter(elem => {
                 const attr = elem.attributes.getNamedItem("paragraph-seq")
-                return attr && attr.value && Number(attr.value) === progress
+                return book && attr && attr.value && Number(attr.value) === book.progress
             })
 
             if (anchor.length > 0) {
