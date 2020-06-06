@@ -50,7 +50,7 @@ namespace deech.me.api.controllers
             var entity = _mapper.Map<Bookmark>(bookmark);
             _bookmarkDataService.Delete(entity);
 
-            return Ok();
+            return Ok(bookmark);
         }
 
         [HttpGet]

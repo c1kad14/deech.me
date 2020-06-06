@@ -50,7 +50,7 @@ namespace deech.me.api.controllers
             var entity = _mapper.Map<Note>(note);
             _noteDataService.Delete(entity);
 
-            return Ok();
+            return Ok(note);
         }
 
         [HttpGet]

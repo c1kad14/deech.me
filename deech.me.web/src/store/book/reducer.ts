@@ -60,7 +60,7 @@ const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookSt
                 break
             case BookTypes.NOTE_DELETED:
                 if (draft.book && draft.book.notes) {
-                    draft.book.notes = draft.book.notes.filter(n => n.paragraphId === action.payload.note.paragraphId)
+                    draft.book.notes = draft.book.notes.filter(n => n.paragraphId !== action.payload.note.paragraphId)
                 }
                 break
             default:

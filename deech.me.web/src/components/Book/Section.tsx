@@ -1,5 +1,8 @@
 import React from "react"
 import { rawMarkupHelper, imgPathHelper } from "../../utils/helpers"
+import { RootState } from "../../store/rootReducer";
+import { useSelector } from "react-redux";
+import { BookmarkButton } from "./BookmarkButton";
 
 export type SectionProps = {
     id: number,
@@ -7,17 +10,31 @@ export type SectionProps = {
     type: string
 }
 
+
 export const Section: React.FC<SectionProps> = ({ id, value, type }) => {
+    let { book } = useSelector((state: RootState) => state.book)
+    let sectionValue;
+    let bookmark;
+
+    if (book && book.bookmarks) {
+        bookmark = book.bookmarks.filter(b => b.paragraphId === id)[0]
+    }
+
     switch (type) {
         case "image":
-            return <img className="book-image" key={id} src={imgPathHelper(value)} />
+            sectionValue = <img className="book-image" key={id} src={imgPathHelper(value)} />
+            break
         case "title":
-            return <h3 key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></h3>
-        case "p":
-            return <p key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></p>
+            sectionValue = <h3 key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></h3>
+            break
         case "table":
-            return <table className="table" key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></table>
+            sectionValue = <table className="table" key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></table>
         default:
-            return <span key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></span>
+            sectionValue = <span key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></span>
     }
+
+    return <span>
+        {bookmark && <BookmarkButton />}
+        {sectionValue}
+    </span>
 }

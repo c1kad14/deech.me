@@ -4,10 +4,10 @@ import { IParagraph } from "../../store/book/types"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/rootReducer"
 import CommentsSection from "../Comments/CommentsSection"
-import { addBookmark } from "../../store/book/actions"
+import { addBookmark, deleteBookmark } from "../../store/book/actions"
 import { ReplyButton } from "./ReplyButton"
 import { CitationButton } from "./CitationButton"
-import { BookmarkButton } from "./BookmarkButton"
+import { BookmarkActionButton } from "./BookmarkActionButton"
 import { NoteButton } from "./NoteButton"
 import { Section } from "./Section"
 import SignInRequired from "../Modals/SignInRequired"
@@ -27,7 +27,8 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
     const [reply, setReply] = useState(false)
     const [showSignInRequired, setShowSignInRequired] = useState(false)
     const paragraphClasses = selected ? "paragraph-element paragraph-element-selected rounded" : "paragraph-element"
-    let bookmark;
+    const bookmark = book && book.bookmarks && book.bookmarks.filter(b => b.paragraphId === paragraph.id)[0]
+    const added = bookmark !== undefined
 
     const paragraphSelected = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         event.stopPropagation()
@@ -46,23 +47,22 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
             setShowSignInRequired(true)
         } else {
             if (book && book.userBookId) {
-                dispatch(addBookmark({ userBookId: book.userBookId, paragraphId: paragraph.id, created: moment().format("YYYY-MM-DD HH:mm") }))
+                if (bookmark) {
+                    dispatch(deleteBookmark(bookmark))
+                } else {
+                    dispatch(addBookmark({ userBookId: book.userBookId, paragraphId: paragraph.id, created: moment().format("YYYY-MM-DD HH:mm") }))
+                }
             }
         }
     }
 
-    if (book && book.bookmarks) {
-        bookmark = book.bookmarks.filter(b => b.paragraphId === paragraph.id)[0]
-    }
-
     return <div>
-        {bookmark && <span>***</span>}
         <div className={paragraphClasses} paragraph-seq={paragraph.sequence} onClick={(e) => paragraphSelected(e)}>
             <Section id={paragraph.id} type={paragraph.type} value={paragraph.value} />
 
             {selected && <span className="justify-content-end d-flex">
                 <>
-                    <BookmarkButton onClick={bookmarkButtonClick} />
+                    <BookmarkActionButton onClick={bookmarkButtonClick} added={added} />
                     <NoteButton />
                     <CitationButton />
                     <ReplyButton onClick={replyButtonClick} />
@@ -70,7 +70,6 @@ const Paragraph: React.FC<ParagraphProps> = ({ paragraph }) => {
                 </>
             </span>
             }
-
         </div>
 
         {paragraphId === paragraph.id && reply && <CommentsSection />}

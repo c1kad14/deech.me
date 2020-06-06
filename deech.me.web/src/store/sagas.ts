@@ -5,7 +5,7 @@ import { setTitles, addTitles } from "./title/actions"
 import { domain } from "../config"
 import { setLoading, setLoaded } from "./app/actions"
 import { BookTypes, GetBook, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph, DeleteBookmark } from "./book/types"
-import { setBook, bookmarkAdded, citationAdded, noteAdded, noteDeleted, citationDeleted } from "./book/actions"
+import { setBook, bookmarkAdded, citationAdded, noteAdded, noteDeleted, citationDeleted, bookmarkDeleted } from "./book/actions"
 import { CommentTypes, AddComment, IComment, ShowComments } from "./comments/types"
 import { commentAdded, setComments } from "./comments/actions"
 import { RootState } from "./rootReducer"
@@ -154,7 +154,7 @@ export function* deleteBookmarkSaga(action: DeleteBookmark) {
         const accessToken = yield select(getAccessToken)
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         const payload = yield call(deleteBookmarkApiCall, action.payload.bookmark)
-        yield put(noteDeleted(payload))
+        yield put(bookmarkDeleted(payload))
     } catch (error) {
         console.log(error)
     }

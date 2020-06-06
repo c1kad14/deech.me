@@ -50,7 +50,7 @@ namespace deech.me.api.controllers
             var entity = _mapper.Map<Citation>(citation);
             _citationDataService.Delete(entity);
 
-            return Ok();
+            return Ok(citation);
         }
 
         [HttpGet]

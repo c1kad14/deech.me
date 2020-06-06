@@ -45,6 +45,7 @@ body {
   color: #f7f7f7;
   cursor: pointer;
   text-align: justify;
+  margin-top: .5rem
 }
 
 .paragraph-element-selected {
