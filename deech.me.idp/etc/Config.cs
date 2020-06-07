@@ -33,8 +33,9 @@ namespace deech.me.idp.etc
                     RequireClientSecret = false,
                     RequireConsent = false,
 
-                    RedirectUris =           { "http://localhost:3000/sicb" },
+                    RedirectUris =           { "http://localhost:3000/sicb", "http://localhost:3000/renew" },
                     PostLogoutRedirectUris = { "http://localhost:3000/socb" },
+                    
                     AllowedCorsOrigins =     { "http://localhost:3000" },
 
                     AllowedScopes =

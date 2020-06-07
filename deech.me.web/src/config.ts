@@ -9,5 +9,7 @@ export const userManagerSettings = {
     redirect_uri: "http://localhost:3000/sicb",
     response_type: "code",
     scope: "openid profile api1",
-    post_logout_redirect_uri: "http://localhost:3000/socb"
+    post_logout_redirect_uri: "http://localhost:3000/socb",
+    automaticSilentRenew: true,
+    silent_redirect_uri: "http://localhost:3000/renew" 
 }

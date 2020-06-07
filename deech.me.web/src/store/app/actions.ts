@@ -1,4 +1,4 @@
-import { AppTypes, SetError, SetLoaded, SetLoading, SetAuth, ClearAuth } from "./types"
+import { AppTypes, SetError, SetLoaded, SetLoading, ClearUser, SetUser } from "./types"
 
 export function setLoading(): SetLoading {
     return {
@@ -12,19 +12,18 @@ export function setLoaded(): SetLoaded {
     }
 }
 
-export function setAuth(username: string, access_token: string): SetAuth {
+export function setUser(username: string): SetUser {
     return {
-        type: AppTypes.SET_AUTH,
+        type: AppTypes.SET_USER,
         payload: {
-            username,
-            access_token
+            username
         }
     }
 }
 
-export function clearAuth(): ClearAuth {
+export function clearAuth(): ClearUser {
     return {
-        type: AppTypes.CLEAR_AUTH
+        type: AppTypes.CLEAR_USER
     }
 }
 

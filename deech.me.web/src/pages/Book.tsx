@@ -12,20 +12,17 @@ interface BookParams {
 
 const Book: React.FC<RouteComponentProps<BookParams>> = ({ match }) => {
     const dispatch = useDispatch()
-    let { book } = useSelector((state: RootState) => state.book)
-    const { id } = match.params
     let { loading } = useSelector((state: RootState) => state.app)
+    const { id } = match.params
 
     useEffect(() => {
-        if (!book || book.id !== parseInt(id)) {
-            dispatch(getBook(parseInt(id)))
-        }
+        dispatch(getBook(parseInt(id)))
         return () => {
             dispatch(clearBook())
         }
-    }, [])
+    }, [dispatch, id])
 
-    if (!book || loading) {
+    if (loading) {
         return <div className="text-center pt-5 mt-5"><Spinner /></div>
     }
 

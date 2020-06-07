@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react"
+import React from "react"
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap"
 import "./modal.css"
 import Oidc from "oidc-client"

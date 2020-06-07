@@ -1,4 +1,4 @@
-import { BookTypes, IBook, ClearBook, GetBook, SetBook, SetProgress, SetParagraph, IBookmark, AddBookmark, AddNote, AddCitation, ICitation, INote, DeleteBookmark, DeleteCitation, DeleteNote, BookmarkAdded, BookmarkDeleted, CitationAdded, CitationDeleted, NoteAdded, NoteDeleted } from "./types"
+import { BookTypes, IBook, ClearBook, GetBook, SetBook, SetProgress, SetParagraph, IBookmark, AddBookmark, AddNote, AddCitation, ICitation, INote, DeleteBookmark, DeleteNote, BookmarkAdded, BookmarkDeleted, CitationAdded, CitationDeleted, NoteAdded, NoteDeleted } from "./types"
 
 export function getBook(id: number): GetBook {
     return {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import { useHistory } from "react-router"
 import Oidc from "oidc-client"
 import { useDispatch } from "react-redux"
-import { setAuth } from "../store/app/actions"
+import { setUser } from "../store/app/actions"
 import { userManagerSettings } from "../config"
 
 const SignInCallback: React.FC = () => {
@@ -15,7 +15,7 @@ const SignInCallback: React.FC = () => {
             console.log(user)
             if (user.profile.name) {
                 console.log(`User ${user.profile.name} logged in`)
-                dispatch(setAuth(user.profile.name, user.access_token))
+                dispatch(setUser(user.profile.name))
                 history.push("/")
             }
             else {
@@ -25,7 +25,7 @@ const SignInCallback: React.FC = () => {
         }).catch(function (e) {
             console.error(e)
         })
-    }, [])
+    })
 
     return <></>
 }

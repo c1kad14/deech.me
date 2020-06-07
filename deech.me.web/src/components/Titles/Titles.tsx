@@ -15,7 +15,7 @@ const Titles: React.FC = () => {
 
     useEffect(() => {
         return () => { dispatch(clearTitles()) }
-    }, [])
+    }, [dispatch])
 
     const loadMore = () => {
         dispatch(loadMoreTitles())

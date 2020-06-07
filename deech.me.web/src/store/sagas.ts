@@ -2,13 +2,14 @@ import { call, put, takeEvery, select, takeLatest } from "redux-saga/effects"
 import Axios from "axios"
 import { TitleTypes } from "./title/types"
 import { setTitles, addTitles } from "./title/actions"
-import { domain } from "../config"
+import { domain, userManagerSettings } from "../config"
 import { setLoading, setLoaded } from "./app/actions"
 import { BookTypes, GetBook, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph, DeleteBookmark, SetProgress } from "./book/types"
 import { setBook, bookmarkAdded, citationAdded, noteAdded, noteDeleted, citationDeleted, bookmarkDeleted } from "./book/actions"
 import { CommentTypes, AddComment, IComment, ShowComments } from "./comments/types"
 import { commentAdded, setComments } from "./comments/actions"
 import { RootState } from "./rootReducer"
+import Oidc from "oidc-client"
 
 export function* sagaWatcher() {
     yield takeLatest(TitleTypes.LOAD_TITLES, loadTitlesSaga)
@@ -26,9 +27,13 @@ export function* sagaWatcher() {
     yield takeEvery(BookTypes.SET_PROGRESS, setReadingProgressSaga)
 }
 
-const getAccessToken = ((state: RootState) => {
-    return state.app.access_token
-})
+const getAccessToken = () => {
+    const mgr = new Oidc.UserManager(userManagerSettings)
+    return mgr.getUser().then((user) => {
+        if (user)
+            return user.access_token
+    })
+}
 
 const getTitleCount = ((state: RootState) => {
     return state.title.titles.length
@@ -40,7 +45,7 @@ const getTitleFilter = ((state: RootState) => {
 
 export function* setReadingProgressSaga(action: SetProgress) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         yield call(setReadingProgressApiCall, action.payload.userBookId, action.payload.progress)
     } catch (error) {
@@ -92,12 +97,11 @@ export function* loadMoreTitlesSaga() {
 }
 
 export function* loadBookSaga(action: GetBook) {
-    const accessToken = yield select(getAccessToken)
+    const accessToken = yield getAccessToken()
     Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
     try {
         yield put(setLoading())
         const payload = yield call(loadBookApiCall, action.payload.id)
-        console.log(payload)
         payload.paragraphs = payload.paragraphs.sort((a: IParagraph, b: IParagraph) => a.sequence - b.sequence)
         yield put(setBook(payload))
         yield put(setLoaded())
@@ -118,7 +122,7 @@ export function* showCommentsSaga(action: ShowComments) {
 
 export function* addCommentSaga(action: AddComment) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         const payload = yield call(addCommentApiCall, action.payload.comment)
         yield put(commentAdded(payload))
@@ -129,8 +133,9 @@ export function* addCommentSaga(action: AddComment) {
 
 export function* addBookmarkSaga(action: AddBookmark) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
+        console.log(accessToken)
         const payload = yield call(addBookmarkApiCall, action.payload.bookmark)
         yield put(bookmarkAdded(payload))
     } catch (error) {
@@ -140,7 +145,7 @@ export function* addBookmarkSaga(action: AddBookmark) {
 
 export function* addCitationSaga(action: AddCitation) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         const payload = yield call(addCitationApiCall, action.payload.citation)
         yield put(citationAdded(payload))
@@ -151,7 +156,7 @@ export function* addCitationSaga(action: AddCitation) {
 
 export function* addNoteSaga(action: AddNote) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         const payload = yield call(addNoteApiCall, action.payload.note)
         yield put(noteAdded(payload))
@@ -162,7 +167,7 @@ export function* addNoteSaga(action: AddNote) {
 
 export function* deleteBookmarkSaga(action: DeleteBookmark) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         const payload = yield call(deleteBookmarkApiCall, action.payload.bookmark)
         yield put(bookmarkDeleted(payload))
@@ -173,7 +178,7 @@ export function* deleteBookmarkSaga(action: DeleteBookmark) {
 
 export function* deleteCitationSaga(action: DeleteCitation) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         const payload = yield call(deleteCitationApiCall, action.payload.citation)
         yield put(citationDeleted(payload))
@@ -184,7 +189,7 @@ export function* deleteCitationSaga(action: DeleteCitation) {
 
 export function* deleteNoteSaga(action: DeleteNote) {
     try {
-        const accessToken = yield select(getAccessToken)
+        const accessToken = yield getAccessToken()
         Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
         const payload = yield call(deleteNoteApiCall, action.payload.note)
         yield put(noteDeleted(payload))

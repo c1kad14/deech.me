@@ -17,7 +17,7 @@ const SignOutCallback: React.FC = () => {
         }).catch(function (e) {
             console.error(e);
         });
-    }, [])
+    })
 
     return <></>
 }

@@ -22,13 +22,14 @@ export const Section: React.FC<SectionProps> = ({ id, value, type }) => {
 
     switch (type) {
         case "image":
-            sectionValue = <img className="book-image" key={id} src={imgPathHelper(value)} />
+            sectionValue = <img className="book-image" key={id} src={imgPathHelper(value)} alt="" />
             break
         case "title":
             sectionValue = <h3 key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></h3>
             break
         case "table":
             sectionValue = <table className="table" key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></table>
+            break
         default:
             sectionValue = <span key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></span>
     }

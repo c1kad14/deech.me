@@ -2,10 +2,8 @@ import React from "react"
 import { ITitleInfo } from "../../store/title/types"
 import { domain } from "../../config"
 import { useHistory } from "react-router-dom"
-import { useDispatch } from "react-redux"
 
 const TitleTile: React.FC<ITitleInfo> = ({ id, cover, title }) => {
-    const dispatch = useDispatch()
     const data = cover ? `${domain}/books/${cover}` : `${domain}/images/cover.png`
     const history = useHistory()
 
