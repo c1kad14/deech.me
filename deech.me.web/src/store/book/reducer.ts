@@ -12,11 +12,6 @@ const BookReducer: Reducer<IBookState> = (state = initialState, action): IBookSt
             case BookTypes.SET_BOOK:
                 draft.book = action.payload.book
                 break
-            case BookTypes.SET_PROGRESS:
-                if (draft.book) {
-                    draft.book.progress = action.payload.progress === 1 ? 0 : action.payload.progress
-                }
-                break
             case BookTypes.SET_PARAGRAPH:
                 draft.paragraphId = action.payload.paragraphId
                 break

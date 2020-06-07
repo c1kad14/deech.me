@@ -83,6 +83,7 @@ export interface SetBook extends Action {
 export interface SetProgress extends Action {
     type: BookTypes.SET_PROGRESS,
     payload: {
+        userBookId: number
         progress: number
     }
 }

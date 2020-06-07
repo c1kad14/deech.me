@@ -4,7 +4,7 @@ import { TitleTypes } from "./title/types"
 import { setTitles, addTitles } from "./title/actions"
 import { domain } from "../config"
 import { setLoading, setLoaded } from "./app/actions"
-import { BookTypes, GetBook, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph, DeleteBookmark } from "./book/types"
+import { BookTypes, GetBook, AddBookmark, AddCitation, AddNote, DeleteNote, DeleteCitation, IBookmark, ICitation, INote, IParagraph, DeleteBookmark, SetProgress } from "./book/types"
 import { setBook, bookmarkAdded, citationAdded, noteAdded, noteDeleted, citationDeleted, bookmarkDeleted } from "./book/actions"
 import { CommentTypes, AddComment, IComment, ShowComments } from "./comments/types"
 import { commentAdded, setComments } from "./comments/actions"
@@ -23,6 +23,7 @@ export function* sagaWatcher() {
     yield takeEvery(BookTypes.DELETE_BOOKMARK, deleteBookmarkSaga)
     yield takeEvery(BookTypes.DELETE_CITATION, deleteCitationSaga)
     yield takeEvery(BookTypes.DELETE_NOTE, deleteNoteSaga)
+    yield takeEvery(BookTypes.SET_PROGRESS, setReadingProgressSaga)
 }
 
 const getAccessToken = ((state: RootState) => {
@@ -36,6 +37,16 @@ const getTitleCount = ((state: RootState) => {
 const getTitleFilter = ((state: RootState) => {
     return state.title.filter
 })
+
+export function* setReadingProgressSaga(action: SetProgress) {
+    try {
+        const accessToken = yield select(getAccessToken)
+        Axios.defaults.headers['authorization'] = `Bearer ${accessToken}`
+        yield call(setReadingProgressApiCall, action.payload.userBookId, action.payload.progress)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export function* loadTitlesSaga() {
     try {
@@ -245,5 +256,11 @@ async function deleteCitationApiCall(citation: ICitation) {
 async function deleteNoteApiCall(note: INote) {
     const url = `${domain}/note/`
     const response = await Axios.delete(url, { data: note })
+    return await response.data
+}
+
+async function setReadingProgressApiCall(userBookId: number, progress: number) {
+    const url = `${domain}/book/progress?book=${userBookId}&value=${progress}`
+    const response = await Axios.get(url)
     return await response.data
 }

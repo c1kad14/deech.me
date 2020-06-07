@@ -9,6 +9,7 @@ using AutoMapper;
 using deech.me.data.entities;
 using deech.me.logic.abstractions;
 using deech.me.logic.models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace deech.me.api.controllers
 {
@@ -67,7 +68,7 @@ namespace deech.me.api.controllers
                 }
 
                 var mapped = this._mapper.Map<UserBookModel>(result);
-                
+
                 return Ok(mapped);
             }
         }
@@ -81,6 +82,22 @@ namespace deech.me.api.controllers
             var result = this._bookDataService.GetSingle(b => b.TitleInfo.Authors.Any(a => a.AuthorId == authorId));
 
             return Ok(result);
+        }
+
+        [Authorize]
+        [HttpGet("progress")]
+        public ActionResult SetReadingProgress(int book, int value)
+        {
+            var userId = GetUserId();
+            var userBook = this._userBookDataService.GetSingle(b => b.UserId == userId && b.Id == book);
+
+            if (userBook != null)
+            {
+                userBook.Progress = value;
+                this._userBookDataService.Update(userBook);
+            }
+
+            return Ok();
         }
 
         private string GetUserId() => HttpContext.User?.Claims?.ToList().SingleOrDefault(c => c.Type == "id")?.Value;

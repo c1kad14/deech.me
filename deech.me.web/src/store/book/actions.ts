@@ -24,10 +24,11 @@ export function clearBook(): ClearBook {
     }
 }
 
-export function setProgress(progress: number): SetProgress {
+export function setProgress(userBookId:number, progress: number): SetProgress {
     return {
         type: BookTypes.SET_PROGRESS,
         payload: {
+            userBookId,
             progress
         }
     }
