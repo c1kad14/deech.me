@@ -233,4 +233,5 @@ _Pvt_Extensions
 
 #misc
 .DS_Store
-deech.me.api/wwwroot/books/
+deech.me.web/wwwroot/books/
+# See https://help.github.com/ignore-files/ for more about ignoring files.
