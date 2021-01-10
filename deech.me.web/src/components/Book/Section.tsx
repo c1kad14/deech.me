@@ -10,15 +10,17 @@ export type SectionProps = {
     type: string
 }
 
-
 export const Section: React.FC<SectionProps> = ({ id, value, type }) => {
     let { book } = useSelector((state: RootState) => state.book)
+    let { size } = useSelector((state: RootState) => state.settings)
     let sectionValue;
     let bookmark;
 
     if (book && book.bookmarks) {
         bookmark = book.bookmarks.filter(b => b.paragraphId === id)[0]
     }
+
+    const style = { fontSize: `${size}rem`}
 
     switch (type) {
         case "image":
@@ -31,7 +33,7 @@ export const Section: React.FC<SectionProps> = ({ id, value, type }) => {
             sectionValue = <table className="table" key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></table>
             break
         default:
-            sectionValue = <span key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></span>
+            sectionValue = <span style={style} key={id} dangerouslySetInnerHTML={rawMarkupHelper(value)}></span>
     }
 
     return <span>

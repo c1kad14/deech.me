@@ -47,7 +47,7 @@ export interface HideComments extends Action {
     type: CommentTypes.COMMENTS_HIDE
 }
 
-export interface SetComments {
+export interface SetComments extends Action {
     type: CommentTypes.COMMENTS_LOADED
     payload: {
         comments: IComment[]

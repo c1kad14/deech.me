@@ -11,5 +11,5 @@ export const SignInButton: React.FC = () => {
 
     return <div className="sign-in-button text-white pt-2" onClick={signInClick}>
         Sign In
-    </div>
+        </div>
 }

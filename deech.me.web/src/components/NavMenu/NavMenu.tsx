@@ -5,13 +5,15 @@ import { Search } from "../Search"
 import { MenuButton, MenuFullScreen } from "../Menu"
 import { SignInButton } from "../SignIn/SignInButton"
 import { SignOutButton } from "../SignIn/SignOutButton"
+import { increaseText, decreaseText } from "../../store/settings/actions"
 import { Deech } from "./Deech"
-import "./navmenu.css"
-import { useSelector } from "react-redux"
+import "./NavMenu.css"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../store/rootReducer"
 
 const NavMenu: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false)
+    const dispatch = useDispatch()
     let { username } = useSelector((state: RootState) => state.app)
     const menuOpenClick = () => setIsOpen(true)
     const menuCloseClick = () => setIsOpen(false)
@@ -25,6 +27,10 @@ const NavMenu: React.FC = () => {
                             <Deech />
                         </NavbarBrand>
                         <MenuButton menuOpenClick={menuOpenClick} />
+                    </div>
+                    <div>
+                        <button onClick={_ => dispatch(increaseText())}>+</button>
+                        <button onClick={_ => dispatch(decreaseText())}>-</button>
                     </div>
                     <div className="col-md-5 mt-2">
                         <Search />

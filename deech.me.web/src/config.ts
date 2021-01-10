@@ -1,6 +1,6 @@
 import { WebStorageStateStore } from "oidc-client"
 
-export const domain = "http://192.168.50.204:5000"
+export const domain = "http://localhost:5000"
 
 export const userManagerSettings = {
     userStore: new WebStorageStateStore({ store: localStorage }),

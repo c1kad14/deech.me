@@ -58,12 +58,12 @@ namespace deech.me.api
                                   });
             });
             services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("Bearer", options =>
-            {
-                options.Authority = "https://localhost:5050";
-                options.RequireHttpsMetadata = false;
-                options.Audience = "api1";
-            });
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer("Bearer", options =>
+            // {
+            //     options.Authority = "https://localhost:5050";
+            //     options.RequireHttpsMetadata = false;
+            //     options.Audience = "api1";
+            // });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -82,8 +82,8 @@ namespace deech.me.api
             app.UseRouting();
             app.UseStaticFiles();
             app.UseCors(MyAllowSpecificOrigins);
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // app.UseAuthentication();
+            // app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

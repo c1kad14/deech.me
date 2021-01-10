@@ -35,7 +35,7 @@ namespace deech.me.data.context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=127.0.0.1,1433;Database=DeechMeDb;User Id=SA;Password=1Secure*Password1");
+            optionsBuilder.UseSqlServer("Server=127.0.0.1,1433;Database=DeechMeDb;User Id=sa;Password=1Secure*Password1");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
